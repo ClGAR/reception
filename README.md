@@ -9,7 +9,7 @@ AI receptionist + booking SaaS for appointment businesses in the Philippines (MV
 4. `npm run dev -- -p 3107` and open http://localhost:3107
 
 Demo login: `owner@glowstudio.test` (owner) or `staff@glowstudio.test` (reception staff), password = `DEMO_PASSWORD` in `.env`.
-Public booking page: `/b/glow-studio`. A second fictional tenant, `/b/smile-lab`, exists for isolation tests.
+Public booking page: `/b/glow-studio`. Chat widget demo: `/demo-site.html`. A second fictional tenant, `/b/smile-lab`, exists for isolation tests.
 
 ## Scripts
 | Command | What it does |

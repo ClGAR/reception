@@ -30,7 +30,7 @@ import { toast } from "@/components/toast";
 import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
 import { sendStaffReply, setAppointmentStatus, setConversationState } from "@/server/actions";
 
-type Tag = "booking" | "ai_replied" | "new" | "resolved" | "replied";
+type Tag = "booking" | "ai_replied" | "new" | "resolved" | "replied" | "needs_reply";
 interface Row { id: string; name: string; preview: string; ago: string; unread: boolean; tag: Tag; hasBooking: boolean }
 interface Detail {
   id: string;
@@ -63,6 +63,14 @@ export function InboxView({ list, detail, filter, query, mobileThread }: { list:
     if (p.c) s.set("c", p.c);
     return `/app/inbox${s.size ? `?${s}` : ""}`;
   };
+
+  // New widget messages arrive server-side; refresh the view every 10 s while the tab is visible.
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (document.visibilityState === "visible") router.refresh();
+    }, 10_000);
+    return () => clearInterval(id);
+  }, [router]);
 
   // Opening a conversation marks it read.
   useEffect(() => {
@@ -410,6 +418,7 @@ function TagChip({ tag }: { tag: Tag }) {
   if (tag === "booking") return <span className={cx(base, "bg-accent-soft/70 text-ink/85")}><CalendarDays size={14} strokeWidth={1.75} /> Booking</span>;
   if (tag === "ai_replied") return <span className={cx(base, "bg-surface text-ink/85")}><Sparkle size={14} strokeWidth={1.75} /> AI replied</span>;
   if (tag === "new") return <span className={cx(base, "bg-accent-soft/70 text-ink/85")}><span className="size-2 rounded-full bg-live" /> New</span>;
+  if (tag === "needs_reply") return <span className={cx(base, "bg-warn-soft text-warn-ink")}><Hand size={14} strokeWidth={1.75} /> Needs reply</span>;
   if (tag === "replied") return <span className={cx(base, "bg-surface text-ink/85")}><User size={14} strokeWidth={1.75} /> Replied</span>;
   return <span className={cx(base, "bg-surface text-ink/85")}><Check size={14} strokeWidth={2} /> Resolved</span>;
 }

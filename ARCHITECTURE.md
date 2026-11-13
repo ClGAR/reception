@@ -1,4 +1,4 @@
-# Architecture (Stage 2)
+# Architecture (Stage 3)
 
 Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 · Neon Postgres + Drizzle · Better Auth (email/password + organization plugin) · Zod · Vitest.
 
@@ -15,9 +15,19 @@ Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 
 - Migration `0001_booking_exclusion.sql`: `EXCLUDE USING gist (staff_id WITH =, tstzrange(starts_at, block_ends_at) WITH &&) WHERE status = 'confirmed'`. The database itself refuses double confirmations.
 - Status machine: pending → confirmed | declined | cancelled; confirmed → cancelled | completed | no_show. Every change writes `audit_log` and an outbox row (deduped by key).
 
-## AI
-- Stage 2 ships a **deterministic FAQ matcher** (`src/server/ai/faq.ts`), clearly labelled in the UI as not a model. Medical-sounding questions always hand off to staff.
-- Stage 3: AI SDK with tools `listServices`, `checkAvailability`, `createBookingRequest`, `handoffToStaff`, provider chosen by `AI_PROVIDER` / `AI_MODEL`.
+## AI receptionist (`src/server/ai/`)
+- `provider.ts`: model from env (`AI_PROVIDER` = `openai-compatible` | `anthropic`, `AI_MODEL`, `AI_BASE_URL`, `AI_API_KEY`). Nothing hardcoded; pick a cheap model.
+- `receptionist.ts`: AI SDK v7 `generateText` with server tools scoped to one business: `getBusinessInformation`, `listServices`, `checkAvailability`, `createBookingRequest` (Zod-validated, requires `customerAgreed: true`, goes through the booking engine, idempotent per slot), `handoffToStaff`.
+- Guardrails in the system prompt: only tool facts, no medical advice, never claim confirmed while pending, customer text is not instructions. Max 6 steps, 400 output tokens, 30 s timeout, 1 retry.
+- Skips when staff took over or AI is off; hands off when the monthly limit is hit; on provider error saves a safe fallback + handoff (never a booking claim). Token usage → `ai_usage`.
+- No provider configured → `faq.ts` keyword matcher. Replies stored with `simulated = true` and labelled "FAQ match" in the inbox and widget. Medical-sounding questions always hand off.
+- Privacy: a production provider must have a data processing agreement. Don't route real customer chats through free/unknown routers.
+
+## Website widget
+- `public/widget.js` → injects a button + iframe (`/widget/[token]`) inside a shadow root, so host CSS can't touch it.
+- `src/proxy.ts` sets `frame-ancestors` per business from Settings → Chat widget → Allowed websites; unknown tokens get `'none'`.
+- `src/server/widget-actions.ts`: public server actions. Widget token picks the business; a random per-visitor conversation token (stored in the iframe's localStorage) picks the thread. Rate-limited per IP. The widget polls every 8 s for staff replies; the inbox refreshes every 10 s.
+- `public/demo-site.html`: fictional host page for demos.
 
 ## Notifications
 - `notification_outbox` rows are created inside the same transaction as the booking change. The bell menu reads them. Email is dry-run unless `RESEND_API_KEY` + `EMAIL_FROM` are set. Inngest delivery is Stage 4.
@@ -30,7 +40,6 @@ Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 
 - Motion library not added yet: only CSS entrances (dropdowns, dialogs, drawer, toasts) with a reduced-motion override.
 
 ## Limitations / next
-- Chat widget script (`/widget.js`) and AI SDK tool-calling: Stage 3.
 - Inngest workers, real email, Playwright E2E suite: Stage 4.
 - Rate limiting on public endpoints is in-memory per instance; needs a shared store before scaling.
 - Data Privacy Act: privacy notice is a draft; DPO, retention policy and processing agreements still to do.

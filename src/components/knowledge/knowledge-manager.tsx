@@ -17,6 +17,7 @@ const categories = [
   ["faq", "Common questions"],
 ] as const;
 const catLabel = Object.fromEntries(categories) as Record<string, string>;
+const toolLabel: Record<string, string> = { getBusinessInformation: "business info & approved answers", listServices: "services & prices", checkAvailability: "live availability" };
 
 export function KnowledgeManager({ entries, canEdit }: { entries: Entry[]; canEdit: boolean }) {
   const [cat, setCat] = useState<string>("all");
@@ -73,7 +74,7 @@ export function KnowledgeManager({ entries, canEdit }: { entries: Entry[]; canEd
 
 function TestPanel() {
   const [q, setQ] = useState("");
-  const [res, setRes] = useState<{ q: string; answer: string; source: { title: string } | null; confident: boolean } | null>(null);
+  const [res, setRes] = useState<{ q: string; answer: string; sources: string[]; mode: "faq" | "model"; model: string | null } | null>(null);
   const [busy, start] = useTransition();
   return (
     <aside aria-labelledby="test-h" className="h-fit rounded-lg border border-line xl:sticky xl:top-6">
@@ -105,11 +106,16 @@ function TestPanel() {
             <p className="text-[13px] text-muted">“{res.q}”</p>
             <p className="rounded-xl rounded-tr-md bg-surface px-3.5 py-2.5 text-[14px] leading-relaxed">{res.answer}</p>
             <p className="text-[12.5px] text-muted">
-              Source: {res.source ? <span className="text-ink">{res.source.title}</span> : <span>none found, so the reply offers a staff handoff</span>}
+              {res.mode === "model" ? "Looked up: " : "Source: "}
+              {res.sources.length ? <span className="text-ink">{res.sources.map((x) => toolLabel[x] ?? x).join(", ")}</span> : <span>nothing found, so the reply offers a staff handoff</span>}
             </p>
-            <p className="rounded-md bg-warn-soft/60 px-3 py-2 text-[12px] text-warn-ink">
-              Development mode: answered by keyword matching, not an AI model. Connect an AI provider in Settings for natural replies.
-            </p>
+            {res.mode === "faq" ? (
+              <p className="rounded-md bg-warn-soft/60 px-3 py-2 text-[12px] text-warn-ink">
+                Development mode: answered by keyword matching, not an AI model. Set an AI provider on the server for natural replies.
+              </p>
+            ) : (
+              <p className="text-[12px] text-muted">Answered by {res.model}. Test questions count toward AI usage.</p>
+            )}
           </div>
         )}
       </div>

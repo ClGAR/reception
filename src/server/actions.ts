@@ -3,7 +3,7 @@
 import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
-import { and, eq, inArray, isNull } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { auth } from "./auth";
 import { AuthError, authorize, getSession } from "./context";
@@ -24,7 +24,7 @@ import {
   workingHours,
 } from "./db/schema";
 import { BookingError, getSlots, rescheduleAppointment, transitionAppointment } from "./booking/service";
-import { answerFromKnowledge } from "./ai/faq";
+import { testAnswer, replyToConversation } from "./ai/receptionist";
 import { isValidDate } from "@/lib/time";
 
 export type Result<T = undefined> = { ok: true; data?: T } | { ok: false; error: string };
@@ -80,6 +80,10 @@ export async function setConversationState(
     if (!conv) throw new AuthError("Conversation not found.");
     if (p.handledBy === "human") {
       await db.insert(handoff).values({ businessId: biz.id, conversationId: conv.id, reason: "Staff took over" });
+    }
+    if (p.handledBy === "ai") {
+      const [last] = await db.select().from(message).where(eq(message.conversationId, conv.id)).orderBy(desc(message.createdAt)).limit(1);
+      if (last?.sender === "customer") await replyToConversation(biz, conv.id);
     }
     if (p.handledBy === "ai" || p.status === "resolved") {
       await db
@@ -235,7 +239,7 @@ export async function deleteKnowledge(id: string) {
 export async function testKnowledge(question: string) {
   return run(async () => {
     const { business: biz } = await authorize("conversation:reply");
-    return answerFromKnowledge(biz, z.string().trim().min(2, "Type a question.").max(500).parse(question));
+    return testAnswer(biz, z.string().trim().min(2, "Type a question.").max(500).parse(question));
   });
 }
 

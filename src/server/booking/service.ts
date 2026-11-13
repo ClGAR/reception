@@ -107,6 +107,7 @@ export interface RequestInput {
   source: "booking_page" | "chat" | "staff";
   conversationId?: string | null;
   idempotencyKey?: string | null;
+  existingCustomerId?: string | null;
 }
 
 /**
@@ -137,6 +138,14 @@ export async function createBookingRequest(biz: Business, input: RequestInput) {
     let cust = email
       ? (await tx.select().from(customer).where(and(eq(customer.businessId, biz.id), eq(customer.email, email))))[0]
       : undefined;
+    if (!cust && input.existingCustomerId) {
+      // Chat visitor: fill in the anonymous customer record created by the widget.
+      [cust] = await tx
+        .update(customer)
+        .set({ name: input.customer.name.trim(), email, phone: input.customer.phone || null, consentAt: new Date(), lastActivityAt: new Date() })
+        .where(and(eq(customer.id, input.existingCustomerId), eq(customer.businessId, biz.id)))
+        .returning();
+    }
     if (!cust) {
       [cust] = await tx
         .insert(customer)

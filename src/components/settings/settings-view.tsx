@@ -377,7 +377,9 @@ function WidgetTab({ business: b, perms, origin }: Props) {
         </div>
       </Section>
       <Section title="Website chat widget" body="Paste this before the closing </body> tag on your website.">
-        <div className="mb-4 rounded-md bg-warn-soft/60 px-3 py-2 text-[13px] text-warn-ink">The chat widget script ships in the next build stage. This snippet and token are ready for it.</div>
+        <p className="mb-4 text-[13px] text-muted">
+          Preview it on <a href={`/widget/${b.widgetToken}`} target="_blank" className="underline underline-offset-2">its own page</a>. The widget only loads on the websites listed below.
+        </p>
         <pre className="overflow-x-auto rounded-md border border-line bg-surface px-3 py-3 text-[12.5px]"><code>{snippet}</code></pre>
         <div className="mt-2 flex gap-2">
           <Button size="sm" onClick={() => navigator.clipboard.writeText(snippet).then(() => toast.ok("Snippet copied."))}><Copy size={14} /> Copy snippet</Button>
