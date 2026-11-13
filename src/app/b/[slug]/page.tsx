@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import { and, asc, eq } from "drizzle-orm";
 import { MapPin, Phone } from "lucide-react";
@@ -7,12 +8,14 @@ import { BookingFlow } from "@/components/booking/booking-flow";
 import { peso, todayIn } from "@/lib/time";
 
 export async function generateMetadata({ params }: PageProps<"/b/[slug]">) {
+  await connection();
   const { slug } = await params;
   const [b] = await db.select({ name: business.name }).from(business).where(eq(business.slug, slug));
   return { title: b ? `Book at ${b.name}` : "Booking page not found" };
 }
 
 export default async function PublicBookingPage({ params }: PageProps<"/b/[slug]">) {
+  await connection(); // request-time data: don't touch the DB during prerender
   const { slug } = await params;
   const [biz] = await db.select().from(business).where(eq(business.slug, slug));
   if (!biz) notFound();

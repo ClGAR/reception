@@ -11,7 +11,9 @@
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed": "tsx --env-file=.env scripts/seed.mts"
+    "db:seed": "tsx --env-file=.env scripts/seed.mts",
+    "test:e2e": "next build && playwright test",
+    "test:eval": "EVAL_MODELS=1 vitest run tests/eval"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.104",
@@ -28,6 +30,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@tailwindcss/turbopack": "4.3.3",
     "@types/node": "^22.20.5",
     "@types/react": "^19",

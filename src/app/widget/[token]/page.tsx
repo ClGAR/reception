@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
@@ -9,6 +10,7 @@ export const metadata = { title: "Chat", robots: { index: false } };
 
 /** Rendered inside the iframe that /widget.js injects, so host-page CSS can't leak in. */
 export default async function WidgetPage({ params }: PageProps<"/widget/[token]">) {
+  await connection(); // request-time data: don't touch the DB during prerender
   const { token } = await params;
   const [biz] = await db.select().from(business).where(eq(business.widgetToken, token));
   if (!biz) notFound();

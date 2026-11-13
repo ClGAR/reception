@@ -42,7 +42,23 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
               <EmptyState icon={<Scissors size={20} />} title="No services yet" body="Add your first service so customers can book it." action={canEdit && <Button variant="primary" onClick={() => setEditSvc("new")}>Add a service</Button>} />
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-lg border border-line">
+            <>
+            {/* Phones: stacked list instead of a sideways-scrolling table */}
+            <ul className="divide-y divide-line rounded-lg border border-line md:hidden">
+              {services.map((s) => (
+                <li key={s.id} className={cx("flex items-start gap-3 px-4 py-3 text-[14px]", !s.active && "text-muted")}>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-medium">{s.name}</span>
+                    <span className="block text-[13px] text-muted">
+                      {s.durationMinutes} min{s.bufferMinutes ? ` + ${s.bufferMinutes} buffer` : ""} · {peso(Math.round(s.price * 100))} · {s.staffIds.length ? s.staffIds.map(staffName).join(", ") : "No staff"}
+                    </span>
+                    <Badge tone={s.active ? "accent" : "outline"} className="mt-1.5">{s.active ? "Bookable" : "Hidden"}</Badge>
+                  </span>
+                  {canEdit && <Button size="sm" variant="ghost" onClick={() => setEditSvc(s)}>Edit</Button>}
+                </li>
+              ))}
+            </ul>
+            <div className="hidden overflow-x-auto rounded-lg border border-line md:block">
               <table className="w-full min-w-[640px] text-left text-[14px]">
                 <thead className="border-b border-line bg-surface/60 text-[12.5px] text-muted">
                   <tr>
@@ -71,6 +87,7 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
                 </tbody>
               </table>
             </div>
+            </>
           )}
         </section>
 

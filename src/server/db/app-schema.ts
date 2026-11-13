@@ -317,3 +317,27 @@ export const auditLog = pgTable(
   },
   (t) => [index("audit_business_idx").on(t.businessId, t.createdAt)],
 );
+
+/**
+ * Per-conversation booking draft. The AI can only change it through validated tools,
+ * and the server (not the model) decides when a request may be submitted.
+ */
+export const bookingDraft = pgTable("booking_draft", {
+  conversationId: uuid("conversation_id")
+    .primaryKey()
+    .references(() => conversation.id, { onDelete: "cascade" }),
+  businessId: bizRef(),
+  serviceId: uuid("service_id").references(() => service.id, { onDelete: "set null" }),
+  date: date("date"),
+  /** Times the customer was actually shown for `date` (local minutes). */
+  offeredMinutes: integer("offered_minutes").array().notNull().default(sql`'{}'::integer[]`),
+  minute: integer("minute"),
+  customerName: text("customer_name"),
+  customerEmail: text("customer_email"),
+  customerPhone: text("customer_phone"),
+  /** collecting → awaiting_confirmation → submitted */
+  stage: text("stage").notNull().default("collecting"),
+  summaryShownAt: ts("summary_shown_at"),
+  appointmentId: uuid("appointment_id").references(() => appointment.id, { onDelete: "set null" }),
+  updatedAt: ts("updated_at").notNull().defaultNow(),
+});

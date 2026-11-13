@@ -27,6 +27,18 @@ Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 
 - No provider configured → `faq.ts` keyword matcher. Replies stored with `simulated = true` and labelled "FAQ match" in the inbox and widget. Medical-sounding questions always hand off.
 - Privacy: a production provider must have a data processing agreement. Don't route real customer chats through free/unknown routers.
 
+## Booking conversation (server-enforced)
+- Each conversation has a `booking_draft` row: service → date → `offeredMinutes` (times actually shown) → chosen minute → name + email/phone → stage (`collecting` → `awaiting_confirmation` → `submitted`).
+- The model only has state tools: `selectService`, `checkAvailability`, `selectSlot` (must be an offered, still-free time), `setContactDetails` (validated), `reviewBooking`, `handoffToStaff`. **There is no submit tool.**
+- After `reviewBooking`, the **server** writes the summary. The next customer message is checked in code (`isAffirmative`): a clear yes submits (idempotency key per draft+slot); anything else reopens the draft.
+- Every model reply is checked in code (`checkReply`): times must be ones the server offered, prices must be real, no "confirmed/booked" claims, max 4 times. Failing replies are replaced by a deterministic next-step message (plus an approved FAQ answer if the customer asked a side question).
+- If every model fails mid-booking, the server reads an offered time or name/email/phone from the message itself and keeps the flow going.
+- Changing service resets the time; re-checking the same date keeps a still-free chosen time; a slot taken before "yes" gets an honest message with refreshed times.
+- Email: request-received email goes through `sendEmail`, which is dry-run without Resend and never delivers to `.test`/`example.*` addresses.
+
+## Model evaluation
+- `npm run test:eval` runs each model in `AI_MODEL` (and the full chain) through a 7-step scripted booking with an interruption and a time change, against a temporary fictional business. Results: `tests/eval/RESULTS.md`.
+
 ## Website widget
 - `public/widget.js` → injects a button + iframe (`/widget/[token]`) inside a shadow root, so host CSS can't touch it.
 - `src/proxy.ts` sets `frame-ancestors` per business from Settings → Chat widget → Allowed websites; unknown tokens get `'none'`.
