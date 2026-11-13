@@ -172,7 +172,7 @@ function AvailabilityTab({ business: b, hours, closures, perms }: Props) {
               </li>
             ))}
           </ul>
-          {bad && <p role="alert" className="mt-2 text-[13px] text-[#9b3b2b]">Closing time must be after opening time.</p>}
+          {bad && <p role="alert" className="mt-2 text-[13px] text-danger-ink">Closing time must be after opening time.</p>}
           <Button
             className="mt-4"
             variant="primary"
@@ -409,7 +409,7 @@ function UsageTab({ business: b, usage }: Props) {
         <p className="text-[14px] font-medium">Pro Plan</p>
         <p className="mt-1 text-[13.5px] text-muted">₱4,999/month plus a one-time setup fee. Final quotation confirmed with you.</p>
         <p className="mt-4 text-[14px] tabular-nums">{usage.aiMessages.toLocaleString()} / {b.aiMonthlyMessageLimit.toLocaleString()} AI messages this month</p>
-        <div className="mt-2 h-1.5 rounded-full bg-[#d9dbd5]" role="progressbar" aria-valuenow={usage.aiMessages} aria-valuemax={b.aiMonthlyMessageLimit} aria-label="AI messages used">
+        <div className="mt-2 h-1.5 rounded-full bg-track" role="progressbar" aria-valuenow={usage.aiMessages} aria-valuemax={b.aiMonthlyMessageLimit} aria-label="AI messages used">
           <div className="h-full rounded-full bg-accent-strong" style={{ width: `${pct}%` }} />
         </div>
         <p className="mt-4 text-[13.5px] text-muted">Open staff handoffs: {usage.openHandoffs}</p>

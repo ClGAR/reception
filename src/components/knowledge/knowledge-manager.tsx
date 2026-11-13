@@ -157,7 +157,7 @@ function EntryDialog({ entry, onClose }: { entry: Entry | null; onClose: () => v
           <span className="text-[14px]">AI can use this answer</span>
           <Switch checked={v.active} onChange={(x) => setV({ ...v, active: x })} label="AI can use this answer" />
         </div>
-        {error && <p role="alert" className="text-[13.5px] text-[#9b3b2b]">{error}</p>}
+        {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
         <div className="flex items-center justify-between gap-2 pt-2">
           {entry ? (
             <Button

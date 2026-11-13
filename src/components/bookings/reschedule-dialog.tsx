@@ -38,7 +38,7 @@ export function RescheduleDialog({ appointment, onClose }: { appointment: { id: 
           }} />
       </Field>
       <p className="mt-4 mb-2 text-[13.5px] font-medium">Available times</p>
-      {error && <p role="alert" className="text-[13.5px] text-[#9b3b2b]">{error}</p>}
+      {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
       {!slots && !error && <p className="text-[13.5px] text-muted">Checking availability…</p>}
       {slots && slots.length === 0 && <p className="text-[13.5px] text-muted">No open times on this date. Try another day.</p>}
       {slots && slots.length > 0 && (

@@ -21,10 +21,10 @@ export const Button = forwardRef<
         size === "sm" && "h-8 px-3 text-[13.5px]",
         size === "md" && "h-10 px-4 text-[14.5px]",
         size === "lg" && "h-11 px-5 text-[15.5px]",
-        variant === "primary" && "bg-accent-strong text-white hover:bg-[#344a41]",
+        variant === "primary" && "bg-accent-strong text-white hover:bg-accent-hover",
         variant === "secondary" && "border border-line bg-bg text-ink hover:bg-surface",
         variant === "ghost" && "text-ink hover:bg-surface",
-        variant === "danger" && "border border-[#e8cfc9] bg-bg text-[#9b3b2b] hover:bg-[#fbf1ee]",
+        variant === "danger" && "border border-danger-line bg-bg text-danger-ink hover:bg-danger-soft",
         className,
       )}
       {...rest}
@@ -44,7 +44,7 @@ export function Field({ label, hint, error, children, htmlFor }: { label: string
       {children}
       {hint && !error && <p className="text-[12.5px] text-muted">{hint}</p>}
       {error && (
-        <p role="alert" className="text-[12.5px] text-[#9b3b2b]">
+        <p role="alert" className="text-[12.5px] text-danger-ink">
           {error}
         </p>
       )}
@@ -53,7 +53,7 @@ export function Field({ label, hint, error, children, htmlFor }: { label: string
 }
 
 const inputCls =
-  "rounded-md border border-line bg-bg px-3 text-[14.5px] placeholder:text-muted/80 outline-none transition-colors focus:border-accent focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-accent/40 aria-[invalid=true]:border-[#c98b7e]";
+  "rounded-md border border-line bg-bg px-3 text-[14.5px] placeholder:text-muted/80 outline-none transition-colors focus:border-accent focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-accent/40 aria-[invalid=true]:border-danger-line";
 
 const hasWidth = (c?: string) => /(^|\s)w-/.test(c ?? "");
 
@@ -78,7 +78,7 @@ export function Switch({ checked, onChange, label, disabled }: { checked: boolea
       onClick={() => onChange(!checked)}
       className={cx(
         "relative inline-flex h-6 w-10 shrink-0 items-center rounded-full transition-colors disabled:opacity-50",
-        checked ? "bg-accent-strong" : "bg-[#d6d6cf]",
+        checked ? "bg-accent-strong" : "bg-track",
       )}
     >
       <span className={cx("inline-block size-[18px] rounded-full bg-white shadow-sm transition-transform", checked ? "translate-x-[19px]" : "translate-x-[3px]")} />
@@ -94,7 +94,7 @@ export function Badge({ tone = "neutral", children, className }: { tone?: "neutr
         tone === "neutral" && "bg-surface text-ink/80",
         tone === "accent" && "bg-accent-soft text-accent-strong",
         tone === "warn" && "bg-warn-soft text-warn-ink",
-        tone === "danger" && "bg-[#f7e4df] text-[#8a3324]",
+        tone === "danger" && "bg-danger-soft text-danger-ink",
         tone === "outline" && "border border-line text-muted",
         className,
       )}
@@ -120,7 +120,7 @@ export function Dialog({ open, onClose, title, children, wide }: { open: boolean
       onClose={onClose}
       onClick={(e) => e.target === ref.current && onClose()}
       className={cx(
-        "dialog-anim m-auto w-[calc(100%-32px)] rounded-xl border border-line bg-bg p-0 text-ink shadow-[0_20px_60px_-20px_rgba(33,40,38,0.35)] backdrop:bg-[#212826]/30",
+        "dialog-anim m-auto w-[calc(100%-32px)] rounded-xl border border-line bg-bg p-0 text-ink shadow-[0_20px_60px_-20px_rgba(33,40,38,0.35)] backdrop:bg-black/40",
         wide ? "max-w-[640px]" : "max-w-[460px]",
       )}
     >
@@ -173,7 +173,7 @@ export function Avatar({ name, size = "md" }: { name: string; size?: "sm" | "md"
     <span
       aria-hidden
       className={cx(
-        "grid shrink-0 place-items-center rounded-full bg-[#e7e9e3] font-medium text-ink/85",
+        "grid shrink-0 place-items-center rounded-full bg-avatar font-medium text-ink/85",
         size === "sm" && "size-8 text-[12.5px]",
         size === "md" && "size-10 text-[15px]",
         size === "lg" && "size-[46px] text-[17px]",

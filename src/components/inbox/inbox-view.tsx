@@ -293,7 +293,7 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
                   <button
                     disabled={working}
                     onClick={() => act(() => setAppointmentStatus(booking.id, "confirmed"), "Booking confirmed and added to the calendar.")}
-                    className="flex h-11 items-center gap-2 rounded-md bg-accent-strong px-5 text-[15.5px] font-medium text-white transition-colors hover:bg-[#344a41] disabled:opacity-60"
+                    className="flex h-11 items-center gap-2 rounded-md bg-accent-strong px-5 text-[15.5px] font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
                   >
                     <Check size={18} /> Approve &amp; Confirm
                   </button>
@@ -354,7 +354,7 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
         >
           <Zap size={17} strokeWidth={1.75} /> AI {aiOn ? "on" : "off"}
         </button>
-        <button type="submit" disabled={sending || !draft.trim()} aria-label="Send message" className="grid size-11 shrink-0 place-items-center rounded-md bg-accent-strong text-white transition-colors hover:bg-[#344a41] disabled:opacity-60">
+        <button type="submit" disabled={sending || !draft.trim()} aria-label="Send message" className="grid size-11 shrink-0 place-items-center rounded-md bg-accent-strong text-white transition-colors hover:bg-accent-hover disabled:opacity-60">
           <SendHorizontal size={19} />
         </button>
       </form>

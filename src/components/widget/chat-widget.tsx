@@ -114,7 +114,7 @@ export function ChatWidget(p: Props) {
         <a href={p.bookingUrl} target="_blank" rel="noopener" className="mb-2 flex items-center justify-center gap-1.5 rounded-md border border-line py-1.5 text-[13px] hover:bg-surface">
           <CalendarDays size={14} /> Book an appointment online
         </a>
-        {error && <p role="alert" className="mb-2 text-[12.5px] text-[#8a3324]">{error}</p>}
+        {error && <p role="alert" className="mb-2 text-[12.5px] text-danger-ink">{error}</p>}
         <form
           onSubmit={(e) => {
             e.preventDefault();

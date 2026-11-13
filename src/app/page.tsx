@@ -22,7 +22,7 @@ export default function Home() {
           </ul>
           <div className="ml-auto flex items-center gap-2">
             <Link href="/login" className="hidden h-9 items-center rounded-md px-3 text-[14.5px] hover:bg-surface sm:flex">Log in</Link>
-            <Link href="/register" className="flex h-9 items-center rounded-md bg-accent-strong px-4 text-[14.5px] font-medium text-white hover:bg-[#344a41]">Get started</Link>
+            <Link href="/register" className="flex h-9 items-center rounded-md bg-accent-strong px-4 text-[14.5px] font-medium text-white hover:bg-accent-hover">Get started</Link>
           </div>
         </nav>
       </header>
@@ -33,7 +33,7 @@ export default function Home() {
             <h1 className="text-[44px] leading-[1.05] font-semibold tracking-[-0.035em] md:text-[64px]">Every inquiry, handled.</h1>
             <p className="mt-5 text-[18px] text-ink/75 md:text-[20px]">A calmer way to manage conversations and appointments.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={DEMO} className="flex h-11 items-center gap-2 rounded-md bg-accent-strong px-5 text-[15.5px] font-medium text-white hover:bg-[#344a41]">
+              <Link href={DEMO} className="flex h-11 items-center gap-2 rounded-md bg-accent-strong px-5 text-[15.5px] font-medium text-white hover:bg-accent-hover">
                 See a live demo <ArrowRight size={17} />
               </Link>
               <Link href="/register" className="flex h-11 items-center rounded-md border border-line px-5 text-[15.5px] hover:bg-surface">Get started</Link>
@@ -112,7 +112,7 @@ export default function Home() {
                   <li key={x} className="flex gap-2.5"><Check size={17} className="mt-0.5 shrink-0 text-accent" aria-hidden /> {x}</li>
                 ))}
               </ul>
-              <Link href="/register" className="mt-7 flex h-11 items-center justify-center rounded-md bg-accent-strong text-[15.5px] font-medium text-white hover:bg-[#344a41]">Get started</Link>
+              <Link href="/register" className="mt-7 flex h-11 items-center justify-center rounded-md bg-accent-strong text-[15.5px] font-medium text-white hover:bg-accent-hover">Get started</Link>
               <p className="mt-3 text-[12.5px] text-muted">Indicative price. Usage terms and the final quotation are confirmed before you pay anything.</p>
             </div>
           </div>
@@ -167,7 +167,7 @@ function ProductPreview() {
             ["Ana Cruz", "Hair color this weekend?", "New", false],
           ].map(([n, m, t, u], i) => (
             <div key={n as string} className={`mx-2 flex items-start gap-3 rounded-lg px-4 py-3 ${i === 0 ? "bg-surface-2" : ""}`}>
-              <span className="mt-0.5 grid size-8 place-items-center rounded-full bg-[#e7e9e3] text-[12px] font-medium">{(n as string).split(" ").map((w) => w[0]).join("")}</span>
+              <span className="mt-0.5 grid size-8 place-items-center rounded-full bg-avatar text-[12px] font-medium">{(n as string).split(" ").map((w) => w[0]).join("")}</span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-1.5 text-[14px] font-semibold">{u ? <span className="size-1.5 rounded-full bg-live" /> : null}{n}</span>
                 <span className="block truncate text-[13px] text-ink/75">{m}</span>

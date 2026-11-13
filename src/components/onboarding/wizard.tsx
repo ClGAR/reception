@@ -138,7 +138,7 @@ export function OnboardingWizard({ ownerName }: { ownerName: string }) {
         </Step>
       )}
 
-      {error && <p role="alert" className="mt-4 rounded-md bg-[#fbf1ee] px-3 py-2 text-[13.5px] text-[#8a3324]">{error}</p>}
+      {error && <p role="alert" className="mt-4 rounded-md bg-danger-soft px-3 py-2 text-[13.5px] text-danger-ink">{error}</p>}
       <div className="mt-8 flex items-center justify-between border-t border-line pt-5">
         <Button variant="ghost" onClick={() => setStep((s) => s - 1)} disabled={step === 0}>Back</Button>
         <div className="flex gap-2">

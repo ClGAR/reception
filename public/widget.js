@@ -29,7 +29,7 @@
   frame.src = origin + "/widget/" + encodeURIComponent(token);
   frame.setAttribute("loading", "lazy");
   frame.style.cssText =
-    "display:none;position:absolute;right:0;bottom:72px;width:380px;height:600px;max-width:calc(100vw - 40px);max-height:calc(100vh - 110px);border:1px solid #e7e5df;border-radius:14px;background:#faf9f6;box-shadow:0 24px 60px -24px rgba(33,40,38,.45)";
+    "display:none;position:absolute;right:0;bottom:72px;width:380px;height:600px;max-width:calc(100vw - 40px);max-height:calc(100vh - 110px);border:1px solid rgba(127,127,127,.25);border-radius:14px;background:#fff;color-scheme:normal;box-shadow:0 24px 60px -24px rgba(33,40,38,.45)";
 
   function setOpen(open) {
     frame.style.display = open ? "block" : "none";

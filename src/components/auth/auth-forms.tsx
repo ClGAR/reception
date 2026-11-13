@@ -19,7 +19,7 @@ function Heading({ title, body }: { title: string; body?: string }) {
 function FormError({ msg }: { msg: string | null }) {
   if (!msg) return null;
   return (
-    <p role="alert" className="rounded-md border border-[#ecd2cb] bg-[#fbf1ee] px-3 py-2 text-[13.5px] text-[#8a3324]">
+    <p role="alert" className="rounded-md border border-danger-line bg-danger-soft px-3 py-2 text-[13.5px] text-danger-ink">
       {msg}
     </p>
   );

@@ -173,7 +173,7 @@ function ServiceDialog({ svc, staff, onClose }: { svc: Svc | null; staff: Staff[
                 const on = v.staffIds.includes(s.id);
                 return (
                   <label key={s.id} className={cx("flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 text-[13.5px]", on ? "border-accent bg-accent-soft/60" : "border-line")}>
-                    <input type="checkbox" className="accent-[#3f574d]" checked={on} onChange={() => set("staffIds", on ? v.staffIds.filter((x) => x !== s.id) : [...v.staffIds, s.id])} />
+                    <input type="checkbox" className="accent-accent-strong" checked={on} onChange={() => set("staffIds", on ? v.staffIds.filter((x) => x !== s.id) : [...v.staffIds, s.id])} />
                     {s.name}
                   </label>
                 );
@@ -185,7 +185,7 @@ function ServiceDialog({ svc, staff, onClose }: { svc: Svc | null; staff: Staff[
           <span className="text-[14px]">Bookable by customers</span>
           <Switch checked={v.active} onChange={(x) => set("active", x)} label="Bookable by customers" />
         </div>
-        {error && <p role="alert" className="text-[13.5px] text-[#9b3b2b]">{error}</p>}
+        {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit" variant="primary" loading={saving}>Save service</Button>
@@ -224,7 +224,7 @@ function StaffDialog({ s, onClose }: { s: Staff | null; onClose: () => void }) {
           <span className="text-[14px]">Taking bookings</span>
           <Switch checked={v.active} onChange={(x) => setV({ ...v, active: x })} label="Taking bookings" />
         </div>
-        {error && <p role="alert" className="text-[13.5px] text-[#9b3b2b]">{error}</p>}
+        {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
         <div className="flex justify-end gap-2">
           <Button type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit" variant="primary" loading={saving}>Save</Button>

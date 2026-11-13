@@ -3,9 +3,10 @@
 Source of truth: the user's inbox mockup (Glow Studio Salon, 3-pane). Match it ~1:1 at 1440×810.
 
 ## Tokens (src/app/globals.css)
-- bg #FAF9F6 · surface #F2F1ED · surface-2 #ECEAE4 · ink #212826 · muted #69716D
-- line #E7E5DF · accent #526A60 · accent-strong #3F574D (primary buttons, badges) · accent-soft #DCE6DC
-- warn-soft #F6ECC9 / warn-ink #7A5D12 (Pending approval only) · live #2F7A4D (unread dot)
+- Light (default): bg #FFFFFF, ink #000000, surface #F4F4F2, line #E6E6E3, muted #5F6662
+- Dark (`prefers-color-scheme: dark`): bg #000000, ink #FFFFFF, surface #121212, line #262626, muted #A3A3A3
+- Accent stays sage green in both (#3F574D buttons light / #4A7563 dark); soft accent, warn, danger, avatar and track all have light + dark values
+- No hardcoded hex colors in components: use the tokens (bg-*, text-*, border-*)
 - Font: Geist. Icons: Lucide, stroke 1.6–1.75.
 
 ## Layout (desktop)

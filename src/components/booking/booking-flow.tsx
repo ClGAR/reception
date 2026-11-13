@@ -205,7 +205,7 @@ function DateTime(p: Props & { svc: Svc; date: string | null; setDate: (d: strin
       {p.date && (
         <div className="mt-6">
           <p className="mb-3 text-[14px] font-medium">{fmt(p.date, { weekday: "long", month: "long", day: "numeric" })}</p>
-          {error && <p role="alert" className="text-[13.5px] text-[#9b3b2b]">{error}</p>}
+          {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
           {!slots && !error && <p className="text-[13.5px] text-muted">Loading times…</p>}
           {slots && slots.length === 0 && <p className="text-[13.5px] text-muted">Fully booked. Please pick another date.</p>}
           {slots && slots.length > 0 && (
@@ -259,10 +259,10 @@ function Details(p: Props & { svc: Svc; date: string; slot: { minute: number; la
         <Field label="Mobile number (optional)" htmlFor="bk-phone"><Input id="bk-phone" name="phone" type="tel" autoComplete="tel" placeholder="+63 9XX XXX XXXX" /></Field>
         <Field label="Notes for the team (optional)" htmlFor="bk-notes"><Textarea id="bk-notes" name="notes" maxLength={500} /></Field>
         <label className="flex items-start gap-3 text-[13px] leading-relaxed text-ink/80">
-          <input type="checkbox" name="consent" required className="mt-0.5 size-4 accent-[#3f574d]" />
+          <input type="checkbox" name="consent" required className="mt-0.5 size-4 accent-accent-strong" />
           <span>I agree that {p.businessName} may use my name and contact details to manage this appointment, in line with the Data Privacy Act of 2012.</span>
         </label>
-        {error && <p role="alert" className="rounded-md bg-[#fbf1ee] px-3 py-2 text-[13.5px] text-[#8a3324]">{error}</p>}
+        {error && <p role="alert" className="rounded-md bg-danger-soft px-3 py-2 text-[13.5px] text-danger-ink">{error}</p>}
         <Button type="submit" variant="primary" size="lg" loading={busy} className="w-full sm:w-auto">
           {p.requireApproval ? "Request appointment" : "Book appointment"}
         </Button>

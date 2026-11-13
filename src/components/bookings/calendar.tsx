@@ -110,7 +110,7 @@ export function BookingsCalendar(p: Props) {
         <div className="flex flex-wrap items-center gap-2 border-b border-line bg-warn-soft/40 px-4 py-2.5 text-[13.5px] md:px-8">
           <span className="font-medium">{pending.length} waiting for approval:</span>
           {pending.map((e) => (
-            <button key={e.id} onClick={() => setSelected(e)} className="rounded-md border border-[#ecdcaa] bg-bg px-2 py-0.5 hover:bg-surface">
+            <button key={e.id} onClick={() => setSelected(e)} className="rounded-md border border-warn-line bg-bg px-2 py-0.5 hover:bg-surface">
               {e.customer} · {dayName(e.date, { weekday: "short" })} {minuteLabel(e.startMinute)}
             </button>
           ))}
@@ -160,8 +160,8 @@ export function BookingsCalendar(p: Props) {
                           style={{ top, height: h }}
                           className={cx(
                             "absolute inset-x-1 overflow-hidden rounded-md border px-2 py-1 text-left text-[12.5px] leading-tight transition-colors",
-                            e.status === "pending" && "border-dashed border-[#d9bf6a] bg-warn-soft hover:bg-[#f1e3b5]",
-                            e.status === "confirmed" && "border-[#c5d5c7] bg-accent-soft hover:bg-[#cfdccf]",
+                            e.status === "pending" && "border-dashed border-warn-line bg-warn-soft hover:bg-warn-hover",
+                            e.status === "confirmed" && "border-accent-line bg-accent-soft hover:bg-accent-soft-hover",
                             (e.status === "completed" || e.status === "no_show") && "border-line bg-surface text-muted",
                           )}
                         >

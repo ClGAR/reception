@@ -282,7 +282,7 @@ function Sidebar(p: ShellProps & { className?: string; onClose?: () => void }) {
         <p className="mt-2 text-[14.5px]">
           {aiMessages.toLocaleString()} / {p.aiLimit.toLocaleString()} messages
         </p>
-        <div className="mt-2 h-1.5 rounded-full bg-[#d9dbd5]" role="progressbar" aria-valuenow={aiMessages} aria-valuemax={p.aiLimit} aria-label="AI messages used this month">
+        <div className="mt-2 h-1.5 rounded-full bg-track" role="progressbar" aria-valuenow={aiMessages} aria-valuemax={p.aiLimit} aria-label="AI messages used this month">
           <div className="h-full rounded-full bg-accent-strong" style={{ width: `${pct}%` }} />
         </div>
         <Link href="/app/settings?tab=usage" className="mt-3 flex items-center gap-2 text-[14px] text-ink/80 hover:text-ink">
