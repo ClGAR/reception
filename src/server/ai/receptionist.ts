@@ -452,7 +452,7 @@ export async function replyToConversation(
         ),
         stopWhen: isStepCount(6),
         maxOutputTokens: 600,
-        timeout: { totalMs: 45_000 },
+        timeout: { totalMs: 15_000 },
         maxRetries: 0,
       });
       await db.insert(aiUsage).values({
