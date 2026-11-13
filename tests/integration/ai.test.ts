@@ -149,3 +149,26 @@ describe("AI receptionist", () => {
     expect(out).toEqual({ kind: "skipped", reason: "ai_disabled" });
   });
 });
+
+describe("AI receptionist: failure after booking", () => {
+  it("tells the customer the truth when the model fails right after booking", async () => {
+    const conv = await newConversation("Book cleaning at 3 PM. Test Late Fail, late.fail@example.test");
+    let i = 0;
+    setModelOverride({
+      label: "mock",
+      model: new MockLanguageModelV4({
+        doGenerate: async () => {
+          if (i++ === 0)
+            return call("createBookingRequest", { serviceId: svcId, date, minute: 900, customerName: "Test Late Fail", customerEmail: "late.fail@example.test", customerAgreed: true });
+          throw new Error("empty completion");
+        },
+      }),
+    });
+    const out = await replyToConversation(biz, conv.id);
+    expect(out.kind).toBe("replied");
+    const last = (await messagesOf(conv.id)).at(-1)!;
+    expect(last.body).toMatch(/request/i);
+    expect(last.body).toMatch(/isn't confirmed yet/);
+    expect(await db.select().from(s.appointment).where(eq(s.appointment.conversationId, conv.id))).toHaveLength(1);
+  });
+});

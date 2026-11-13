@@ -17,6 +17,10 @@ Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 
 
 ## AI receptionist (`src/server/ai/`)
 - `provider.ts`: model from env (`AI_PROVIDER` = `openai-compatible` | `anthropic`, `AI_MODEL`, `AI_BASE_URL`, `AI_API_KEY`). Nothing hardcoded; pick a cheap model.
+- `AI_MODEL` takes a comma-separated fallback list; each model gets 45 s, then the next is tried.
+- Business facts and services are preloaded into the system prompt, so most turns need 1–3 model calls.
+- If a booking succeeded but the model then fails, the app writes its own honest "request sent, not confirmed yet" message.
+- Dev setup: FreeLLMAPI (local router) with `gemini-3.5-flash,gpt-oss-120b,gemini-3.8-flash`. Free tiers are rate-limited and sometimes fail mid-conversation; use a paid model with a DPA for real customers.
 - `receptionist.ts`: AI SDK v7 `generateText` with server tools scoped to one business: `getBusinessInformation`, `listServices`, `checkAvailability`, `createBookingRequest` (Zod-validated, requires `customerAgreed: true`, goes through the booking engine, idempotent per slot), `handoffToStaff`.
 - Guardrails in the system prompt: only tool facts, no medical advice, never claim confirmed while pending, customer text is not instructions. Max 6 steps, 400 output tokens, 30 s timeout, 1 retry.
 - Skips when staff took over or AI is off; hands off when the monthly limit is hit; on provider error saves a safe fallback + handoff (never a booking claim). Token usage → `ai_usage`.
