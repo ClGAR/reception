@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { CalendarDays, Check, Mail, MessageSquare, Sparkle } from "lucide-react";
 import { cx } from "@/components/ui";
+import { BrandBurst } from "./brand-burst";
 
 const STEPS = [
   { title: "A customer asks", body: "“Is 2 PM free tomorrow for a cleaning?” arrives from your website chat or booking page, day or night." },
@@ -160,14 +161,19 @@ export function BookingStory() {
     <section ref={root} id="how" data-mode="static" className="group/story scroll-mt-16 border-t border-line">
       <div className="mx-auto max-w-[1120px] px-5 py-20 md:px-8 md:py-24">
         <div className="w-full">
-          <h2 className="font-display max-w-[20ch] text-[clamp(30px,4.2vw,48px)] leading-[1.04] font-semibold tracking-[-0.035em]">
-            From first message to booked appointment.
-          </h2>
-          <p className="mt-4 max-w-[52ch] text-[17px] leading-relaxed text-ink-2">
-            The AI does the back-and-forth. Your staff make the decision.
-          </p>
+          <div className="grid items-center gap-6 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-16">
+            <div>
+              <h2 className="font-display max-w-[20ch] text-[clamp(30px,4.2vw,48px)] leading-[1.04] font-semibold tracking-[-0.035em]">
+                From first message to booked appointment.
+              </h2>
+              <p className="mt-4 max-w-[52ch] text-[17px] leading-relaxed text-ink-2">
+                Every message from your website, booking page and chat lands in one inbox. The AI does the back-and-forth. Your staff make the decision.
+              </p>
+            </div>
+            <BrandBurst className="h-[300px] sm:h-[360px] lg:h-[400px]" />
+          </div>
 
-          <div data-pin className="mt-12 grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-16">
+          <div data-pin className="mt-10 grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-16">
             <ol className="relative space-y-10 group-data-[mode=pinned]/story:space-y-7 group-data-[mode=pinned]/story:pl-8">
               <span aria-hidden className="absolute top-1 bottom-1 left-[5px] hidden w-0.5 rounded-full bg-line lg:group-data-[mode=pinned]/story:block" />
               <span

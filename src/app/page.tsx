@@ -6,6 +6,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Reveal } from "@/components/motion/reveal";
 import { AssistantDemo } from "@/components/landing/assistant-demo";
 import { BookingStory } from "@/components/landing/booking-story";
+import { ProductReveal } from "@/components/landing/product-reveal";
+import { FeatureBento } from "@/components/landing/feature-bento";
 
 export const metadata = {
   title: "Reception · Every inquiry, handled.",
@@ -93,10 +95,12 @@ export default function Home() {
           </ul>
         </section>
 
+        <ProductReveal />
         <BookingStory />
+        <FeatureBento />
 
         {/* Controlled AI */}
-        <section id="product" className="scroll-mt-16 border-t border-line bg-surface">
+        <section id="trust" className="scroll-mt-16 border-t border-line bg-surface">
           <div className="mx-auto max-w-[1120px] px-5 py-20 md:px-8 md:py-28">
             <Reveal>
               <h2 className="font-display max-w-[18ch] text-[clamp(30px,4.2vw,48px)] leading-[1.04] font-semibold tracking-[-0.035em]">
@@ -107,8 +111,8 @@ export default function Home() {
               </p>
             </Reveal>
 
-            <div className="mt-12 grid gap-4 md:grid-cols-2">
-              <Reveal className="md:col-span-2">
+            <div className="mt-12">
+              <Reveal>
                 <article className="grid overflow-hidden rounded-[20px] border border-line bg-bg md:grid-cols-[1fr_1.1fr]">
                   <div className="p-6 md:p-9">
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1.5 text-[13px] leading-none font-medium text-primary">
@@ -137,30 +141,6 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                </article>
-              </Reveal>
-
-              <Reveal delay={60}>
-                <article className="h-full rounded-[20px] border border-line bg-bg p-6 md:p-8">
-                  <span className="grid size-11 place-items-center rounded-[12px] bg-accent-soft text-primary" aria-hidden>
-                    <CalendarDays size={20} strokeWidth={1.8} />
-                  </span>
-                  <h3 className="mt-5 text-[20px] font-semibold tracking-[-0.015em]">No double bookings</h3>
-                  <p className="mt-2 text-[16px] leading-relaxed text-ink-2">
-                    Times come from each staff member&apos;s schedule, and the system refuses two confirmed appointments in the same slot.
-                  </p>
-                </article>
-              </Reveal>
-
-              <Reveal delay={120}>
-                <article className="h-full rounded-[20px] border border-line bg-bg p-6 md:p-8">
-                  <span className="grid size-11 place-items-center rounded-[12px] bg-accent-soft text-primary" aria-hidden>
-                    <Hand size={20} strokeWidth={1.8} />
-                  </span>
-                  <h3 className="mt-5 text-[20px] font-semibold tracking-[-0.015em]">Your staff stay in charge</h3>
-                  <p className="mt-2 text-[16px] leading-relaxed text-ink-2">
-                    Take over any conversation, approve or decline requests, and read exactly what the AI said.
-                  </p>
                 </article>
               </Reveal>
             </div>

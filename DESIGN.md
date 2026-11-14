@@ -33,6 +33,9 @@ Updated 2026-11-14. Feel: Vercel / X / Apple. Calm, plain, high contrast.
 - Landing hero: CSS entrance (rise and fade, staggered 60 to 300 ms). Job: first read order.
 - Landing "From first message to booked appointment": GSAP ScrollTrigger pin, scrubbed, 4 steps crossfade in one device. Job: explain the product. Desktop + motion allowed only; otherwise a plain numbered list with a picture per step.
 - Scroll reveals: content visible by default, only below-the-fold blocks fade in once.
+- Story header: the owner-requested 21st.dev Logo Burst plays on first view or on replay, then rests. Its canvas stops offscreen and honors reduced motion. Job: illustrate incoming inquiries converging on one inbox.
+- Product section: a real demo-inbox screenshot in a GSAP scroll reveal. Phones and reduced-motion users see the static image. Job: show the actual product before explaining its flow.
+- Feature bento: five static mini illustrations of schedule, takeover, alerts, after-hours replies and widget install. Job: make capabilities concrete without adding more animation.
 - App: existing CSS entrances for menus, dialogs, drawer, toasts. No decorative motion.
 - Reduced motion: movement off, content all there.
 
@@ -40,7 +43,8 @@ Updated 2026-11-14. Feel: Vercel / X / Apple. Calm, plain, high contrast.
 - Hero and auth side panel: faint static grid fading out (`.grid-backdrop`), 21st.dev-style. Nothing animated.
 
 ## Rejected
-- Dithered mountain footer and logo burst (owner dropped them).
+- Dithered mountain footer. The owner later requested a Logo Burst specifically for the story section.
+- Rotating hero headline: the primary message stays fixed and readable while the page already has a burst and two scroll effects.
 - Aurora / animated gradients, spotlight cursors, glass stacks: distracting, heavy on cheap phones.
 - Lenis / smooth-scroll hijack: breaks expectations for new web users.
 - Snap-to-step on the scroll story: fought fast scrolling; replaced with rest holds.
