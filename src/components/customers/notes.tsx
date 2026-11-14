@@ -14,7 +14,7 @@ export function CustomerNotes({ id, initial }: { id: string; initial: string }) 
       <label htmlFor="notes" className="sr-only">Internal notes</label>
       <Textarea id="notes" value={value} maxLength={2000} onChange={(e) => setValue(e.target.value)} placeholder="Preferences, allergies to products, anything staff should know. Only your team sees this." />
       <div className="mt-2 flex items-center justify-between">
-        <p className="text-[12.5px] text-muted">Only your team can see notes. Avoid medical details unless needed.</p>
+        <p className="text-[13.5px] text-ink-3">Only your team can see notes. Avoid medical details unless needed.</p>
         <Button
           size="sm"
           variant="primary"

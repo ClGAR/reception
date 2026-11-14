@@ -77,7 +77,7 @@ export function BookingsCalendar(p: Props) {
           <Link href={qs({ date: addDays(p.date, -step) })} aria-label={`Previous ${p.view}`} className="grid size-9 place-items-center rounded-md border border-line hover:bg-surface">
             <ChevronLeft size={18} />
           </Link>
-          <Link href={qs({ date: p.today })} className="flex h-9 items-center rounded-md border border-line px-3 text-[14px] hover:bg-surface">
+          <Link href={qs({ date: p.today })} className="flex h-9 items-center rounded-md border border-line px-3 text-[15px] hover:bg-surface">
             Today
           </Link>
           <Link href={qs({ date: addDays(p.date, step) })} aria-label={`Next ${p.view}`} className="grid size-9 place-items-center rounded-md border border-line hover:bg-surface">
@@ -87,18 +87,18 @@ export function BookingsCalendar(p: Props) {
         <p className="text-[15px] font-medium" aria-live="polite">{title}</p>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <label className="sr-only" htmlFor="f-staff">Filter by staff</label>
-          <Select id="f-staff" value={p.filters.staffId ?? ""} onChange={(e) => router.push(qs({ staff: e.target.value || undefined }))} className="h-9 w-[150px] text-[13.5px]">
+          <Select id="f-staff" value={p.filters.staffId ?? ""} onChange={(e) => router.push(qs({ staff: e.target.value || undefined }))} className="h-9 w-[150px] text-[14.5px]">
             <option value="">All staff</option>
             {p.staff.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
           </Select>
           <label className="sr-only" htmlFor="f-svc">Filter by service</label>
-          <Select id="f-svc" value={p.filters.serviceId ?? ""} onChange={(e) => router.push(qs({ service: e.target.value || undefined }))} className="h-9 w-[150px] text-[13.5px]">
+          <Select id="f-svc" value={p.filters.serviceId ?? ""} onChange={(e) => router.push(qs({ service: e.target.value || undefined }))} className="h-9 w-[150px] text-[14.5px]">
             <option value="">All services</option>
             {p.services.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
           </Select>
           <div role="tablist" aria-label="View" className="flex rounded-md border border-line p-0.5">
             {(["day", "week"] as const).map((v) => (
-              <Link key={v} role="tab" aria-selected={p.view === v} href={qs({ view: v })} className={cx("rounded px-3 py-1 text-[13.5px] capitalize", p.view === v ? "bg-surface-2 font-medium" : "text-muted hover:text-ink")}>
+              <Link key={v} role="tab" aria-selected={p.view === v} href={qs({ view: v })} className={cx("rounded px-3 py-1 text-[14.5px] capitalize", p.view === v ? "bg-accent-soft font-semibold text-primary" : "text-ink-3 hover:text-ink")}>
                 {v}
               </Link>
             ))}
@@ -107,7 +107,7 @@ export function BookingsCalendar(p: Props) {
       </div>
 
       {pending.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border-b border-line bg-warn-soft/40 px-4 py-2.5 text-[13.5px] md:px-8">
+        <div className="flex flex-wrap items-center gap-2 border-b border-line bg-warn-soft/40 px-4 py-2.5 text-[14.5px] md:px-8">
           <span className="font-medium">{pending.length} waiting for approval:</span>
           {pending.map((e) => (
             <button key={e.id} onClick={() => setSelected(e)} className="rounded-md border border-warn-line bg-bg px-2 py-0.5 hover:bg-surface">
@@ -126,19 +126,19 @@ export function BookingsCalendar(p: Props) {
               <Link
                 key={c.key}
                 href={p.view === "week" ? qs({ view: "day", date: c.date }) : "#"}
-                className={cx("border-l border-line px-3 py-2.5 text-[13.5px]", c.date === p.today && p.view === "week" && "text-accent")}
+                className={cx("border-l border-line px-3 py-2.5 text-[14.5px]", c.date === p.today && p.view === "week" && "text-accent")}
               >
-                <span className="font-medium">{c.label}</span> {c.sub && <span className={cx("ml-1 font-mono tabular-nums", c.date === p.today && "rounded bg-primary px-1.5 py-0.5 text-primary-ink")}>{c.sub}</span>}
+                <span className="font-medium">{c.label}</span> {c.sub && <span className={cx("ml-1 tabular-nums", c.date === p.today && "rounded bg-primary px-1.5 py-0.5 text-primary-ink")}>{c.sub}</span>}
               </Link>
             ))}
           </div>
           {columns.length === 0 ? (
-            <p className="px-8 py-16 text-center text-[14px] text-muted">No active staff yet. Add staff in Services.</p>
+            <p className="px-8 py-16 text-center text-[15px] text-ink-3">No active staff yet. Add staff in Services.</p>
           ) : (
             <div className="relative grid" style={{ gridTemplateColumns: `64px repeat(${columns.length}, minmax(0,1fr))` }}>
               <div>
                 {hours.map((h) => (
-                  <div key={h} style={{ height: HOUR }} className="pr-2 text-right text-[12px] text-muted -translate-y-2">
+                  <div key={h} style={{ height: HOUR }} className="pr-2 text-right text-[13px] text-ink-3 -translate-y-2">
                     {minuteLabel(h).replace(":00", "")}
                   </div>
                 ))}
@@ -159,10 +159,10 @@ export function BookingsCalendar(p: Props) {
                           onClick={() => setSelected(e)}
                           style={{ top, height: h }}
                           className={cx(
-                            "absolute inset-x-1 overflow-hidden rounded-md border px-2 py-1 text-left text-[12.5px] leading-tight transition-colors",
+                            "absolute inset-x-1 overflow-hidden rounded-md border px-2 py-1 text-left text-[13.5px] leading-tight transition-colors",
                             e.status === "pending" && "border-dashed border-warn-line bg-warn-soft hover:bg-warn-hover",
                             e.status === "confirmed" && "border-accent-line bg-accent-soft hover:bg-accent-soft-hover",
-                            (e.status === "completed" || e.status === "no_show") && "border-line bg-surface text-muted",
+                            (e.status === "completed" || e.status === "no_show") && "border-line bg-surface text-ink-3",
                           )}
                         >
                           <span className="block truncate font-medium">{e.customer}</span>
@@ -184,18 +184,18 @@ export function BookingsCalendar(p: Props) {
           const list = p.events.filter((e) => e.date === d);
           return (
             <section key={d} className="border-b border-line px-4 py-3">
-              <h2 className={cx("mb-2 text-[13.5px] font-medium", d === p.today && "text-accent")}>{dayName(d, { weekday: "long", month: "short", day: "numeric" })}</h2>
+              <h2 className={cx("mb-2 text-[14.5px] font-medium", d === p.today && "text-accent")}>{dayName(d, { weekday: "long", month: "short", day: "numeric" })}</h2>
               {list.length === 0 ? (
-                <p className="text-[13.5px] text-muted">No bookings</p>
+                <p className="text-[14.5px] text-ink-3">No bookings</p>
               ) : (
                 <ul className="space-y-2">
                   {list.map((e) => (
                     <li key={e.id}>
                       <button onClick={() => setSelected(e)} className="flex w-full items-center gap-3 rounded-md border border-line px-3 py-2.5 text-left">
-                        <span className="w-[64px] shrink-0 text-[13.5px] font-medium font-mono tabular-nums">{minuteLabel(e.startMinute)}</span>
+                        <span className="w-[64px] shrink-0 text-[14.5px] font-medium tabular-nums">{minuteLabel(e.startMinute)}</span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-[14px]">{e.customer}</span>
-                          <span className="block truncate text-[12.5px] text-muted">{e.service} · {e.staff}</span>
+                          <span className="block truncate text-[15px]">{e.customer}</span>
+                          <span className="block truncate text-[13.5px] text-ink-3">{e.service} · {e.staff}</span>
                         </span>
                         <Badge tone={statusTone(e.status)}>{statusLabel[e.status]}</Badge>
                       </button>
@@ -231,19 +231,19 @@ function EventDialog({ event: e, onClose }: { event: CalEvent; onClose: () => vo
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
           <p className="text-[17px] font-semibold">{e.customer}</p>
-          {e.contact && <p className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted"><Mail size={13} /> {e.contact}</p>}
+          {e.contact && <p className="mt-0.5 flex items-center gap-1.5 text-[14px] text-ink-3"><Mail size={13} /> {e.contact}</p>}
         </div>
         <Badge tone={statusTone(e.status)}>{statusLabel[e.status]}</Badge>
       </div>
-      <dl className="space-y-2 text-[14px]">
-        <div className="flex items-center gap-3"><dt className="text-muted"><CalendarDays size={16} /><span className="sr-only">Date</span></dt><dd>{dayName(e.date, { weekday: "long", month: "long", day: "numeric" })}</dd></div>
-        <div className="flex items-center gap-3"><dt className="text-muted"><Clock size={16} /><span className="sr-only">Time</span></dt><dd>{e.time}</dd></div>
-        <div className="flex items-center gap-3"><dt className="text-muted"><Scissors size={16} /><span className="sr-only">Service</span></dt><dd>{e.service}</dd></div>
-        <div className="flex items-center gap-3"><dt className="text-muted"><User size={16} /><span className="sr-only">Staff</span></dt><dd>{e.staff}</dd></div>
-        <div className="flex items-center gap-3"><dt className="text-muted"><Tag size={16} /><span className="sr-only">Price</span></dt><dd>{e.price}</dd></div>
+      <dl className="space-y-2 text-[15px]">
+        <div className="flex items-center gap-3"><dt className="text-ink-3"><CalendarDays size={16} /><span className="sr-only">Date</span></dt><dd>{dayName(e.date, { weekday: "long", month: "long", day: "numeric" })}</dd></div>
+        <div className="flex items-center gap-3"><dt className="text-ink-3"><Clock size={16} /><span className="sr-only">Time</span></dt><dd>{e.time}</dd></div>
+        <div className="flex items-center gap-3"><dt className="text-ink-3"><Scissors size={16} /><span className="sr-only">Service</span></dt><dd>{e.service}</dd></div>
+        <div className="flex items-center gap-3"><dt className="text-ink-3"><User size={16} /><span className="sr-only">Staff</span></dt><dd>{e.staff}</dd></div>
+        <div className="flex items-center gap-3"><dt className="text-ink-3"><Tag size={16} /><span className="sr-only">Price</span></dt><dd>{e.price}</dd></div>
       </dl>
-      {e.notes && <p className="mt-3 rounded-md bg-surface px-3 py-2 text-[13.5px]">{e.notes}</p>}
-      <p className="mt-3 text-[12.5px] text-muted">Booked via {e.source === "chat" ? "chat" : e.source === "staff" ? "staff" : "booking page"}</p>
+      {e.notes && <p className="mt-3 rounded-md bg-surface px-3 py-2 text-[14.5px]">{e.notes}</p>}
+      <p className="mt-3 text-[13.5px] text-ink-3">Booked via {e.source === "chat" ? "chat" : e.source === "staff" ? "staff" : "booking page"}</p>
       <div className="mt-5 flex flex-wrap justify-end gap-2 border-t border-line pt-4">
         {e.status === "pending" && (
           <>

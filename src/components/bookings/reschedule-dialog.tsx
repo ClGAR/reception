@@ -29,7 +29,7 @@ export function RescheduleDialog({ appointment, onClose }: { appointment: { id: 
 
   return (
     <Dialog open onClose={onClose} title="Reschedule appointment">
-      <p className="mb-4 text-[14px] text-muted">{appointment.label}</p>
+      <p className="mb-4 text-[15px] text-ink-3">{appointment.label}</p>
       <Field label="Date" htmlFor="rs-date">
         <Input id="rs-date" type="date" value={date} onChange={(e) => {
             setSlots(null);
@@ -37,10 +37,10 @@ export function RescheduleDialog({ appointment, onClose }: { appointment: { id: 
             setDate(e.target.value);
           }} />
       </Field>
-      <p className="mt-4 mb-2 text-[13.5px] font-medium">Available times</p>
-      {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
-      {!slots && !error && <p className="text-[13.5px] text-muted">Checking availability…</p>}
-      {slots && slots.length === 0 && <p className="text-[13.5px] text-muted">No open times on this date. Try another day.</p>}
+      <p className="mt-4 mb-2 text-[14.5px] font-medium">Available times</p>
+      {error && <p role="alert" className="text-[14.5px] text-danger-ink">{error}</p>}
+      {!slots && !error && <p className="text-[14.5px] text-ink-3">Checking availability…</p>}
+      {slots && slots.length === 0 && <p className="text-[14.5px] text-ink-3">No open times on this date. Try another day.</p>}
       {slots && slots.length > 0 && (
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Available times">
           {slots.map((s) => (
@@ -49,7 +49,7 @@ export function RescheduleDialog({ appointment, onClose }: { appointment: { id: 
               role="radio"
               aria-checked={picked === s.minute}
               onClick={() => setPicked(s.minute)}
-              className={cx("h-9 rounded-md border text-[13.5px] transition-colors", picked === s.minute ? "border-primary bg-primary text-primary-ink" : "border-line hover:bg-surface")}
+              className={cx("h-9 rounded-md border text-[14.5px] transition-colors", picked === s.minute ? "border-primary bg-primary text-primary-ink" : "border-line hover:bg-surface")}
             >
               {minuteLabel(s.minute)}
             </button>

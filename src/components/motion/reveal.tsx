@@ -3,55 +3,35 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 /**
- * Fades content in once, when it first enters the viewport.
+ * Fades a block in once, the first time it scrolls into view.
  *
- * The animation is an enhancement, never a gate: content already near the
- * viewport is revealed by a short failsafe, and `<noscript>` in the root
- * layout removes the effect entirely when JavaScript is off.
+ * Content is visible by default. Blocks already on screen at load stay put;
+ * only blocks below the fold animate, and only when motion is allowed.
  */
-export function Reveal({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-}) {
+export function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (!("IntersectionObserver" in window)) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window) || el.getBoundingClientRect().top < window.innerHeight) {
       el.dataset.visible = "true";
       return;
     }
-
-    const show = () => {
-      el.dataset.visible = "true";
-    };
-
+    el.dataset.visible = "false";
+    document.documentElement.classList.add("reveal-ready");
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
-          show();
+          el.dataset.visible = "true";
           io.disconnect();
         }
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
     );
     io.observe(el);
-
-    // Anything within the first screen and a bit is revealed even if the
-    // observer never fires (print, background tab, screenshot tooling).
-    const near = el.getBoundingClientRect().top < window.innerHeight * 1.25;
-    const failsafe = near ? window.setTimeout(show, 1600) : undefined;
-
-    return () => {
-      io.disconnect();
-      if (failsafe) window.clearTimeout(failsafe);
-    };
+    return () => io.disconnect();
   }, []);
 
   return (

@@ -23,7 +23,7 @@ export function Toaster() {
   return (
     <div aria-live="polite" className="pointer-events-none fixed right-4 bottom-[calc(128px+env(safe-area-inset-bottom))] z-50 flex flex-col gap-2 lg:bottom-[84px]">
       {items.map((t) => (
-        <div key={t.id} role="status" className="toast-anim material-strong flex max-w-[360px] items-start gap-2.5 rounded-2xl border border-line px-4 py-3 text-[13.5px] shadow-[var(--shadow-pop)]">
+        <div key={t.id} role="status" className="toast-anim material-strong flex max-w-[360px] items-start gap-2.5 rounded-2xl border border-line px-4 py-3 text-[14.5px] shadow-[var(--shadow-pop)]">
           {t.tone === "ok" ? <CheckCircle2 size={17} className="mt-px shrink-0 text-accent" /> : <AlertCircle size={17} className="mt-px shrink-0 text-danger-ink" />}
           {t.text}
         </div>

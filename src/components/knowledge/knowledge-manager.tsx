@@ -35,9 +35,9 @@ export function KnowledgeManager({ entries, canEdit }: { entries: Entry[]; canEd
         <section aria-label="Approved answers">
           <div role="tablist" aria-label="Category" className="mb-4 flex flex-wrap gap-1">
             {[["all", "All"] as const, ...categories].map(([k, label]) => (
-              <button key={k} role="tab" aria-selected={cat === k} onClick={() => setCat(k)} className={cx("rounded-md px-3 py-1.5 text-[13.5px]", cat === k ? "bg-surface-2 font-medium" : "text-muted hover:bg-surface hover:text-ink")}>
+              <button key={k} role="tab" aria-selected={cat === k} onClick={() => setCat(k)} className={cx("rounded-md px-3 py-1.5 text-[14.5px]", cat === k ? "bg-accent-soft font-semibold text-primary" : "text-ink-3 hover:bg-surface hover:text-ink")}>
                 {label}
-                {k !== "all" && <span className="ml-1.5 text-muted">{entries.filter((e) => e.category === k).length}</span>}
+                {k !== "all" && <span className="ml-1.5 text-ink-3">{entries.filter((e) => e.category === k).length}</span>}
               </button>
             ))}
           </div>
@@ -51,14 +51,14 @@ export function KnowledgeManager({ entries, canEdit }: { entries: Entry[]; canEd
                 <li key={e.id} className={cx("px-5 py-4", !e.active && "opacity-60")}>
                   <div className="flex items-start gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-[14.5px] font-medium">{e.question}</p>
-                      <p className="mt-1 text-[14px] leading-relaxed text-ink/80">{e.answer}</p>
+                      <p className="text-[15.5px] font-medium">{e.question}</p>
+                      <p className="mt-1 text-[15px] leading-relaxed text-ink/80">{e.answer}</p>
                       <div className="mt-2 flex gap-2">
                         <Badge>{catLabel[e.category] ?? e.category}</Badge>
                         {!e.active && <Badge tone="outline">Not used by AI</Badge>}
                       </div>
                     </div>
-                    {canEdit && <Button size="sm" variant="ghost" onClick={() => setEdit(e)}>Edit</Button>}
+                    {canEdit && <Button size="sm" variant="ghost" className="text-primary hover:bg-accent-soft hover:text-primary" onClick={() => setEdit(e)}>Edit</Button>}
                   </div>
                 </li>
               ))}
@@ -80,7 +80,7 @@ function TestPanel() {
     <aside aria-labelledby="test-h" className="h-fit rounded-lg border border-line xl:sticky xl:top-6">
       <div className="border-b border-line px-5 py-3">
         <h2 id="test-h" className="flex items-center gap-2 text-[15px] font-semibold"><FlaskConical size={16} /> Test an answer</h2>
-        <p className="mt-0.5 text-[12.5px] text-muted">Ask what a customer would ask. See the reply and where it came from.</p>
+        <p className="mt-0.5 text-[13.5px] text-ink-3">Ask what a customer would ask. See the reply and where it came from.</p>
       </div>
       <form
         className="flex gap-2 px-5 pt-4"
@@ -100,21 +100,21 @@ function TestPanel() {
       </form>
       <div className="px-5 py-4" aria-live="polite">
         {!res ? (
-          <p className="text-[13px] text-muted">Answers appear here.</p>
+          <p className="text-[14px] text-ink-3">Answers appear here.</p>
         ) : (
           <div className="space-y-3">
-            <p className="text-[13px] text-muted">“{res.q}”</p>
-            <p className="rounded-xl rounded-tr-md bg-surface px-3.5 py-2.5 text-[14px] leading-relaxed">{res.answer}</p>
-            <p className="text-[12.5px] text-muted">
+            <p className="text-[14px] text-ink-3">“{res.q}”</p>
+            <p className="rounded-xl rounded-tr-md bg-surface px-3.5 py-2.5 text-[15px] leading-relaxed">{res.answer}</p>
+            <p className="text-[13.5px] text-ink-3">
               {res.mode === "model" ? "Looked up: " : "Source: "}
               {res.sources.length ? <span className="text-ink">{res.sources.map((x) => toolLabel[x] ?? x).join(", ")}</span> : <span>nothing found, so the reply offers a staff handoff</span>}
             </p>
             {res.mode === "faq" ? (
-              <p className="rounded-md bg-warn-soft/60 px-3 py-2 text-[12px] text-warn-ink">
+              <p className="rounded-md bg-warn-soft/60 px-3 py-2 text-[13px] text-warn-ink">
                 Development mode: answered by keyword matching, not an AI model. Set an AI provider on the server for natural replies.
               </p>
             ) : (
-              <p className="text-[12px] text-muted">Answered by {res.model}. Test questions count toward AI usage.</p>
+              <p className="text-[13px] text-ink-3">Answered by {res.model}. Test questions count toward AI usage.</p>
             )}
           </div>
         )}
@@ -154,10 +154,10 @@ function EntryDialog({ entry, onClose }: { entry: Entry | null; onClose: () => v
           <Textarea id="k-a" value={v.answer} onChange={(e) => setV({ ...v, answer: e.target.value })} maxLength={1500} required className="min-h-[120px]" />
         </Field>
         <div className="flex items-center justify-between rounded-md bg-surface px-3 py-2.5">
-          <span className="text-[14px]">AI can use this answer</span>
+          <span className="text-[15px]">AI can use this answer</span>
           <Switch checked={v.active} onChange={(x) => setV({ ...v, active: x })} label="AI can use this answer" />
         </div>
-        {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
+        {error && <p role="alert" className="text-[14.5px] text-danger-ink">{error}</p>}
         <div className="flex items-center justify-between gap-2 pt-2">
           {entry ? (
             <Button

@@ -25,28 +25,31 @@ export function BookingFlow(p: Props) {
   return (
     <div className="grid gap-8 md:grid-cols-[1fr_280px]">
       <div>
-        <ol className="mb-6 flex items-center gap-2 text-[13.5px]" aria-label="Steps">
+        <p className="mb-3 text-[14px] font-medium text-primary sm:hidden">
+          Step {step + 1} of {steps.length} · {steps[step]}
+        </p>
+        <ol className="mb-6 flex items-center gap-2 text-[14.5px]" aria-label="Steps">
           {steps.map((s, i) => (
             <li key={s} className="flex items-center gap-2" aria-current={i === step ? "step" : undefined}>
-              <span className={cx("grid size-6 place-items-center rounded-full text-[12px] font-medium", i < step ? "bg-primary text-primary-ink" : i === step ? "bg-ink text-bg" : "bg-surface-2 text-muted")}>
+              <span className={cx("grid size-7 place-items-center rounded-full text-[13px] font-medium", i < step ? "bg-primary text-primary-ink" : i === step ? "bg-accent-soft text-primary ring-1 ring-primary" : "bg-surface-2 text-ink-3")}>
                 {i < step ? <Check size={13} /> : i + 1}
               </span>
-              <span className={cx(i === step ? "font-medium" : "text-muted", "hidden sm:inline")}>{s}</span>
+              <span className={cx(i === step ? "font-medium" : "text-ink-3", "hidden sm:inline")}>{s}</span>
               {i < steps.length - 1 && <span className="mx-1 h-px w-6 bg-line" aria-hidden />}
             </li>
           ))}
         </ol>
 
         {step > 0 && (
-          <button onClick={() => setStep(step - 1)} className="mb-4 inline-flex items-center gap-1 text-[14px] text-muted hover:text-ink">
-            <ArrowLeft size={15} /> Back
+          <button onClick={() => setStep(step - 1)} className="press mb-4 -ml-2 inline-flex h-10 items-center gap-1.5 rounded-[10px] px-2 text-[15px] font-medium text-primary hover:bg-accent-soft">
+            <ArrowLeft size={16} /> Back
           </button>
         )}
 
         {step === 0 && (
           <section aria-labelledby="s1">
             <h2 id="s1" className="mb-4 text-[20px] font-semibold">Choose a service</h2>
-            <ul className="divide-y divide-line rounded-lg border border-line">
+            <ul className="divide-y divide-line overflow-hidden rounded-[14px] border border-line">
               {p.services.map((s) => (
                 <li key={s.id}>
                   <button
@@ -56,15 +59,15 @@ export function BookingFlow(p: Props) {
                       setSlot(null);
                       setStep(1);
                     }}
-                    className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-surface"
+                    className="flex min-h-[72px] w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-surface"
                   >
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[15.5px] font-medium">{s.name}</span>
-                      {s.description && <span className="mt-0.5 block text-[13.5px] text-muted">{s.description}</span>}
-                      <span className="mt-1 flex items-center gap-1.5 text-[13px] text-muted"><Clock size={13} aria-hidden /> {s.duration} min</span>
+                      <span className="block text-[17px] font-semibold">{s.name}</span>
+                      {s.description && <span className="mt-0.5 block text-[14.5px] text-ink-3">{s.description}</span>}
+                      <span className="mt-1 flex items-center gap-1.5 text-[14px] text-ink-3"><Clock size={13} aria-hidden /> {s.duration} min</span>
                     </span>
-                    <span className="text-[15px] font-medium font-mono tabular-nums">{s.price}</span>
-                    <ChevronRight size={18} className="text-muted" aria-hidden />
+                    <span className="text-[17px] font-semibold tabular-nums">{s.price}</span>
+                    <ChevronRight size={18} className="text-ink-3" aria-hidden />
                   </button>
                 </li>
               ))}
@@ -104,18 +107,18 @@ export function BookingFlow(p: Props) {
         )}
       </div>
 
-      <aside className="h-fit rounded-lg border border-line bg-surface/50 px-5 py-4 text-[14px] md:sticky md:top-6" aria-label="Your booking">
-        <p className="mb-3 text-[12.5px] font-medium tracking-[0.06em] text-muted">YOUR BOOKING</p>
+      <aside className="h-fit rounded-[14px] border border-line bg-surface px-5 py-4 text-[15px] md:sticky md:top-6" aria-label="Your booking">
+        <p className="mb-3 text-[15px] font-semibold text-ink">Your booking</p>
         {svc ? (
           <dl className="space-y-2">
-            <div><dt className="sr-only">Service</dt><dd className="font-medium">{svc.name}</dd><dd className="text-muted">{svc.duration} min · {svc.price}</dd></div>
+            <div><dt className="sr-only">Service</dt><dd className="font-medium">{svc.name}</dd><dd className="text-ink-3">{svc.duration} min · {svc.price}</dd></div>
             {date && <div className="flex items-center gap-2"><dt><CalendarClock size={15} aria-label="Date" /></dt><dd>{fmt(date, { weekday: "long", month: "long", day: "numeric" })}</dd></div>}
             {slot && <div className="flex items-center gap-2"><dt><Clock size={15} aria-label="Time" /></dt><dd>{slot.label}</dd></div>}
           </dl>
         ) : (
-          <p className="text-muted">Pick a service to start.</p>
+          <p className="text-ink-3">Pick a service to start.</p>
         )}
-        {p.cancellationPolicy && <p className="mt-4 border-t border-line pt-3 text-[12.5px] text-muted">{p.cancellationPolicy}</p>}
+        {p.cancellationPolicy && <p className="mt-4 border-t border-line pt-3 text-[13.5px] text-ink-3">{p.cancellationPolicy}</p>}
       </aside>
     </div>
   );
@@ -155,20 +158,20 @@ function DateTime(p: Props & { svc: Svc; date: string | null; setDate: (d: strin
   return (
     <section aria-labelledby="s2">
       <h2 id="s2" className="mb-4 text-[20px] font-semibold">Pick a date and time</h2>
-      {p.notice && <p role="alert" className="mb-4 rounded-md bg-warn-soft px-3 py-2 text-[13.5px] text-warn-ink">{p.notice} Here are the times still open.</p>}
+      {p.notice && <p role="alert" className="mb-4 rounded-[10px] bg-warn-soft px-3.5 py-2.5 text-[14.5px] text-warn-ink">{p.notice} Here are the times still open.</p>}
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-[14px] font-medium">{fmt(days[0] ?? weekStart, { month: "long", year: "numeric" })}</p>
+        <p className="text-[15px] font-medium">{fmt(days[0] ?? weekStart, { month: "long", year: "numeric" })}</p>
         <div className="flex gap-1">
           <button aria-label="Earlier dates" disabled={weekStart <= p.today} onClick={() => {
             setOpen(null);
             setWeekStart(addDays(weekStart, -14) < p.today ? p.today : addDays(weekStart, -14));
-          }} className="grid size-9 place-items-center rounded-md border border-line hover:bg-surface disabled:opacity-40">
+          }} className="press grid size-11 place-items-center rounded-[10px] border border-line-strong hover:bg-surface disabled:opacity-40">
             <ChevronLeft size={17} />
           </button>
           <button aria-label="Later dates" disabled={addDays(weekStart, 14) > last} onClick={() => {
             setOpen(null);
             setWeekStart(addDays(weekStart, 14));
-          }} className="grid size-9 place-items-center rounded-md border border-line hover:bg-surface disabled:opacity-40">
+          }} className="press grid size-11 place-items-center rounded-[10px] border border-line-strong hover:bg-surface disabled:opacity-40">
             <ChevronRight size={17} />
           </button>
         </div>
@@ -189,29 +192,29 @@ function DateTime(p: Props & { svc: Svc; date: string | null; setDate: (d: strin
                 p.setDate(d);
               }}
               className={cx(
-                "flex flex-col items-center rounded-md border py-2 text-[13px] transition-colors",
-                sel ? "border-primary bg-primary text-primary-ink" : isOpen ? "border-line hover:bg-surface" : "border-transparent text-muted/60 line-through",
+                "flex min-h-[60px] flex-col items-center justify-center rounded-[10px] border py-2 text-[14px] transition-colors",
+                sel ? "border-primary bg-primary text-primary-ink" : isOpen ? "border-line-strong hover:border-primary hover:bg-accent-soft" : "border-transparent text-ink-3/60 line-through",
                 !open && "animate-pulse",
               )}
             >
-              <span className={sel ? "text-primary-ink/70" : "text-muted"}>{fmt(d, { weekday: "short" })}</span>
-              <span className="text-[16px] font-medium font-mono tabular-nums">{fmt(d, { day: "numeric" })}</span>
+              <span className={sel ? "text-primary-ink/85" : "text-ink-3"}>{fmt(d, { weekday: "short" })}</span>
+              <span className="text-[18px] font-semibold tabular-nums">{fmt(d, { day: "numeric" })}</span>
             </button>
           );
         })}
       </div>
-      {open && open.length === 0 && <p className="mt-3 text-[13.5px] text-muted">No open dates in this range. Try later dates.</p>}
+      {open && open.length === 0 && <p className="mt-3 text-[14.5px] text-ink-3">No open dates in this range. Try later dates.</p>}
 
       {p.date && (
         <div className="mt-6">
-          <p className="mb-3 text-[14px] font-medium">{fmt(p.date, { weekday: "long", month: "long", day: "numeric" })}</p>
-          {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
-          {!slots && !error && <p className="text-[13.5px] text-muted">Loading times…</p>}
-          {slots && slots.length === 0 && <p className="text-[13.5px] text-muted">Fully booked. Please pick another date.</p>}
+          <p className="mb-3 text-[15px] font-medium">{fmt(p.date, { weekday: "long", month: "long", day: "numeric" })}</p>
+          {error && <p role="alert" className="text-[14.5px] text-danger-ink">{error}</p>}
+          {!slots && !error && <p className="text-[14.5px] text-ink-3">Loading times…</p>}
+          {slots && slots.length === 0 && <p className="text-[14.5px] text-ink-3">Fully booked. Please pick another date.</p>}
           {slots && slots.length > 0 && (
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Time">
               {slots.map((s) => (
-                <button key={s.minute} role="radio" aria-checked={p.slot?.minute === s.minute} onClick={() => p.onPick(s)} className="h-10 rounded-md border border-line text-[14px] font-mono tabular-nums transition-colors hover:border-accent hover:bg-accent-soft/50">
+                <button key={s.minute} role="radio" aria-checked={p.slot?.minute === s.minute} onClick={() => p.onPick(s)} className="h-12 rounded-[10px] border border-line-strong text-[16px] tabular-nums transition-colors hover:border-accent hover:bg-accent-soft/50">
                   {s.label}
                 </button>
               ))}
@@ -258,15 +261,15 @@ function Details(p: Props & { svc: Svc; date: string; slot: { minute: number; la
         <Field label="Email" htmlFor="bk-email" hint="We'll send updates about this appointment here."><Input id="bk-email" name="email" type="email" autoComplete="email" required /></Field>
         <Field label="Mobile number (optional)" htmlFor="bk-phone"><Input id="bk-phone" name="phone" type="tel" autoComplete="tel" placeholder="+63 9XX XXX XXXX" /></Field>
         <Field label="Notes for the team (optional)" htmlFor="bk-notes"><Textarea id="bk-notes" name="notes" maxLength={500} /></Field>
-        <label className="flex items-start gap-3 text-[13px] leading-relaxed text-ink/80">
-          <input type="checkbox" name="consent" required className="mt-0.5 size-4 accent-primary" />
+        <label className="flex items-start gap-3 text-[14px] leading-relaxed text-ink-2">
+          <input type="checkbox" name="consent" required className="mt-0.5 size-5 shrink-0 accent-primary" />
           <span>I agree that {p.businessName} may use my name and contact details to manage this appointment, in line with the Data Privacy Act of 2012.</span>
         </label>
-        {error && <p role="alert" className="rounded-md bg-danger-soft px-3 py-2 text-[13.5px] text-danger-ink">{error}</p>}
+        {error && <p role="alert" className="rounded-[10px] bg-danger-soft px-3.5 py-2.5 text-[14.5px] text-danger-ink">{error}</p>}
         <Button type="submit" variant="primary" size="lg" loading={busy} className="w-full sm:w-auto">
           {p.requireApproval ? "Request appointment" : "Book appointment"}
         </Button>
-        {p.requireApproval && <p className="text-[12.5px] text-muted">This is a request. {p.businessName} will confirm it.</p>}
+        {p.requireApproval && <p className="text-[13.5px] text-ink-3">This is a request. {p.businessName} will confirm it.</p>}
       </form>
     </section>
   );
@@ -276,12 +279,12 @@ function Done({ status, service, when, businessName }: { status: "pending" | "co
   const confirmed = status === "confirmed";
   return (
     <div className="mx-auto max-w-[460px] py-10 text-center" role="status">
-      <span className={cx("mx-auto mb-5 grid size-14 place-items-center rounded-full", confirmed ? "bg-accent-soft text-accent" : "bg-warn-soft text-warn-ink")}>
+      <span className={cx("mx-auto mb-5 grid size-14 place-items-center rounded-full", confirmed ? "bg-success-soft text-success" : "bg-warn-soft text-warn-ink")}>
         {confirmed ? <CalendarCheck2 size={26} /> : <CalendarClock size={26} />}
       </span>
       <h2 className="text-[24px] font-semibold tracking-[-0.01em]">{confirmed ? "You're booked" : "Request sent"}</h2>
-      <p className="mt-2 text-[15px] text-ink/80">{service} · {when}</p>
-      <p className="mt-4 text-[14px] text-muted">
+      <p className="mt-2 text-[15px] text-ink-2">{service} · {when}</p>
+      <p className="mt-4 text-[15px] text-ink-3">
         {confirmed
           ? `${businessName} has your appointment. See you then.`
           : `This is not confirmed yet. ${businessName} will review it and email you once it's confirmed.`}

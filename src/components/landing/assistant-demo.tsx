@@ -70,37 +70,37 @@ export function AssistantDemo() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[460px] text-left">
+    <div className="mx-auto w-full max-w-[520px] text-left">
       <div className="overflow-hidden rounded-[22px] border border-line bg-bg-elevated shadow-[var(--shadow-float)]">
-        <header className="flex items-center gap-2.5 border-b border-line px-3.5 py-2.5">
-          <span className="grid size-7 place-items-center rounded-full bg-avatar text-[10px] font-semibold" aria-hidden>
+        <header className="flex items-center gap-3 border-b border-line px-4 py-3">
+          <span className="grid size-9 place-items-center rounded-full bg-avatar text-[13px] font-semibold" aria-hidden>
             GS
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-[12.5px] leading-tight font-semibold">Glow Studio</p>
-            <p className="text-[10.5px] text-muted">Website chat</p>
+            <p className="truncate text-[16px] leading-tight font-semibold">Glow Studio</p>
+            <p className="text-[13px] text-ink-3">Website chat</p>
           </div>
-          <span className="flex items-center gap-1.5 rounded-full bg-accent-soft px-2 py-0.5 text-[10px] font-medium text-accent">
-            <span className="size-1.5 rounded-full bg-accent" aria-hidden /> AI on
+          <span className="flex items-center gap-1.5 rounded-full bg-accent-soft px-2.5 py-1 text-[13px] leading-none font-medium text-primary">
+            <span className="size-1.5 rounded-full bg-primary" aria-hidden /> AI on
           </span>
         </header>
 
-        <div className="h-[228px] space-y-2.5 overflow-y-auto px-3.5 py-3.5" aria-live="polite">
+        <div className="h-[280px] space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
           {conv.map((m) =>
             m.from === "you" ? (
-              <p key={m.id} className="bubble-anim ml-auto w-fit max-w-[86%] rounded-[14px] rounded-br-[4px] bg-surface px-3 py-2 text-[12.5px] leading-relaxed">
+              <p key={m.id} className="bubble-anim ml-auto w-fit max-w-[86%] rounded-[18px] rounded-br-[6px] bg-primary px-4 py-2.5 text-[15.5px] leading-relaxed text-primary-ink">
                 {m.text}
               </p>
             ) : (
               <div key={m.id} className="bubble-anim flex gap-2">
-                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-accent-soft text-accent" aria-hidden>
+                <span className="mt-1 grid size-7 shrink-0 place-items-center rounded-full bg-accent-soft text-primary" aria-hidden>
                   {m.kind === "handoff" ? <Hand size={12} strokeWidth={2} /> : <Sparkle size={12} strokeWidth={2} />}
                 </span>
                 <div className="min-w-0">
                   <p
                     className={cx(
-                      "w-fit rounded-[14px] rounded-bl-[4px] border px-3 py-2 text-[12.5px] leading-relaxed",
-                      m.kind === "handoff" ? "border-dashed border-line-strong bg-bg" : "border-line bg-bg",
+                      "w-fit rounded-[18px] rounded-bl-[6px] px-4 py-2.5 text-[15.5px] leading-relaxed",
+                      m.kind === "handoff" ? "border border-dashed border-field-line bg-bg" : "bg-surface-2",
                     )}
                   >
                     {m.text}
@@ -108,17 +108,17 @@ export function AssistantDemo() {
                   {m.note && (
                     <p
                       className={cx(
-                        "mt-1 flex items-center gap-1 text-[10.5px]",
-                        m.kind === "handoff" ? "text-warn-ink" : "text-muted",
+                        "mt-1.5 flex items-center gap-1.5 text-[13px]",
+                        m.kind === "handoff" ? "text-warn-ink" : "text-ink-3",
                       )}
                     >
-                      {m.kind === "handoff" ? <Hand size={10} aria-hidden /> : <Check size={10} className="text-accent" aria-hidden />}
+                      {m.kind === "handoff" ? <Hand size={12} aria-hidden /> : <Check size={12} className="text-primary" aria-hidden />}
                       {m.note}
                     </p>
                   )}
                   {m.kind === "booking" && (
-                    <span className="mt-1.5 flex w-fit items-center gap-1.5 rounded-full border border-line bg-surface px-2 py-1 text-[10.5px] font-medium">
-                      <CalendarDays size={10} aria-hidden /> Appointment request · Pending
+                    <span className="mt-2 flex w-fit items-center gap-1.5 rounded-full border border-warn-line bg-warn-soft px-3 py-1.5 text-[13px] leading-none font-medium text-warn-ink">
+                      <CalendarDays size={13} aria-hidden /> Appointment request · Pending
                     </span>
                   )}
                 </div>
@@ -126,24 +126,24 @@ export function AssistantDemo() {
             ),
           )}
           {busy && (
-            <div className="flex items-center gap-1.5 pl-8" aria-label="Assistant is replying">
-              <span className="typing-dot size-1.5 rounded-full bg-muted" />
-              <span className="typing-dot size-1.5 rounded-full bg-muted" style={{ animationDelay: "160ms" }} />
-              <span className="typing-dot size-1.5 rounded-full bg-muted" style={{ animationDelay: "320ms" }} />
+            <div className="flex items-center gap-1.5 pl-10" role="status" aria-label="Assistant is replying">
+              <span className="typing-dot size-1.5 rounded-full bg-ink-3" />
+              <span className="typing-dot size-1.5 rounded-full bg-ink-3" style={{ animationDelay: "160ms" }} />
+              <span className="typing-dot size-1.5 rounded-full bg-ink-3" style={{ animationDelay: "320ms" }} />
             </div>
           )}
           <div ref={endRef} />
         </div>
 
-        <div className="border-t border-line px-3.5 py-3">
-          <p className="mb-2 text-[10.5px] font-semibold tracking-[0.08em] text-muted uppercase">Try one</p>
-          <div className="flex flex-wrap gap-1.5">
+        <div className="border-t border-line px-4 py-4">
+          <p className="mb-2.5 text-[14px] font-medium text-ink-2">Tap a question to try it</p>
+          <div className="flex flex-wrap gap-2">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s.label}
                 onClick={() => ask(s)}
                 disabled={busy}
-                className="press rounded-full border border-line bg-bg px-2.5 py-1 text-[11.5px] text-ink-2 hover:border-line-strong hover:bg-surface hover:text-ink disabled:opacity-50"
+                className="press min-h-10 rounded-full border border-line-strong bg-bg px-4 py-2 text-[15px] text-ink hover:border-primary hover:bg-accent-soft hover:text-primary disabled:opacity-50"
               >
                 {s.label}
               </button>
@@ -152,8 +152,8 @@ export function AssistantDemo() {
         </div>
       </div>
 
-      <p className="mx-auto mt-3 flex max-w-[38ch] items-start justify-center gap-1.5 text-center text-[11.5px] leading-relaxed text-muted">
-        <ArrowUpRight size={12} className="mt-0.5 shrink-0" aria-hidden />
+      <p className="mx-auto mt-4 flex max-w-[42ch] items-start justify-center gap-1.5 text-center text-[14px] leading-relaxed text-ink-3">
+        <ArrowUpRight size={14} className="mt-0.5 shrink-0" aria-hidden />
         Scripted preview. Real replies come from your services, hours and FAQs.
       </p>
     </div>

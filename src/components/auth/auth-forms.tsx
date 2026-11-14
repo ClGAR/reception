@@ -10,8 +10,8 @@ import { Button, Field, Input } from "@/components/ui";
 function Heading({ title, body }: { title: string; body?: string }) {
   return (
     <div className="mb-7">
-      <h1 className="text-[28px] leading-tight font-semibold tracking-[-0.04em]">{title}</h1>
-      {body && <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{body}</p>}
+      <h1 className="text-[30px] leading-tight font-semibold tracking-[-0.03em]">{title}</h1>
+      {body && <p className="mt-1.5 text-[15px] leading-relaxed text-ink-3">{body}</p>}
     </div>
   );
 }
@@ -19,7 +19,7 @@ function Heading({ title, body }: { title: string; body?: string }) {
 function FormError({ msg }: { msg: string | null }) {
   if (!msg) return null;
   return (
-    <p role="alert" className="rounded-xl border border-danger-line bg-danger-soft px-3 py-2 text-[13px] text-danger-ink">
+    <p role="alert" className="rounded-xl border border-danger-line bg-danger-soft px-3 py-2 text-[14px] text-danger-ink">
       {msg}
     </p>
   );
@@ -66,7 +66,7 @@ export function LoginForm() {
           <Input id="password" name="password" type="password" autoComplete="current-password" required />
         </Field>
         <div className="flex justify-end">
-          <Link href="/forgot-password" className="text-[13.5px] text-muted hover:text-ink">
+          <Link href="/forgot-password" className="text-[14.5px] font-medium text-primary hover:underline">
             Forgot password?
           </Link>
         </div>
@@ -75,9 +75,9 @@ export function LoginForm() {
           Log in
         </Button>
       </form>
-      <p className="mt-6 text-center text-[14px] text-muted">
+      <p className="mt-6 text-center text-[15px] text-ink-3">
         New to Reception?{" "}
-        <Link href="/register" className="font-medium text-ink underline-offset-4 hover:underline">
+        <Link href="/register" className="font-medium text-primary hover:underline">
           Create an account
         </Link>
       </p>
@@ -116,7 +116,7 @@ export function RegisterForm() {
           <MailCheck size={22} />
         </span>
         <Heading title="Check your email" body={`We sent a verification link to ${sentTo}. Open it to set up your business.`} />
-        <p className="text-[13px] text-muted">Running locally without an email provider? The link is printed in the server console.</p>
+        <p className="text-[14px] text-ink-3">Running locally without an email provider? The link is printed in the server console.</p>
       </div>
     );
   return (
@@ -136,7 +136,7 @@ export function RegisterForm() {
         <Button type="submit" variant="primary" size="lg" className="w-full" loading={loading}>
           Create account
         </Button>
-        <p className="text-[12.5px] leading-relaxed text-muted">
+        <p className="text-[13.5px] leading-relaxed text-ink-3">
           By creating an account you agree to our{" "}
           <Link href="/privacy" className="underline underline-offset-2">
             privacy notice
@@ -144,9 +144,9 @@ export function RegisterForm() {
           .
         </p>
       </form>
-      <p className="mt-6 text-center text-[14px] text-muted">
+      <p className="mt-6 text-center text-[15px] text-ink-3">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-ink underline-offset-4 hover:underline">
+        <Link href="/login" className="font-medium text-primary hover:underline">
           Log in
         </Link>
       </p>
@@ -176,7 +176,7 @@ export function ForgotForm() {
           Send reset link
         </Button>
       </form>
-      <p className="mt-6 text-center text-[14px] text-muted">
+      <p className="mt-6 text-center text-[15px] text-ink-3">
         <Link href="/login" className="hover:text-ink">
           Back to log in
         </Link>

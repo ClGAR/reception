@@ -78,7 +78,7 @@ export function ChatWidget(p: Props) {
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-semibold">{p.businessName}</p>
-          <p className="text-[12px] text-muted">{handledBy === "human" ? "A team member will reply here" : "Usually replies instantly"}</p>
+          <p className="text-[13px] text-ink-3">{handledBy === "human" ? "A team member will reply here" : "Usually replies instantly"}</p>
         </div>
         <button aria-label="Close chat" onClick={() => window.parent.postMessage({ reception: "close" }, "*")} className="grid size-8 place-items-center rounded-md hover:bg-surface">
           <X size={18} />
@@ -90,20 +90,20 @@ export function ChatWidget(p: Props) {
           <Bubble sender="ai" body={p.greeting} />
           {messages.map((m) =>
             m.sender === "system" ? (
-              <li key={m.id} className="text-center text-[12px] text-muted">{m.body}</li>
+              <li key={m.id} className="text-center text-[13px] text-ink-3">{m.body}</li>
             ) : (
               <Bubble key={m.id} sender={m.sender} body={m.body} time={m.time} note={m.simulated ? "Automated answer from the business's FAQ" : undefined} />
             ),
           )}
           {pendingText && <Bubble sender="customer" body={pendingText} />}
           {sending && (
-            <li className="flex items-center gap-2 text-[13px] text-muted">
+            <li className="flex items-center gap-2 text-[14px] text-ink-3">
               <Loader2 size={14} className="animate-spin" /> Typing…
             </li>
           )}
         </ol>
         {handledBy === "human" && messages.length > 0 && (
-          <p className="mt-4 flex items-center justify-center gap-1.5 text-[12px] text-muted">
+          <p className="mt-4 flex items-center justify-center gap-1.5 text-[13px] text-ink-3">
             <Hand size={13} /> You&apos;re chatting with the {p.businessName} team
           </p>
         )}
@@ -111,10 +111,10 @@ export function ChatWidget(p: Props) {
       </div>
 
       <div className="border-t border-line px-3 pt-2 pb-3">
-        <a href={p.bookingUrl} target="_blank" rel="noopener" className="mb-2 flex items-center justify-center gap-1.5 rounded-md border border-line py-1.5 text-[13px] hover:bg-surface">
+        <a href={p.bookingUrl} target="_blank" rel="noopener" className="mb-2 flex items-center justify-center gap-1.5 rounded-md border border-line py-1.5 text-[14px] hover:bg-surface">
           <CalendarDays size={14} /> Book an appointment online
         </a>
-        {error && <p role="alert" className="mb-2 text-[12.5px] text-danger-ink">{error}</p>}
+        {error && <p role="alert" className="mb-2 text-[13.5px] text-danger-ink">{error}</p>}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -123,12 +123,12 @@ export function ChatWidget(p: Props) {
           className="flex items-center gap-2 rounded-lg border border-line px-2 focus-within:border-accent"
         >
           <label htmlFor="w-input" className="sr-only">Message</label>
-          <input id="w-input" value={draft} maxLength={1000} onChange={(e) => setDraft(e.target.value)} placeholder="Type your message…" className="h-11 min-w-0 flex-1 bg-transparent px-1 text-[15px] outline-none placeholder:text-muted" />
+          <input id="w-input" value={draft} maxLength={1000} onChange={(e) => setDraft(e.target.value)} placeholder="Type your message…" className="h-11 min-w-0 flex-1 bg-transparent px-1 text-[15px] outline-none placeholder:text-ink-3" />
           <button type="submit" disabled={!draft.trim() || sending} aria-label="Send" className="grid size-9 place-items-center rounded-md bg-primary text-primary-ink disabled:opacity-50">
             <SendHorizontal size={17} />
           </button>
         </form>
-        <p className="mt-2 text-center text-[11px] text-muted">
+        <p className="mt-2 text-center text-[12px] text-ink-3">
           {!p.aiEnabled ? "Replies come from our team." : p.aiMode === "faq" ? "Automated answers use this business's FAQ." : "AI replies use only this business's approved info."} Don&apos;t share sensitive health details.
         </p>
       </div>
@@ -140,12 +140,12 @@ function Bubble({ sender, body, time, note }: { sender: "customer" | "ai" | "sta
   const mine = sender === "customer";
   return (
     <li className={cx("flex flex-col", mine ? "items-end" : "items-start")}>
-      <p className={cx("max-w-[85%] rounded-xl px-3.5 py-2 text-[14.5px] leading-snug break-words whitespace-pre-wrap", mine ? "rounded-tr-md bg-primary text-primary-ink" : "rounded-tl-md bg-surface")}>
+      <p className={cx("max-w-[85%] rounded-xl px-3.5 py-2 text-[15.5px] leading-snug break-words whitespace-pre-wrap", mine ? "rounded-tr-md bg-primary text-primary-ink" : "rounded-tl-md bg-surface")}>
         <span className="sr-only">{mine ? "You: " : sender === "staff" ? "Staff: " : "Assistant: "}</span>
         {body}
       </p>
       {(time || note) && (
-        <span className="mt-1 px-1 text-[11px] text-muted">
+        <span className="mt-1 px-1 text-[12px] text-ink-3">
           {sender === "staff" ? "Team · " : ""}
           {time}
           {note ? ` · ${note}` : ""}

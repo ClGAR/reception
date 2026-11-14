@@ -16,12 +16,12 @@ export const Button = forwardRef<
       ref={ref}
       disabled={disabled || loading}
       className={cx(
-        "press inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap select-none disabled:cursor-not-allowed disabled:opacity-50",
-        size === "sm" && "h-8 px-3.5 text-[13px]",
-        size === "md" && "h-10 px-4 text-[14px]",
-        size === "lg" && "h-11 px-5 text-[15px]",
+        "press inline-flex items-center justify-center gap-2 rounded-[10px] font-medium whitespace-nowrap select-none disabled:cursor-not-allowed disabled:opacity-50",
+        size === "sm" && "h-9 px-3.5 text-[14px]",
+        size === "md" && "h-11 px-4.5 text-[15px]",
+        size === "lg" && "h-12 px-6 text-[16px]",
         variant === "primary" && "bg-primary text-primary-ink shadow-[var(--shadow-sm)] hover:bg-primary-hover",
-        variant === "secondary" && "border border-line-strong bg-bg text-ink hover:bg-surface",
+        variant === "secondary" && "border border-line-strong bg-bg text-ink shadow-[var(--shadow-sm)] hover:border-field-line hover:bg-surface",
         variant === "ghost" && "text-ink-2 hover:bg-surface hover:text-ink",
         variant === "danger" && "border border-danger-line bg-bg text-danger-ink hover:bg-danger-soft",
         className,
@@ -37,13 +37,13 @@ export const Button = forwardRef<
 export function Field({ label, hint, error, children, htmlFor }: { label: string; hint?: string; error?: string; children: ReactNode; htmlFor?: string }) {
   return (
     <div className="space-y-1.5">
-      <label htmlFor={htmlFor} className="block text-[13px] font-medium tracking-[0.005em] text-ink-2">
+      <label htmlFor={htmlFor} className="block text-[14px] font-medium text-ink">
         {label}
       </label>
       {children}
-      {hint && !error && <p className="text-[12.5px] leading-relaxed text-muted">{hint}</p>}
+      {hint && !error && <p className="text-[13.5px] leading-relaxed text-ink-3">{hint}</p>}
       {error && (
-        <p role="alert" className="text-[12.5px] leading-relaxed text-danger-ink">
+        <p role="alert" className="text-[13.5px] leading-relaxed text-danger-ink">
           {error}
         </p>
       )}
@@ -52,18 +52,18 @@ export function Field({ label, hint, error, children, htmlFor }: { label: string
 }
 
 const inputCls =
-  "rounded-[10px] border border-line-strong bg-bg px-3 text-[14px] text-ink placeholder:text-muted transition-[border-color,box-shadow] duration-200 outline-none hover:border-muted/60 focus:border-ink focus:ring-[3px] focus:ring-ink/8 aria-[invalid=true]:border-danger-line aria-[invalid=true]:ring-danger-soft";
+  "rounded-[10px] border border-field-line bg-bg px-3.5 text-[16px] text-ink placeholder:text-ink-3 transition-[border-color,box-shadow] duration-200 outline-none hover:border-ink-2 focus:border-primary focus:ring-[3px] focus:ring-accent-line aria-[invalid=true]:border-danger-ink aria-[invalid=true]:ring-danger-soft";
 
 const hasWidth = (c?: string) => /(^|\s)w-/.test(c ?? "");
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input({ className, ...p }, ref) {
-  return <input ref={ref} className={cx(inputCls, "h-10", !hasWidth(className) && "w-full", className)} {...p} />;
+  return <input ref={ref} className={cx(inputCls, "h-11", !hasWidth(className) && "w-full", className)} {...p} />;
 });
 export function Textarea({ className, ...p }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea className={cx(inputCls, "min-h-[88px] w-full py-2 leading-relaxed", className)} {...p} />;
 }
 export function Select({ className, ...p }: SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select className={cx(inputCls, "h-10 pr-8", !hasWidth(className) && "w-full", className)} {...p} />;
+  return <select className={cx(inputCls, "h-11 pr-8", !hasWidth(className) && "w-full", className)} {...p} />;
 }
 
 export function Switch({ checked, onChange, label, disabled }: { checked: boolean; onChange: (v: boolean) => void; label: string; disabled?: boolean }) {
@@ -90,16 +90,17 @@ export function Switch({ checked, onChange, label, disabled }: { checked: boolea
   );
 }
 
-export function Badge({ tone = "neutral", children, className }: { tone?: "neutral" | "accent" | "warn" | "danger" | "outline"; children: ReactNode; className?: string }) {
+export function Badge({ tone = "neutral", children, className }: { tone?: "neutral" | "accent" | "success" | "warn" | "danger" | "outline"; children: ReactNode; className?: string }) {
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[12px] font-medium whitespace-nowrap",
+        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[13px] leading-none font-medium whitespace-nowrap",
         tone === "neutral" && "bg-surface-2 text-ink-2",
         tone === "accent" && "bg-accent-soft text-accent",
+        tone === "success" && "bg-success-soft text-success",
         tone === "warn" && "bg-warn-soft text-warn-ink",
         tone === "danger" && "bg-danger-soft text-danger-ink",
-        tone === "outline" && "border border-line text-muted",
+        tone === "outline" && "border border-line text-ink-3",
         className,
       )}
     >
@@ -123,15 +124,15 @@ export function Dialog({ open, onClose, title, children, wide }: { open: boolean
       onClose={onClose}
       onClick={(e) => e.target === ref.current && onClose()}
       className={cx(
-        "dialog-anim m-auto w-[calc(100%-32px)] rounded-[20px] border border-line bg-bg-elevated p-0 text-ink shadow-[var(--shadow-float)] backdrop:bg-[var(--scrim)]",
+        "dialog-anim m-auto w-[calc(100%-32px)] rounded-[16px] border border-line bg-bg-elevated p-0 text-ink shadow-[var(--shadow-float)] backdrop:bg-[var(--scrim)]",
         wide ? "max-w-[640px]" : "max-w-[460px]",
       )}
     >
       {open && (
         <div>
           <header className="flex items-center justify-between border-b border-line px-5 py-4">
-            <h2 className="text-[16px] font-semibold tracking-[-0.015em]">{title}</h2>
-            <button onClick={onClose} aria-label="Close" className="press grid size-8 place-items-center rounded-full text-muted hover:bg-surface hover:text-ink">
+            <h2 className="text-[17px] font-semibold tracking-[-0.015em]">{title}</h2>
+            <button onClick={onClose} aria-label="Close" className="press grid size-10 place-items-center rounded-full text-ink-3 hover:bg-surface hover:text-ink">
               <X size={17} />
             </button>
           </header>
@@ -145,9 +146,9 @@ export function Dialog({ open, onClose, title, children, wide }: { open: boolean
 export function EmptyState({ icon, title, body, action }: { icon: ReactNode; title: string; body: string; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center px-6 py-16 text-center">
-      <span className="mb-4 grid size-12 place-items-center rounded-full border border-line bg-surface text-muted">{icon}</span>
+      <span className="mb-4 grid size-12 place-items-center rounded-full border border-line bg-surface text-ink-3">{icon}</span>
       <p className="text-[15px] font-medium tracking-[-0.01em]">{title}</p>
-      <p className="mt-1.5 max-w-[340px] text-[13.5px] leading-relaxed text-muted">{body}</p>
+      <p className="mt-1.5 max-w-[340px] text-[14.5px] leading-relaxed text-ink-3">{body}</p>
       {action && <div className="mt-5">{action}</div>}
     </div>
   );
@@ -157,8 +158,8 @@ export function PageHeader({ title, description, actions }: { title: string; des
   return (
     <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line px-4 pt-7 pb-5 md:px-8 md:pt-9">
       <div>
-        <h1 className="text-[26px] leading-[1.15] font-semibold tracking-[-0.035em]">{title}</h1>
-        {description && <p className="mt-1 text-[14px] text-muted">{description}</p>}
+        <h1 className="text-[28px] leading-[1.1] font-semibold tracking-[-0.03em]">{title}</h1>
+        {description && <p className="mt-1.5 text-[15px] text-ink-3">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>
@@ -177,8 +178,8 @@ export function Avatar({ name, size = "md" }: { name: string; size?: "sm" | "md"
       aria-hidden
       className={cx(
         "grid shrink-0 place-items-center rounded-full bg-avatar font-medium text-ink ring-1 ring-line/60 ring-inset",
-        size === "sm" && "size-8 text-[12.5px]",
-        size === "md" && "size-10 text-[14.5px]",
+        size === "sm" && "size-8 text-[13.5px]",
+        size === "md" && "size-10 text-[15.5px]",
         size === "lg" && "size-[46px] text-[16px]",
       )}
     >

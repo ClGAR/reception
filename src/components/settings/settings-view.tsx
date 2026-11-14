@@ -43,7 +43,7 @@ export function SettingsView(p: Props) {
         <ul className="flex gap-1 overflow-x-auto md:flex-col">
           {tabs.map(([k, l]) => (
             <li key={k}>
-              <Link href={`/app/settings?tab=${k}`} aria-current={p.tab === k ? "page" : undefined} className={cx("block rounded-md px-3 py-2 text-[14px] whitespace-nowrap", p.tab === k ? "bg-surface-2 font-medium" : "text-ink/80 hover:bg-surface")}>
+              <Link href={`/app/settings?tab=${k}`} aria-current={p.tab === k ? "page" : undefined} className={cx("block rounded-md px-3 py-2 text-[15px] whitespace-nowrap", p.tab === k ? "bg-accent-soft font-semibold text-primary" : "text-ink/80 hover:bg-surface")}>
                 {l}
               </Link>
             </li>
@@ -69,14 +69,14 @@ function Section({ title, body, children }: { title: string; body?: string; chil
   return (
     <section className="mb-10">
       <h2 className="text-[17px] font-semibold">{title}</h2>
-      {body && <p className="mt-1 text-[13.5px] text-muted">{body}</p>}
+      {body && <p className="mt-1 text-[14.5px] text-ink-3">{body}</p>}
       <div className="mt-5">{children}</div>
     </section>
   );
 }
 
 function ReadOnly({ show }: { show: boolean }) {
-  return show ? <p className="mb-5 rounded-md bg-surface px-3 py-2 text-[13.5px] text-muted">You can view these settings. Only the owner can change them.</p> : null;
+  return show ? <p className="mb-5 rounded-md bg-surface px-3 py-2 text-[14.5px] text-ink-3">You can view these settings. Only the owner can change them.</p> : null;
 }
 
 function useSave() {
@@ -149,30 +149,30 @@ function AvailabilityTab({ business: b, hours, closures, perms }: Props) {
   return (
     <>
       <Section title="Opening hours" body="Customers can only book inside these hours. Staff can have narrower hours.">
-        {dis && <p className="mb-5 rounded-md bg-surface px-3 py-2 text-[13.5px] text-muted">Only owners and managers can change availability.</p>}
+        {dis && <p className="mb-5 rounded-md bg-surface px-3 py-2 text-[14.5px] text-ink-3">Only owners and managers can change availability.</p>}
         <fieldset disabled={dis}>
           <ul className="divide-y divide-line rounded-lg border border-line">
             {rows.map((r, i) => (
               <li key={r.weekday} className="flex flex-wrap items-center gap-3 px-4 py-2.5">
-                <span className="w-[110px] text-[14px]">{DAYS[r.weekday]}</span>
+                <span className="w-[110px] text-[15px]">{DAYS[r.weekday]}</span>
                 <Switch checked={r.open} onChange={(x) => setRows(rows.map((y, j) => (j === i ? { ...y, open: x } : y)))} label={`Open on ${DAYS[r.weekday]}`} />
                 {r.open ? (
                   <span className="flex items-center gap-2">
-                    <Select aria-label={`${DAYS[r.weekday]} opening time`} className="h-9 w-[136px] text-[13.5px]" value={r.startMinute} onChange={(e) => setRows(rows.map((y, j) => (j === i ? { ...y, startMinute: Number(e.target.value) } : y)))}>
+                    <Select aria-label={`${DAYS[r.weekday]} opening time`} className="h-9 w-[136px] text-[14.5px]" value={r.startMinute} onChange={(e) => setRows(rows.map((y, j) => (j === i ? { ...y, startMinute: Number(e.target.value) } : y)))}>
                       {TIMES.map((t) => <option key={t} value={t}>{minuteLabel(t)}</option>)}
                     </Select>
-                    <span className="text-muted">to</span>
-                    <Select aria-label={`${DAYS[r.weekday]} closing time`} className="h-9 w-[136px] text-[13.5px]" value={r.endMinute} onChange={(e) => setRows(rows.map((y, j) => (j === i ? { ...y, endMinute: Number(e.target.value) } : y)))}>
+                    <span className="text-ink-3">to</span>
+                    <Select aria-label={`${DAYS[r.weekday]} closing time`} className="h-9 w-[136px] text-[14.5px]" value={r.endMinute} onChange={(e) => setRows(rows.map((y, j) => (j === i ? { ...y, endMinute: Number(e.target.value) } : y)))}>
                       {[...TIMES.slice(1), 1440].map((t) => <option key={t} value={t}>{t === 1440 ? "Midnight" : minuteLabel(t)}</option>)}
                     </Select>
                   </span>
                 ) : (
-                  <span className="text-[13.5px] text-muted">Closed</span>
+                  <span className="text-[14.5px] text-ink-3">Closed</span>
                 )}
               </li>
             ))}
           </ul>
-          {bad && <p role="alert" className="mt-2 text-[13px] text-danger-ink">Closing time must be after opening time.</p>}
+          {bad && <p role="alert" className="mt-2 text-[14px] text-danger-ink">Closing time must be after opening time.</p>}
           <Button
             className="mt-4"
             variant="primary"
@@ -194,8 +194,8 @@ function AvailabilityTab({ business: b, hours, closures, perms }: Props) {
         <fieldset disabled={dis} className="space-y-4">
           <div className="flex items-center justify-between gap-4 rounded-md border border-line px-4 py-3">
             <span>
-              <span className="block text-[14px] font-medium">Staff approves each request</span>
-              <span className="block text-[13px] text-muted">Off: bookings are confirmed instantly when the slot is free.</span>
+              <span className="block text-[15px] font-medium">Staff approves each request</span>
+              <span className="block text-[14px] text-ink-3">Off: bookings are confirmed instantly when the slot is free.</span>
             </span>
             <Switch checked={rules.requireApproval} onChange={(x) => setRules({ ...rules, requireApproval: x })} label="Staff approves each request" />
           </div>
@@ -234,9 +234,9 @@ function AvailabilityTab({ business: b, hours, closures, perms }: Props) {
           {closures.length > 0 && (
             <ul className="mt-4 divide-y divide-line rounded-lg border border-line">
               {closures.map((c) => (
-                <li key={c.id} className="flex items-center gap-3 px-4 py-2.5 text-[14px]">
-                  <span className="font-mono tabular-nums">{c.date}</span>
-                  <span className="flex-1 text-muted">{c.reason}</span>
+                <li key={c.id} className="flex items-center gap-3 px-4 py-2.5 text-[15px]">
+                  <span className=" tabular-nums">{c.date}</span>
+                  <span className="flex-1 text-ink-3">{c.reason}</span>
                   <Button size="sm" variant="ghost" aria-label={`Remove closure on ${c.date}`} onClick={() => start(async () => { const r = await removeClosure(c.id); if (r.ok) toast.ok("Closure removed."); else toast.error(r.error); })}>
                     <Trash2 size={15} />
                   </Button>
@@ -262,8 +262,8 @@ function TeamTab({ team, perms }: Props) {
         {team.map((m) => (
           <li key={m.memberId} className="flex items-center gap-3 px-4 py-3">
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-[14px] font-medium">{m.name}</span>
-              <span className="block truncate text-[13px] text-muted">{m.email}</span>
+              <span className="block truncate text-[15px] font-medium">{m.name}</span>
+              <span className="block truncate text-[14px] text-ink-3">{m.email}</span>
             </span>
             <Badge tone={m.role === "owner" ? "accent" : "neutral"}>{roleName(m.role)}</Badge>
           </li>
@@ -293,7 +293,7 @@ function TeamTab({ team, perms }: Props) {
           <Button type="submit" variant="primary" loading={busy}>Send invite</Button>
         </form>
       ) : (
-        <p className="mt-4 text-[13.5px] text-muted">Only the owner can invite people.</p>
+        <p className="mt-4 text-[14.5px] text-ink-3">Only the owner can invite people.</p>
       )}
     </Section>
   );
@@ -304,10 +304,10 @@ function AiTab({ business: b, perms, integrations }: Props) {
   const { saving, save } = useSave();
   return (
     <Section title="AI behavior" body="The AI answers only from your Knowledge page and service list. It never confirms a booking by itself.">
-      <div className="mb-5 rounded-md border border-line px-4 py-3 text-[13.5px]">
+      <div className="mb-5 rounded-md border border-line px-4 py-3 text-[14.5px]">
         <span className="font-medium">Model provider: </span>
-        {integrations.ai ? <Badge tone="accent">Connected</Badge> : <Badge tone="warn">Not connected</Badge>}
-        <p className="mt-1.5 text-muted">
+        {integrations.ai ? <Badge tone="success">Connected</Badge> : <Badge tone="warn">Not connected</Badge>}
+        <p className="mt-1.5 text-ink-3">
           {integrations.ai
             ? "Replies come from the configured model."
             : "Without a provider, chat replies use keyword matching against your Knowledge page and are labelled as such. Set AI_PROVIDER and AI_MODEL on the server to connect one."}
@@ -316,15 +316,15 @@ function AiTab({ business: b, perms, integrations }: Props) {
       <fieldset disabled={!perms.operational} className="space-y-4">
         <div className="flex items-center justify-between gap-4 rounded-md border border-line px-4 py-3">
           <span>
-            <span className="block text-[14px] font-medium">Automatic replies</span>
-            <span className="block text-[13px] text-muted">Off: every new message waits for staff.</span>
+            <span className="block text-[15px] font-medium">Automatic replies</span>
+            <span className="block text-[14px] text-ink-3">Off: every new message waits for staff.</span>
           </span>
           <Switch checked={v.aiEnabled} onChange={(x) => setV({ ...v, aiEnabled: x })} label="Automatic replies" />
         </div>
         <Field label="Monthly AI message limit" htmlFor="ai-lim" hint="When reached, new messages go to staff instead.">
           <Input id="ai-lim" type="number" min={0} value={v.aiMonthlyMessageLimit} onChange={(e) => setV({ ...v, aiMonthlyMessageLimit: Number(e.target.value) })} className="max-w-[200px]" />
         </Field>
-        <div className="rounded-md bg-surface px-4 py-3 text-[13.5px] leading-relaxed text-ink/80">
+        <div className="rounded-md bg-surface px-4 py-3 text-[14.5px] leading-relaxed text-ink/80">
           <p className="font-medium text-ink">Always on</p>
           <ul className="mt-1 list-disc pl-5">
             <li>No medical diagnoses or treatment advice. Health questions go to staff.</li>
@@ -343,16 +343,16 @@ function NotificationsTab({ business: b, perms, integrations }: Props) {
   const { saving, save } = useSave();
   return (
     <Section title="Notifications" body="New requests, approvals and handoffs always appear in the bell menu and on Overview.">
-      <div className="mb-5 rounded-md border border-line px-4 py-3 text-[13.5px]">
+      <div className="mb-5 rounded-md border border-line px-4 py-3 text-[14.5px]">
         <span className="font-medium">Email delivery: </span>
-        {integrations.email ? <Badge tone="accent">Connected</Badge> : <Badge tone="warn">Dry run</Badge>}
-        <p className="mt-1.5 text-muted">{integrations.email ? "Emails are sent through Resend." : "No email provider is set up, so no emails are sent. Messages are logged on the server instead."}</p>
+        {integrations.email ? <Badge tone="success">Connected</Badge> : <Badge tone="warn">Dry run</Badge>}
+        <p className="mt-1.5 text-ink-3">{integrations.email ? "Emails are sent through Resend." : "No email provider is set up, so no emails are sent. Messages are logged on the server instead."}</p>
       </div>
       <fieldset disabled={!perms.operational} className="space-y-4">
         <div className="flex items-center justify-between gap-4 rounded-md border border-line px-4 py-3">
           <span>
-            <span className="block text-[14px] font-medium">Email staff about new booking requests</span>
-            <span className="block text-[13px] text-muted">Sent to the owner and managers.</span>
+            <span className="block text-[15px] font-medium">Email staff about new booking requests</span>
+            <span className="block text-[14px] text-ink-3">Sent to the owner and managers.</span>
           </span>
           <Switch checked={notify} onChange={setNotify} label="Email staff about new booking requests" />
         </div>
@@ -377,10 +377,10 @@ function WidgetTab({ business: b, perms, origin }: Props) {
         </div>
       </Section>
       <Section title="Website chat widget" body="Paste this before the closing </body> tag on your website.">
-        <p className="mb-4 text-[13px] text-muted">
+        <p className="mb-4 text-[14px] text-ink-3">
           Preview it on <a href={`/widget/${b.widgetToken}`} target="_blank" className="underline underline-offset-2">its own page</a>. The widget only loads on the websites listed below.
         </p>
-        <pre className="overflow-x-auto rounded-md border border-line bg-surface px-3 py-3 text-[12.5px]"><code>{snippet}</code></pre>
+        <pre className="overflow-x-auto rounded-md border border-line bg-surface px-3 py-3 text-[13.5px]"><code>{snippet}</code></pre>
         <div className="mt-2 flex gap-2">
           <Button size="sm" onClick={() => navigator.clipboard.writeText(snippet).then(() => toast.ok("Snippet copied."))}><Copy size={14} /> Copy snippet</Button>
           {perms.business && (
@@ -406,15 +406,15 @@ function UsageTab({ business: b, usage }: Props) {
   return (
     <Section title="Usage & plan" body="Counts reset on the 1st of each month.">
       <div className="rounded-lg border border-line px-5 py-4">
-        <p className="text-[14px] font-medium">Pro Plan</p>
-        <p className="mt-1 text-[13.5px] text-muted">₱4,999/month plus a one-time setup fee. Final quotation confirmed with you.</p>
-        <p className="mt-4 text-[14px] font-mono tabular-nums">{usage.aiMessages.toLocaleString()} / {b.aiMonthlyMessageLimit.toLocaleString()} AI messages this month</p>
+        <p className="text-[15px] font-medium">Pro Plan</p>
+        <p className="mt-1 text-[14.5px] text-ink-3">₱4,999/month plus a one-time setup fee. Final quotation confirmed with you.</p>
+        <p className="mt-4 text-[15px] tabular-nums">{usage.aiMessages.toLocaleString()} / {b.aiMonthlyMessageLimit.toLocaleString()} AI messages this month</p>
         <div className="mt-2 h-1.5 rounded-full bg-track" role="progressbar" aria-valuenow={usage.aiMessages} aria-valuemax={b.aiMonthlyMessageLimit} aria-label="AI messages used">
-          <div className="h-full rounded-full bg-ink" style={{ width: `${pct}%` }} />
+          <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
         </div>
-        <p className="mt-4 text-[13.5px] text-muted">Open staff handoffs: {usage.openHandoffs}</p>
+        <p className="mt-4 text-[14.5px] text-ink-3">Open staff handoffs: {usage.openHandoffs}</p>
       </div>
-      <p className="mt-4 text-[13.5px] text-muted">Online payment isn&apos;t set up. To change plans, contact us and we&apos;ll update your account.</p>
+      <p className="mt-4 text-[14.5px] text-ink-3">Online payment isn&apos;t set up. To change plans, contact us and we&apos;ll update your account.</p>
     </Section>
   );
 }

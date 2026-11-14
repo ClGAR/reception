@@ -73,14 +73,14 @@ export function AppShell(p: ShellProps) {
             <div className="drawer-anim relative z-10 flex h-full w-[288px] max-w-[84vw] flex-col border-r border-line bg-bg-elevated shadow-[var(--shadow-float)]">
               <Sidebar {...p} className="flex w-full flex-1" onClose={() => setDrawer(false)} />
               <div className="border-t border-line px-5 py-4">
-                <p className="truncate text-[13.5px] font-medium">{p.userName}</p>
-                <p className="truncate text-[12.5px] text-muted">{p.userEmail}</p>
-                <SignOutButton className="mt-3 flex w-full items-center gap-2.5 rounded-full px-3 py-2 text-left text-[14px] text-ink-2 hover:bg-surface" />
+                <p className="truncate text-[14.5px] font-medium">{p.userName}</p>
+                <p className="truncate text-[13.5px] text-ink-3">{p.userEmail}</p>
+                <SignOutButton className="mt-3 flex w-full items-center gap-2.5 rounded-full px-3 py-2 text-left text-[15px] text-ink-2 hover:bg-surface" />
               </div>
             </div>
           </div>
         )}
-        <main id="main" className="min-h-0 min-w-0 flex-1 overflow-y-auto pb-[calc(58px+env(safe-area-inset-bottom))] lg:pb-0">
+        <main id="main" className="min-h-0 min-w-0 flex-1 overflow-y-auto pb-[calc(62px+env(safe-area-inset-bottom))] lg:pb-0">
           {p.children}
         </main>
       </div>
@@ -106,7 +106,7 @@ function TopBar(p: ShellProps & { onMenu: () => void }) {
   }, []);
   return (
     <header className="material z-30 flex h-14 shrink-0 items-center gap-2 border-b border-line px-3 md:h-[60px] md:px-5">
-      <button onClick={p.onMenu} aria-label="Open menu" className="press -ml-0.5 grid size-9 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink lg:hidden">
+      <button onClick={p.onMenu} aria-label="Open menu" className="press -ml-0.5 grid size-10 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink lg:hidden">
         <Menu size={20} />
       </button>
       <Link href="/app/overview" className="flex items-center gap-3 md:w-[216px]" aria-label="Reception home">
@@ -114,8 +114,8 @@ function TopBar(p: ShellProps & { onMenu: () => void }) {
       </Link>
       <span className="mx-3 hidden h-6 w-px bg-line md:block" />
       <div className="hidden min-w-0 items-center gap-2 md:flex">
-        <span className="max-w-[220px] truncate text-[13.5px] font-medium">{p.businessName}</span>
-        <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[10px] font-medium text-muted">Pro</span>
+        <span className="max-w-[220px] truncate text-[14.5px] font-medium">{p.businessName}</span>
+        <span className="rounded-full border border-line px-2 py-0.5 text-[12px] font-medium text-ink-3">Pro</span>
       </div>
       <div className="ml-auto flex items-center gap-1 md:gap-2">
         <form
@@ -124,9 +124,9 @@ function TopBar(p: ShellProps & { onMenu: () => void }) {
             e.preventDefault();
             router.push(`/app/customers?q=${encodeURIComponent(q)}`);
           }}
-          className="mr-1 hidden h-9 w-[340px] items-center gap-2.5 rounded-full border border-transparent bg-surface px-3.5 transition-colors focus-within:border-line-strong focus-within:bg-bg xl:flex"
+          className="mr-1 hidden h-10 w-[340px] items-center gap-2.5 rounded-[10px] border border-line bg-surface px-3.5 transition-colors focus-within:border-primary focus-within:bg-bg xl:flex"
         >
-          <Search size={17} strokeWidth={1.75} className="shrink-0 text-muted" aria-hidden />
+          <Search size={17} strokeWidth={1.75} className="shrink-0 text-ink-3" aria-hidden />
           <label htmlFor="global-search" className="sr-only">
             Search customers
           </label>
@@ -136,13 +136,13 @@ function TopBar(p: ShellProps & { onMenu: () => void }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search people, bookings, messages"
-            className="min-w-0 flex-1 bg-transparent text-[13.5px] outline-none placeholder:text-muted"
+            className="min-w-0 flex-1 bg-transparent text-[14.5px] outline-none placeholder:text-ink-3"
           />
-          <kbd className="flex shrink-0 items-center gap-0.5 rounded-md border border-line bg-bg px-1.5 py-0.5 text-[11px] text-muted">
+          <kbd className="flex shrink-0 items-center gap-0.5 rounded-md border border-line bg-bg px-1.5 py-0.5 text-[12px] text-ink-3">
             <Command size={10} /> K
           </kbd>
         </form>
-        <Link href="/app/customers" aria-label="Search" className="press grid size-9 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink xl:hidden">
+        <Link href="/app/customers" aria-label="Search" className="press grid size-10 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink xl:hidden">
           <Search size={19} strokeWidth={1.75} />
         </Link>
         <ThemeToggle />
@@ -182,27 +182,27 @@ function Notifications({ items, unread }: { items: ShellProps["notifications"]; 
           setOpen((o) => !o);
           if (!open && unread) start(() => void markNotificationsRead());
         }}
-        className="press relative grid size-9 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink"
+        className="press relative grid size-10 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink"
       >
         <Bell size={19} strokeWidth={1.75} />
-        {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full border-2 border-bg bg-live" />}
+        {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2.5 rounded-full border-2 border-bg bg-primary" />}
       </button>
       {open && (
         <div className="pop menu-anim absolute right-0 z-30 mt-2 w-[344px] max-w-[calc(100vw-24px)] overflow-hidden">
-          <p className="border-b border-line px-4 py-3 text-[13px] font-semibold">Notifications</p>
+          <p className="border-b border-line px-4 py-3 text-[14px] font-semibold">Notifications</p>
           <ul className="max-h-[360px] overflow-y-auto">
-            {items.length === 0 && <li className="px-4 py-10 text-center text-[13.5px] text-muted">You&apos;re all caught up.</li>}
+            {items.length === 0 && <li className="px-4 py-10 text-center text-[14.5px] text-ink-3">You&apos;re all caught up.</li>}
             {items.map((n) => (
-              <li key={n.id} className="flex gap-3 border-b border-line px-4 py-3 text-[13.5px] last:border-0 hover:bg-surface">
-                <span className={cx("mt-1.5 size-1.5 shrink-0 rounded-full", n.unread ? "bg-live" : "bg-line-strong")} />
+              <li key={n.id} className="flex gap-3 border-b border-line px-4 py-3 text-[14.5px] last:border-0 hover:bg-surface">
+                <span className={cx("mt-1.5 size-1.5 shrink-0 rounded-full", n.unread ? "bg-primary" : "bg-line-strong")} />
                 <span className="flex-1 leading-relaxed">
                   {n.text}
-                  <span className="mt-0.5 block text-[12px] text-muted">{n.ago}</span>
+                  <span className="mt-0.5 block text-[13px] text-ink-3">{n.ago}</span>
                 </span>
               </li>
             ))}
           </ul>
-          <Link href="/app/bookings" onClick={() => setOpen(false)} className="block border-t border-line px-4 py-3 text-[12.5px] text-muted hover:text-ink">
+          <Link href="/app/bookings" onClick={() => setOpen(false)} className="block border-t border-line px-4 py-3 text-[13.5px] text-ink-3 hover:text-ink">
             View bookings
           </Link>
         </div>
@@ -222,20 +222,20 @@ function AccountMenu({ name, email, role }: { name: string; email: string; role:
   return (
     <div ref={ref} className="relative">
       <button className="press flex items-center gap-1.5 rounded-full p-0.5 hover:bg-surface md:pr-1.5" aria-label="Account menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-        <span className="grid size-8 place-items-center rounded-full bg-surface-2 text-[12.5px] font-semibold">{initials}</span>
-        <ChevronDown size={14} strokeWidth={2} className="hidden text-muted md:block" />
+        <span className="grid size-9 place-items-center rounded-full bg-accent-soft text-[13.5px] font-semibold text-primary">{initials}</span>
+        <ChevronDown size={14} strokeWidth={2} className="hidden text-ink-3 md:block" />
       </button>
       {open && (
         <div className="pop menu-anim absolute right-0 z-30 mt-2 w-[256px] overflow-hidden py-1">
           <div className="border-b border-line px-4 py-3">
-            <p className="truncate text-[14px] font-medium">{name}</p>
-            <p className="truncate text-[12.5px] text-muted">{email}</p>
-            <p className="mt-1.5 text-[11.5px] tracking-[0.01em] text-muted capitalize">{role === "member" ? "Reception staff" : role}</p>
+            <p className="truncate text-[15px] font-medium">{name}</p>
+            <p className="truncate text-[13.5px] text-ink-3">{email}</p>
+            <p className="mt-1.5 text-[12.5px] tracking-[0.01em] text-ink-3 capitalize">{role === "member" ? "Reception staff" : role}</p>
           </div>
-          <Link href="/app/settings" onClick={() => setOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-[14px] hover:bg-surface">
+          <Link href="/app/settings" onClick={() => setOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-[15px] hover:bg-surface">
             <Settings size={16} /> Settings
           </Link>
-          <SignOutButton className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[14px] hover:bg-surface" />
+          <SignOutButton className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] hover:bg-surface" />
         </div>
       )}
     </div>
@@ -266,8 +266,8 @@ function Sidebar(p: ShellProps & { className?: string; onClose?: () => void }) {
     <aside className={cx("shrink-0 flex-col border-r border-line px-3 py-5", p.className)} aria-label="Workspace">
       {p.onClose && (
         <div className="mb-2 flex items-center justify-between px-2">
-          <span className="text-[12px] font-medium text-muted">Menu</span>
-          <button onClick={p.onClose} aria-label="Close menu" className="press grid size-8 place-items-center rounded-full text-muted hover:bg-surface hover:text-ink">
+          <span className="text-[13px] font-medium text-ink-3">Menu</span>
+          <button onClick={p.onClose} aria-label="Close menu" className="press grid size-8 place-items-center rounded-full text-ink-3 hover:bg-surface hover:text-ink">
             <X size={17} />
           </button>
         </div>
@@ -278,7 +278,7 @@ function Sidebar(p: ShellProps & { className?: string; onClose?: () => void }) {
           { title: "Setup", items: nav.slice(4) },
         ].map((group) => (
           <div key={group.title}>
-            <p className="px-3.5 pb-1.5 text-[10.5px] font-semibold tracking-[0.09em] text-muted uppercase">{group.title}</p>
+            <p className="px-3 pb-1.5 text-[13px] font-medium text-ink-3">{group.title}</p>
             <div className="space-y-0.5">
               {group.items.map(({ label, href, icon: Icon }) => {
                 const active = path.startsWith(href);
@@ -290,8 +290,8 @@ function Sidebar(p: ShellProps & { className?: string; onClose?: () => void }) {
                     onClick={p.onClose}
                     aria-current={active ? "page" : undefined}
                     className={cx(
-                      "press flex h-10 items-center gap-3 rounded-full px-3.5 text-[14px]",
-                      active ? "bg-surface-2 font-semibold text-ink" : "text-ink-2 hover:bg-surface hover:text-ink",
+                      "press flex h-11 items-center gap-3 rounded-[10px] px-3 text-[15px]",
+                      active ? "bg-accent-soft font-semibold text-primary" : "text-ink-2 hover:bg-surface hover:text-ink",
                     )}
                   >
                     <Icon size={18} strokeWidth={active ? 2 : 1.7} aria-hidden />
@@ -300,8 +300,8 @@ function Sidebar(p: ShellProps & { className?: string; onClose?: () => void }) {
                       <span
                         aria-label={`${badge} ${label === "Inbox" ? "unread" : "pending"}`}
                         className={cx(
-                          "grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[11px] font-semibold font-mono tabular-nums",
-                          active || label === "Inbox" ? "bg-primary text-primary-ink" : "bg-surface-2 text-ink-2",
+                          "grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[12px] font-semibold tabular-nums",
+                          label === "Inbox" ? "bg-primary text-primary-ink" : "bg-warn-soft text-warn-ink",
                         )}
                       >
                         {badge}
@@ -314,17 +314,17 @@ function Sidebar(p: ShellProps & { className?: string; onClose?: () => void }) {
           </div>
         ))}
       </nav>
-      <div className="mt-auto rounded-2xl border border-line bg-surface px-4 py-3.5">
-        <p className="flex items-center gap-1.5 text-[12.5px] font-semibold">
+      <div className="mt-auto rounded-[14px] border border-line bg-surface px-4 py-3.5">
+        <p className="flex items-center gap-1.5 text-[13.5px] font-semibold">
           <Zap size={13} strokeWidth={2} aria-hidden /> Pro plan
         </p>
-        <p className="mt-1.5 text-[11.5px] text-muted font-mono tabular-nums">
+        <p className="mt-1.5 text-[12.5px] text-ink-3 tabular-nums">
           {aiMessages.toLocaleString()} / {p.aiLimit.toLocaleString()} AI messages
         </p>
         <div className="mt-2 h-1 overflow-hidden rounded-full bg-track" role="progressbar" aria-valuenow={aiMessages} aria-valuemax={p.aiLimit} aria-label="AI messages used this month">
-          <div className="h-full rounded-full bg-accent transition-[width] duration-500 ease-[var(--ease-out)]" style={{ width: `${pct}%` }} />
+          <div className="h-full rounded-full bg-primary transition-[width] duration-500 ease-[var(--ease-out)]" style={{ width: `${pct}%` }} />
         </div>
-        <Link href="/app/settings?tab=usage" className="mt-2.5 inline-flex items-center gap-1.5 text-[11.5px] font-medium text-ink-2 hover:text-ink">
+        <Link href="/app/settings?tab=usage" className="mt-2.5 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-ink-2 hover:text-ink">
           Manage plan <ArrowRight size={12} />
         </Link>
       </div>
@@ -337,23 +337,23 @@ function MobileTabs({ counts, onMore }: { counts: ShellProps["counts"]; onMore: 
   return (
     <nav
       aria-label="Primary"
-      className="material-strong pb-safe fixed inset-x-0 bottom-0 z-40 grid h-[58px] grid-cols-5 items-stretch border-t border-line lg:hidden"
+      className="material-strong pb-safe fixed inset-x-0 bottom-0 z-40 grid h-[62px] grid-cols-5 items-stretch border-t border-line lg:hidden"
     >
       {mobileNav.map(({ label, href, icon: Icon }) => {
         const active = path.startsWith(href);
         const badge = label === "Inbox" ? counts.unread : label === "Bookings" ? counts.pending : 0;
         return (
-          <Link key={label} href={href} aria-current={active ? "page" : undefined} className="relative flex flex-col items-center justify-center gap-1 text-[10.5px]">
-            <span className={cx("relative", active ? "text-ink" : "text-muted")}>
+          <Link key={label} href={href} aria-current={active ? "page" : undefined} className="relative flex flex-col items-center justify-center gap-1 text-[12px]">
+            <span className={cx("relative", active ? "text-primary" : "text-ink-3")}>
               <Icon size={21} strokeWidth={active ? 2.1 : 1.7} aria-hidden />
-              {badge > 0 && <span className="absolute -top-1 -right-2 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[9.5px] font-semibold font-mono text-primary-ink tabular-nums">{badge}</span>}
+              {badge > 0 && <span className="absolute -top-1 -right-2 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[11.5px] font-semibold tabular-nums text-primary-ink tabular-nums">{badge}</span>}
             </span>
-            <span className={cx(active ? "font-semibold text-ink" : "text-muted")}>{label}</span>
-            {active && <span className="absolute top-0 h-0.5 w-8 rounded-full bg-ink" />}
+            <span className={cx(active ? "font-semibold text-primary" : "text-ink-2")}>{label}</span>
+            {active && <span className="absolute top-0 h-[3px] w-10 rounded-b-full bg-primary" />}
           </Link>
         );
       })}
-      <button onClick={onMore} className="flex flex-col items-center justify-center gap-1 text-[10.5px] text-muted">
+      <button onClick={onMore} className="flex flex-col items-center justify-center gap-1 text-[12px] text-ink-2">
         <MoreHorizontal size={21} strokeWidth={1.7} />
         More
       </button>

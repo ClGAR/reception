@@ -23,7 +23,7 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
         description="What customers can book, how long it takes, and who does it."
         actions={
           <>
-            <Link href={bookingUrl} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-md border border-line px-4 text-[14.5px] hover:bg-surface">
+            <Link href={bookingUrl} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-md border border-line px-4 text-[15.5px] hover:bg-surface">
               Booking page <ExternalLink size={15} />
             </Link>
             {canEdit && (
@@ -34,7 +34,7 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
           </>
         }
       />
-      {!canEdit && <p className="mx-4 mt-4 rounded-md bg-surface px-3 py-2 text-[13.5px] text-muted md:mx-8">Only owners and managers can change services.</p>}
+      {!canEdit && <p className="mx-4 mt-4 rounded-md bg-surface px-3 py-2 text-[14.5px] text-ink-3 md:mx-8">Only owners and managers can change services.</p>}
       <div className="space-y-10 px-4 py-6 md:px-8">
         <section aria-label="Services">
           {services.length === 0 ? (
@@ -46,21 +46,21 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
             {/* Phones: stacked list instead of a sideways-scrolling table */}
             <ul className="divide-y divide-line rounded-lg border border-line md:hidden">
               {services.map((s) => (
-                <li key={s.id} className={cx("flex items-start gap-3 px-4 py-3 text-[14px]", !s.active && "text-muted")}>
+                <li key={s.id} className={cx("flex items-start gap-3 px-4 py-3 text-[15px]", !s.active && "text-ink-3")}>
                   <span className="min-w-0 flex-1">
                     <span className="block font-medium">{s.name}</span>
-                    <span className="block text-[13px] text-muted">
+                    <span className="block text-[14px] text-ink-3">
                       {s.durationMinutes} min{s.bufferMinutes ? ` + ${s.bufferMinutes} buffer` : ""} · {peso(Math.round(s.price * 100))} · {s.staffIds.length ? s.staffIds.map(staffName).join(", ") : "No staff"}
                     </span>
-                    <Badge tone={s.active ? "accent" : "outline"} className="mt-1.5">{s.active ? "Bookable" : "Hidden"}</Badge>
+                    <Badge tone={s.active ? "success" : "outline"} className="mt-1.5">{s.active ? "Bookable" : "Hidden"}</Badge>
                   </span>
-                  {canEdit && <Button size="sm" variant="ghost" onClick={() => setEditSvc(s)}>Edit</Button>}
+                  {canEdit && <Button size="sm" variant="ghost" className="text-primary hover:bg-accent-soft hover:text-primary" onClick={() => setEditSvc(s)}>Edit</Button>}
                 </li>
               ))}
             </ul>
             <div className="hidden overflow-x-auto rounded-lg border border-line md:block">
-              <table className="w-full min-w-[640px] text-left text-[14px]">
-                <thead className="border-b border-line bg-surface/60 text-[12.5px] text-muted">
+              <table className="w-full min-w-[640px] text-left text-[15px]">
+                <thead className="border-b border-line bg-surface/60 text-[13.5px] text-ink-3">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Service</th>
                     <th className="px-4 py-2.5 font-medium">Duration</th>
@@ -72,16 +72,16 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
                 </thead>
                 <tbody className="divide-y divide-line">
                   {services.map((s) => (
-                    <tr key={s.id} className={cx(!s.active && "text-muted")}>
+                    <tr key={s.id} className={cx(!s.active && "text-ink-3")}>
                       <td className="px-4 py-3">
                         <span className="font-medium">{s.name}</span>
-                        {s.description && <span className="block max-w-[320px] truncate text-[12.5px] text-muted">{s.description}</span>}
+                        {s.description && <span className="block max-w-[320px] truncate text-[13.5px] text-ink-3">{s.description}</span>}
                       </td>
-                      <td className="px-4 py-3 font-mono tabular-nums">{s.durationMinutes} min{s.bufferMinutes ? <span className="text-muted"> + {s.bufferMinutes} buffer</span> : null}</td>
-                      <td className="px-4 py-3 font-mono tabular-nums">{peso(Math.round(s.price * 100))}</td>
+                      <td className="px-4 py-3 tabular-nums">{s.durationMinutes} min{s.bufferMinutes ? <span className="text-ink-3"> + {s.bufferMinutes} buffer</span> : null}</td>
+                      <td className="px-4 py-3 tabular-nums">{peso(Math.round(s.price * 100))}</td>
                       <td className="px-4 py-3">{s.staffIds.length ? s.staffIds.map(staffName).join(", ") : <Badge tone="warn">No staff</Badge>}</td>
-                      <td className="px-4 py-3"><Badge tone={s.active ? "accent" : "outline"}>{s.active ? "Bookable" : "Hidden"}</Badge></td>
-                      <td className="px-4 py-3 text-right">{canEdit && <Button size="sm" variant="ghost" onClick={() => setEditSvc(s)}>Edit</Button>}</td>
+                      <td className="px-4 py-3"><Badge tone={s.active ? "success" : "outline"}>{s.active ? "Bookable" : "Hidden"}</Badge></td>
+                      <td className="px-4 py-3 text-right">{canEdit && <Button size="sm" variant="ghost" className="text-primary hover:bg-accent-soft hover:text-primary" onClick={() => setEditSvc(s)}>Edit</Button>}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -104,13 +104,13 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
                 <li key={s.id} className="flex items-center gap-3 rounded-lg border border-line px-4 py-3">
                   <Avatar name={s.name} />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[14.5px] font-medium">{s.name}</span>
-                    <span className="block truncate text-[13px] text-muted">
+                    <span className="block truncate text-[15.5px] font-medium">{s.name}</span>
+                    <span className="block truncate text-[14px] text-ink-3">
                       {s.title || "Staff"} · {services.filter((v) => v.staffIds.includes(s.id)).length} services
                     </span>
                   </span>
                   {!s.active && <Badge tone="outline">Inactive</Badge>}
-                  {canEdit && <Button size="sm" variant="ghost" onClick={() => setEditStaff(s)}>Edit</Button>}
+                  {canEdit && <Button size="sm" variant="ghost" className="text-primary hover:bg-accent-soft hover:text-primary" onClick={() => setEditStaff(s)}>Edit</Button>}
                 </li>
               ))}
             </ul>
@@ -164,15 +164,15 @@ function ServiceDialog({ svc, staff, onClose }: { svc: Svc | null; staff: Staff[
           </Field>
         </div>
         <fieldset>
-          <legend className="mb-2 text-[13.5px] font-medium">Who can do this service</legend>
+          <legend className="mb-2 text-[14.5px] font-medium">Who can do this service</legend>
           {staff.length === 0 ? (
-            <p className="text-[13px] text-muted">Add staff first. A service with no staff can&apos;t be booked.</p>
+            <p className="text-[14px] text-ink-3">Add staff first. A service with no staff can&apos;t be booked.</p>
           ) : (
             <div className="flex flex-wrap gap-2">
               {staff.map((s) => {
                 const on = v.staffIds.includes(s.id);
                 return (
-                  <label key={s.id} className={cx("flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 text-[13.5px]", on ? "border-accent bg-accent-soft/60" : "border-line")}>
+                  <label key={s.id} className={cx("flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 text-[14.5px]", on ? "border-accent bg-accent-soft/60" : "border-line")}>
                     <input type="checkbox" className="accent-primary" checked={on} onChange={() => set("staffIds", on ? v.staffIds.filter((x) => x !== s.id) : [...v.staffIds, s.id])} />
                     {s.name}
                   </label>
@@ -182,10 +182,10 @@ function ServiceDialog({ svc, staff, onClose }: { svc: Svc | null; staff: Staff[
           )}
         </fieldset>
         <div className="flex items-center justify-between rounded-md bg-surface px-3 py-2.5">
-          <span className="text-[14px]">Bookable by customers</span>
+          <span className="text-[15px]">Bookable by customers</span>
           <Switch checked={v.active} onChange={(x) => set("active", x)} label="Bookable by customers" />
         </div>
-        {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
+        {error && <p role="alert" className="text-[14.5px] text-danger-ink">{error}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit" variant="primary" loading={saving}>Save service</Button>
@@ -221,10 +221,10 @@ function StaffDialog({ s, onClose }: { s: Staff | null; onClose: () => void }) {
           <Input id="st-title" value={v.title} onChange={(e) => setV({ ...v, title: e.target.value })} />
         </Field>
         <div className="flex items-center justify-between rounded-md bg-surface px-3 py-2.5">
-          <span className="text-[14px]">Taking bookings</span>
+          <span className="text-[15px]">Taking bookings</span>
           <Switch checked={v.active} onChange={(x) => setV({ ...v, active: x })} label="Taking bookings" />
         </div>
-        {error && <p role="alert" className="text-[13.5px] text-danger-ink">{error}</p>}
+        {error && <p role="alert" className="text-[14.5px] text-danger-ink">{error}</p>}
         <div className="flex justify-end gap-2">
           <Button type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit" variant="primary" loading={saving}>Save</Button>

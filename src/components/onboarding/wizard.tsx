@@ -47,7 +47,7 @@ export function OnboardingWizard({ ownerName }: { ownerName: string }) {
 
   return (
     <div>
-      <p className="text-[13.5px] text-muted">Step {step + 1} of {STEPS.length}</p>
+      <p className="text-[14.5px] text-ink-3">Step {step + 1} of {STEPS.length}</p>
       <div className="mt-2 mb-8 flex gap-1.5" aria-hidden>
         {STEPS.map((s, i) => <span key={s} className={cx("h-1 flex-1 rounded-full", i <= step ? "bg-primary" : "bg-surface-2")} />)}
       </div>
@@ -74,26 +74,26 @@ export function OnboardingWizard({ ownerName }: { ownerName: string }) {
           <ul className="divide-y divide-line rounded-lg border border-line">
             {hours.map((h, i) => (
               <li key={h.weekday} className="flex flex-wrap items-center gap-3 px-4 py-2.5">
-                <span className="w-10 text-[14px]">{DAYS[h.weekday]}</span>
+                <span className="w-10 text-[15px]">{DAYS[h.weekday]}</span>
                 <Switch checked={h.open} onChange={(x) => setHours(hours.map((y, j) => (j === i ? { ...y, open: x } : y)))} label={`Open on ${DAYS[h.weekday]}`} />
                 {h.open ? (
                   <span className="flex items-center gap-2">
-                    <Select aria-label={`${DAYS[h.weekday]} opens`} className="h-9 w-[136px] text-[13.5px]" value={h.startMinute} onChange={(e) => setHours(hours.map((y, j) => (j === i ? { ...y, startMinute: Number(e.target.value) } : y)))}>
+                    <Select aria-label={`${DAYS[h.weekday]} opens`} className="h-9 w-[136px] text-[14.5px]" value={h.startMinute} onChange={(e) => setHours(hours.map((y, j) => (j === i ? { ...y, startMinute: Number(e.target.value) } : y)))}>
                       {TIMES.map((t) => <option key={t} value={t}>{minuteLabel(t)}</option>)}
                     </Select>
-                    <span className="text-muted">to</span>
-                    <Select aria-label={`${DAYS[h.weekday]} closes`} className="h-9 w-[136px] text-[13.5px]" value={h.endMinute} onChange={(e) => setHours(hours.map((y, j) => (j === i ? { ...y, endMinute: Number(e.target.value) } : y)))}>
+                    <span className="text-ink-3">to</span>
+                    <Select aria-label={`${DAYS[h.weekday]} closes`} className="h-9 w-[136px] text-[14.5px]" value={h.endMinute} onChange={(e) => setHours(hours.map((y, j) => (j === i ? { ...y, endMinute: Number(e.target.value) } : y)))}>
                       {TIMES.slice(1).map((t) => <option key={t} value={t}>{minuteLabel(t)}</option>)}
                     </Select>
                   </span>
-                ) : <span className="text-[13.5px] text-muted">Closed</span>}
+                ) : <span className="text-[14.5px] text-ink-3">Closed</span>}
               </li>
             ))}
           </ul>
           <div className="flex items-center justify-between gap-4 rounded-md border border-line px-4 py-3">
             <span>
-              <span className="block text-[14px] font-medium">Approve each booking request</span>
-              <span className="block text-[13px] text-muted">Recommended. Turn off to confirm free slots instantly.</span>
+              <span className="block text-[15px] font-medium">Approve each booking request</span>
+              <span className="block text-[14px] text-ink-3">Recommended. Turn off to confirm free slots instantly.</span>
             </span>
             <Switch checked={biz.requireApproval} onChange={(x) => setBiz({ ...biz, requireApproval: x })} label="Approve each booking request" />
           </div>
@@ -138,7 +138,7 @@ export function OnboardingWizard({ ownerName }: { ownerName: string }) {
         </Step>
       )}
 
-      {error && <p role="alert" className="mt-4 rounded-md bg-danger-soft px-3 py-2 text-[13.5px] text-danger-ink">{error}</p>}
+      {error && <p role="alert" className="mt-4 rounded-md bg-danger-soft px-3 py-2 text-[14.5px] text-danger-ink">{error}</p>}
       <div className="mt-8 flex items-center justify-between border-t border-line pt-5">
         <Button variant="ghost" onClick={() => setStep((s) => s - 1)} disabled={step === 0}>Back</Button>
         <div className="flex gap-2">
@@ -158,7 +158,7 @@ function Step({ title, body, children }: { title: string; body: string; children
   return (
     <section>
       <h1 className="text-[26px] font-semibold tracking-[-0.02em]">{title}</h1>
-      <p className="mt-1.5 mb-6 text-[14.5px] text-muted">{body}</p>
+      <p className="mt-1.5 mb-6 text-[15.5px] text-ink-3">{body}</p>
       <div className="space-y-4">{children}</div>
     </section>
   );

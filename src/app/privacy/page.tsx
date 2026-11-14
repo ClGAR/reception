@@ -11,7 +11,7 @@ export default function PrivacyPage() {
       </header>
       <main className="mx-auto max-w-[680px] space-y-5 px-4 py-12 text-[15px] leading-relaxed text-ink/85">
         <h1 className="text-[30px] font-semibold tracking-[-0.02em] text-ink">Privacy notice</h1>
-        <p className="rounded-md bg-warn-soft px-3 py-2 text-[13.5px] text-warn-ink">Draft for the MVP. To be reviewed against the Data Privacy Act of 2012 (RA 10173) before launch.</p>
+        <p className="rounded-md bg-warn-soft px-3 py-2 text-[14.5px] text-warn-ink">Draft for the MVP. To be reviewed against the Data Privacy Act of 2012 (RA 10173) before launch.</p>
         <p>Reception processes personal data on behalf of the businesses that use it. When you chat with or book at a business, that business is the personal information controller and Reception is its processor.</p>
         <h2 className="pt-2 text-[18px] font-semibold text-ink">What we collect</h2>
         <p>Your name, email, optional mobile number, appointment details and the messages you send. We collect them only to answer you and manage your appointment.</p>

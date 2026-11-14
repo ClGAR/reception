@@ -3,12 +3,11 @@
 import { Moon, Sun } from "lucide-react";
 import { cx } from "@/components/ui";
 
-/** Follows the system until the reader chooses; the choice survives reloads. */
+/** Light by default; the reader's choice survives reloads. */
 export function ThemeToggle({ className }: { className?: string }) {
   function toggle() {
     const root = document.documentElement;
-    const system = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    const next = (root.dataset.theme ?? system) === "dark" ? "light" : "dark";
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
     try {
       localStorage.setItem("reception-theme", next);
@@ -21,9 +20,9 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Toggle light and dark theme"
+      aria-label="Switch between light and dark"
       className={cx(
-        "press grid size-9 place-items-center rounded-full text-muted hover:bg-surface hover:text-ink",
+        "press grid size-9 place-items-center rounded-full text-ink-3 hover:bg-surface hover:text-ink",
         className,
       )}
     >

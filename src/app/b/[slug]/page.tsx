@@ -29,20 +29,20 @@ export default async function PublicBookingPage({ params }: PageProps<"/b/[slug]
   return (
     <div className="min-h-dvh bg-bg">
       <header className="border-b border-line">
-        <div className="mx-auto flex max-w-[960px] flex-wrap items-center gap-x-6 gap-y-1 px-4 py-5 md:px-6">
+        <div className="mx-auto flex max-w-[960px] flex-col gap-3 px-4 py-6 sm:flex-row sm:items-start md:px-6">
           <div className="min-w-0 flex-1">
-            <h1 className="text-[22px] font-semibold tracking-[-0.01em]">{biz.name}</h1>
-            <p className="mt-0.5 flex flex-wrap gap-x-4 gap-y-1 text-[13.5px] text-muted">
-              {biz.address && <span className="flex items-center gap-1.5"><MapPin size={14} aria-hidden /> {biz.address}</span>}
-              {biz.phone && <a href={`tel:${biz.phone.replace(/\s/g, "")}`} className="flex items-center gap-1.5 hover:text-ink"><Phone size={14} aria-hidden /> {biz.phone}</a>}
+            {biz.isDemo && <p className="mb-2 w-fit rounded-full bg-warn-soft px-2.5 py-1 text-[13px] leading-none font-medium text-warn-ink">Demo business · fictional</p>}
+            <h1 className="text-[28px] leading-tight font-semibold tracking-[-0.025em]">{biz.name}</h1>
+            <p className="mt-2 flex flex-col gap-1.5 text-[15px] text-ink-2 sm:flex-row sm:flex-wrap sm:gap-x-5">
+              {biz.address && <span className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 shrink-0 text-ink-3" aria-hidden /> {biz.address}</span>}
+              {biz.phone && <a href={`tel:${biz.phone.replace(/\s/g, "")}`} className="flex items-center gap-2 font-medium text-primary hover:underline"><Phone size={16} className="shrink-0" aria-hidden /> {biz.phone}</a>}
             </p>
           </div>
-          {biz.isDemo && <span className="rounded-md bg-warn-soft px-2 py-1 text-[12px] text-warn-ink">Demo business · fictional</span>}
         </div>
       </header>
       <main className="mx-auto max-w-[960px] px-4 py-8 md:px-6">
         {services.length === 0 ? (
-          <p className="py-16 text-center text-[15px] text-muted">Online booking isn&apos;t open yet. Please contact the business directly.</p>
+          <p className="py-16 text-center text-[15px] text-ink-3">Online booking isn&apos;t open yet. Please contact the business directly.</p>
         ) : (
           <BookingFlow
             slug={biz.slug}
@@ -55,7 +55,7 @@ export default async function PublicBookingPage({ params }: PageProps<"/b/[slug]
           />
         )}
       </main>
-      <footer className="mx-auto max-w-[960px] px-4 pb-10 text-[12.5px] text-muted md:px-6">
+      <footer className="mx-auto max-w-[960px] px-4 pb-10 text-[13.5px] text-ink-3 md:px-6">
         Booking by Reception · Your details are shared only with {biz.name} to manage your appointment.
       </footer>
     </div>

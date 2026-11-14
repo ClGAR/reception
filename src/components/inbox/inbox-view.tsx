@@ -83,7 +83,7 @@ export function InboxView({ list, detail, filter, query, mobileThread }: { list:
         <div className="flex items-center justify-between px-5 pt-6 pb-3">
           <div className="flex items-center gap-2.5">
             <h1 className="text-[26px] leading-none font-semibold tracking-[-0.04em]">Inbox</h1>
-            {newCount > 0 && <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[12px] font-medium font-mono text-ink-2 tabular-nums">{newCount} new</span>}
+            {newCount > 0 && <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[13px] font-medium tabular-nums text-ink-2 tabular-nums">{newCount} new</span>}
           </div>
           <div className="flex items-center gap-0.5">
             <button aria-label="Search conversations" aria-pressed={showSearch} onClick={() => setShowSearch((s) => !s)} className={cx("press grid size-9 place-items-center rounded-full hover:bg-surface", showSearch ? "bg-surface-2 text-ink" : "text-ink-2")}>
@@ -108,7 +108,7 @@ export function InboxView({ list, detail, filter, query, mobileThread }: { list:
             }}
           >
             <label htmlFor="inbox-q" className="sr-only">Search by customer name</label>
-            <input id="inbox-q" name="q" defaultValue={query} autoFocus placeholder="Search by customer name" className="h-9 w-full rounded-full border border-line bg-surface px-4 text-[13.5px] outline-none transition-colors placeholder:text-muted focus:border-line-strong focus:bg-bg" />
+            <input id="inbox-q" name="q" defaultValue={query} autoFocus placeholder="Search by customer name" className="h-9 w-full rounded-full border border-line bg-surface px-4 text-[14.5px] outline-none transition-colors placeholder:text-ink-3 focus:border-line-strong focus:bg-bg" />
           </form>
         )}
 
@@ -127,12 +127,12 @@ export function InboxView({ list, detail, filter, query, mobileThread }: { list:
               aria-selected={filter === key}
               href={href({ f: key, c: detail?.id })}
               className={cx(
-                "press flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13.5px]",
-                filter === key ? "bg-ink font-medium text-bg" : "text-ink-2 hover:bg-surface",
+                "press flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[14.5px]",
+                filter === key ? "bg-primary font-medium text-primary-ink" : "text-ink-2 hover:bg-surface",
               )}
             >
               {label}
-              {key === "new" && newCount > 0 && <span className={cx("rounded-full px-1.5 text-[11px] font-mono tabular-nums", filter === key ? "bg-bg/20" : "bg-surface-2 text-muted")}>{newCount}</span>}
+              {key === "new" && newCount > 0 && <span className={cx("rounded-full px-1.5 text-[12px] tabular-nums", filter === key ? "bg-bg/20" : "bg-surface-2 text-ink-3")}>{newCount}</span>}
             </Link>
           ))}
         </div>
@@ -158,14 +158,14 @@ export function InboxView({ list, detail, filter, query, mobileThread }: { list:
                 >
                   <span className="relative">
                     <Avatar name={c.name} />
-                    {c.unread && <span className="absolute -top-0.5 -left-0.5 size-2.5 rounded-full border-2 border-bg bg-live" aria-label="Unread" />}
+                    {c.unread && <span className="absolute -top-0.5 -left-0.5 size-3 rounded-full border-2 border-bg bg-primary" aria-label="Unread" />}
                   </span>
                   <span className="min-w-0 pt-0.5">
-                    <span className={cx("block truncate text-[14.5px]", c.unread ? "font-semibold" : "font-medium")}>{c.name}</span>
-                    <span className="mt-0.5 line-clamp-2 text-[13px] leading-snug text-muted">{c.preview}</span>
+                    <span className={cx("block truncate text-[15.5px]", c.unread ? "font-semibold" : "font-medium")}>{c.name}</span>
+                    <span className="mt-0.5 line-clamp-2 text-[14px] leading-snug text-ink-3">{c.preview}</span>
                   </span>
                   <span className="flex h-full flex-col items-end justify-between gap-2 pt-0.5">
-                    <span className="text-[11.5px] whitespace-nowrap text-muted">{c.ago}</span>
+                    <span className="text-[12.5px] whitespace-nowrap text-ink-3">{c.ago}</span>
                     <TagChip tag={c.tag} />
                   </span>
                 </Link>
@@ -217,7 +217,7 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
         <Avatar name={detail.customer.name} />
         <div className="min-w-0 flex-1">
           <h2 className="truncate text-[15.5px] leading-tight font-semibold tracking-[-0.015em]">{detail.customer.name}</h2>
-          <p className="truncate text-[12px] text-muted">
+          <p className="truncate text-[13px] text-ink-3">
             {detail.convCount} conversation{detail.convCount === 1 ? "" : "s"} · Last active {detail.lastActive}
           </p>
         </div>
@@ -246,7 +246,7 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
                 <MenuItem icon={<MessageSquare size={16} />} onClick={() => act(() => setConversationState(detail.id, { unread: true }))}>
                   Mark as unread
                 </MenuItem>
-                <Link href={`/app/customers?id=${detail.customer.id}`} className="flex items-center gap-2.5 px-4 py-2 text-[14px] hover:bg-surface sm:hidden">
+                <Link href={`/app/customers?id=${detail.customer.id}`} className="flex items-center gap-2.5 px-4 py-2 text-[15px] hover:bg-surface sm:hidden">
                   <User size={16} /> Customer details
                 </Link>
               </div>
@@ -257,7 +257,7 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
 
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 md:px-6" aria-busy={busy}>
         {detail.status === "resolved" && (
-          <p className="mb-3 flex w-fit items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-[12.5px] text-muted">
+          <p className="mb-3 flex w-fit items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-[13.5px] text-ink-3">
             <Check size={14} /> Resolved. Sending a reply reopens it.
           </p>
         )}
@@ -276,15 +276,15 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
               <article className="overflow-hidden rounded-2xl border border-line bg-bg">
                 <header className="flex items-center gap-2.5 border-b border-line bg-surface px-4 py-2.5">
                   <CalendarDays size={17} strokeWidth={1.75} aria-hidden />
-                  <h3 className="flex-1 text-[14px] font-semibold">Appointment request</h3>
+                  <h3 className="flex-1 text-[15px] font-semibold">Appointment request</h3>
                   <Badge tone={statusTone(booking.status)}>{statusLabel[booking.status]}</Badge>
                 </header>
-                <dl className="space-y-1.5 px-4 py-3 text-[13.5px]">
-                  <Row icon={<Scissors size={15} strokeWidth={1.6} />} label="Service">{booking.service} <span className="text-muted">· {booking.staff}</span></Row>
+                <dl className="space-y-1.5 px-4 py-3 text-[14.5px]">
+                  <Row icon={<Scissors size={15} strokeWidth={1.6} />} label="Service">{booking.service} <span className="text-ink-3">· {booking.staff}</span></Row>
                   <Row icon={<Clock size={15} strokeWidth={1.6} />} label="Time">{booking.when}</Row>
                   <Row icon={<Tag size={15} strokeWidth={1.6} />} label="Price">{booking.price}</Row>
                 </dl>
-                <p className="flex items-center gap-2 border-t border-line px-4 py-2.5 text-[12.5px] text-muted">
+                <p className="flex items-center gap-2 border-t border-line px-4 py-2.5 text-[13.5px] text-ink-3">
                   <Info size={15} strokeWidth={1.6} aria-hidden />
                   {booking.status === "pending"
                     ? "Awaiting staff approval. The customer will be notified once confirmed."
@@ -298,18 +298,18 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
                   <button
                     disabled={working}
                     onClick={() => act(() => setAppointmentStatus(booking.id, "confirmed"), "Booking confirmed and added to the calendar.")}
-                    className="press flex h-9 items-center gap-1.5 rounded-full bg-primary px-4 text-[13.5px] font-medium text-primary-ink transition-colors hover:bg-primary-hover disabled:opacity-50"
+                    className="press flex h-9 items-center gap-1.5 rounded-full bg-primary px-4 text-[14.5px] font-medium text-primary-ink transition-colors hover:bg-primary-hover disabled:opacity-50"
                   >
                     <Check size={16} /> Approve &amp; confirm
                   </button>
                   <button
                     disabled={working}
                     onClick={() => act(() => setAppointmentStatus(booking.id, "declined"), "Request declined.")}
-                    className="press flex h-9 items-center gap-1.5 rounded-full border border-line-strong px-4 text-[13.5px] transition-colors hover:bg-surface disabled:opacity-50"
+                    className="press flex h-9 items-center gap-1.5 rounded-full border border-line-strong px-4 text-[14.5px] transition-colors hover:bg-surface disabled:opacity-50"
                   >
                     <X size={16} /> Decline
                   </button>
-                  <button onClick={() => setResched(booking)} className="press flex h-9 items-center gap-1.5 rounded-full border border-line-strong px-4 text-[13.5px] transition-colors hover:bg-surface">
+                  <button onClick={() => setResched(booking)} className="press flex h-9 items-center gap-1.5 rounded-full border border-line-strong px-4 text-[14.5px] transition-colors hover:bg-surface">
                     <CalendarDays size={16} strokeWidth={1.75} /> Reschedule
                   </button>
                 </div>
@@ -321,7 +321,7 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
       </div>
 
       {!aiOn && (
-        <p className="mx-4 mb-1.5 flex items-center gap-1.5 text-[12px] text-muted md:mx-6">
+        <p className="mx-4 mb-1.5 flex items-center gap-1.5 text-[13px] text-ink-3 md:mx-6">
           <Hand size={13} aria-hidden /> You&apos;re handling this conversation. AI replies are paused.
         </p>
       )}
@@ -338,7 +338,7 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
         }}
         className="mx-3 mb-3 flex items-center gap-1 rounded-[24px] border border-line bg-bg p-1.5 pl-2 transition-[border-color,box-shadow] focus-within:border-line-strong focus-within:shadow-[var(--shadow-sm)] md:mx-5 md:mb-4"
       >
-        <button type="button" aria-label="Attach file (coming soon)" title="Attachments are coming soon" disabled className="grid size-8 shrink-0 place-items-center rounded-full text-muted/60">
+        <button type="button" aria-label="Attach file (coming soon)" title="Attachments are coming soon" disabled className="grid size-8 shrink-0 place-items-center rounded-full text-ink-3/60">
           <Paperclip size={17} strokeWidth={1.75} />
         </button>
         <label htmlFor="composer" className="sr-only">Message {detail.customer.name}</label>
@@ -348,14 +348,14 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
           maxLength={2000}
           onChange={(e) => setDraft(e.target.value)}
           placeholder={`Message ${detail.customer.name}...`}
-          className="h-9 min-w-0 flex-1 bg-transparent px-2 text-[14.5px] outline-none placeholder:text-muted"
+          className="h-9 min-w-0 flex-1 bg-transparent px-2 text-[15.5px] outline-none placeholder:text-ink-3"
         />
         <button
           type="button"
           aria-pressed={aiOn}
           title={aiOn ? "AI answers this conversation. Click to take over." : "You're handling this. Click to hand back to AI."}
           onClick={() => act(() => setConversationState(detail.id, { handledBy: aiOn ? "human" : "ai" }), aiOn ? "You took over. AI replies are paused." : "Handed back to AI.")}
-          className={cx("press flex h-8 shrink-0 items-center gap-1 rounded-full px-2.5 text-[12.5px] font-medium transition-colors", aiOn ? "bg-accent-soft text-accent" : "bg-surface text-muted")}
+          className={cx("press flex h-8 shrink-0 items-center gap-1 rounded-full px-2.5 text-[13.5px] font-medium transition-colors", aiOn ? "bg-accent-soft text-accent" : "bg-surface text-ink-3")}
         >
           <Zap size={14} strokeWidth={2} /> AI {aiOn ? "on" : "off"}
         </button>
@@ -370,8 +370,8 @@ function Thread({ detail, mobileHidden, backHref, busy }: { detail: Detail; mobi
 
 function MenuItem({ icon, children, onClick }: { icon: React.ReactNode; children: React.ReactNode; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13.5px] hover:bg-surface">
-      <span className="text-muted">{icon}</span> {children}
+    <button onClick={onClick} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[14.5px] hover:bg-surface">
+      <span className="text-ink-3">{icon}</span> {children}
     </button>
   );
 }
@@ -381,24 +381,24 @@ function MessageRow({ m, name }: { m: Detail["messages"][number]; name: string }
     <>
       {m.day && (
         <li className="flex justify-center py-2" aria-hidden>
-          <span className="rounded-full bg-surface px-2.5 py-1 text-[11px] font-medium text-muted">{m.day}</span>
+          <span className="rounded-full bg-surface px-2.5 py-1 text-[12px] font-medium text-ink-3">{m.day}</span>
         </li>
       )}
       {m.sender === "system" ? (
-        <li className="py-1 text-center text-[11.5px] text-muted">{m.body} · {m.time}</li>
+        <li className="py-1 text-center text-[12.5px] text-ink-3">{m.body} · {m.time}</li>
       ) : m.sender === "customer" ? (
         <li className="flex gap-2.5">
           <Avatar name={name} size="sm" />
           <div className="min-w-0">
-            <p className="inline-block rounded-[18px] rounded-bl-[6px] bg-surface px-3.5 py-2 text-[14.5px] leading-relaxed break-words whitespace-pre-wrap">{m.body}</p>
-            <p className="mt-1 pl-1 text-[11px] text-muted">{m.time}</p>
+            <p className="inline-block rounded-[18px] rounded-bl-[6px] bg-surface px-3.5 py-2 text-[15.5px] leading-relaxed break-words whitespace-pre-wrap">{m.body}</p>
+            <p className="mt-1 pl-1 text-[12px] text-ink-3">{m.time}</p>
           </div>
         </li>
       ) : (
         <li className="flex flex-col items-end">
           <div
             className={cx(
-              "flex max-w-[520px] gap-2.5 rounded-[18px] rounded-br-[6px] px-3.5 py-2.5 text-[14.5px] leading-relaxed",
+              "flex max-w-[520px] gap-2.5 rounded-[18px] rounded-br-[6px] px-3.5 py-2.5 text-[15.5px] leading-relaxed",
               m.sender === "ai" ? "bg-surface" : "bg-primary text-primary-ink",
             )}
           >
@@ -410,7 +410,7 @@ function MessageRow({ m, name }: { m: Detail["messages"][number]; name: string }
               {m.body}
             </p>
           </div>
-          <p className="mt-1 flex items-center gap-1.5 pr-1 text-[11px] text-muted">
+          <p className="mt-1 flex items-center gap-1.5 pr-1 text-[12px] text-ink-3">
             {m.sender === "staff" && <span>Staff ·</span>}
             {m.simulated && <span title="Produced by the FAQ matcher, not a language model">FAQ match ·</span>}
             {m.time} <CheckCheck size={13} strokeWidth={1.75} aria-hidden />
@@ -422,19 +422,19 @@ function MessageRow({ m, name }: { m: Detail["messages"][number]; name: string }
 }
 
 function TagChip({ tag }: { tag: Tag }) {
-  const base = "flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap";
+  const base = "flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-medium whitespace-nowrap";
   if (tag === "booking") return <span className={cx(base, "bg-accent-soft text-accent")}><CalendarDays size={11} strokeWidth={2} /> Booking</span>;
   if (tag === "ai_replied") return <span className={cx(base, "bg-surface-2 text-ink-2")}><Sparkle size={11} strokeWidth={2} /> AI</span>;
-  if (tag === "new") return <span className={cx(base, "bg-accent-soft text-accent")}><span className="size-1.5 rounded-full bg-live" /> New</span>;
+  if (tag === "new") return <span className={cx(base, "bg-accent-soft text-accent")}><span className="size-1.5 rounded-full bg-primary" /> New</span>;
   if (tag === "needs_reply") return <span className={cx(base, "bg-warn-soft text-warn-ink")}><Hand size={11} strokeWidth={2} /> Reply</span>;
   if (tag === "replied") return <span className={cx(base, "bg-surface-2 text-ink-2")}><User size={11} strokeWidth={2} /> Replied</span>;
-  return <span className={cx(base, "bg-surface-2 text-muted")}><Check size={11} strokeWidth={2.2} /> Resolved</span>;
+  return <span className={cx(base, "bg-surface-2 text-ink-3")}><Check size={11} strokeWidth={2.2} /> Resolved</span>;
 }
 
 function Row({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3">
-      <dt className="text-muted">
+      <dt className="text-ink-3">
         {icon}
         <span className="sr-only">{label}</span>
       </dt>

@@ -51,22 +51,22 @@ export function FloatingAssistant({ counts, aiLimit }: Props) {
               <Sparkle size={16} strokeWidth={1.9} aria-hidden />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[14px] leading-tight font-semibold tracking-[-0.01em]">Assistant</p>
-              <p className="mt-0.5 text-[12px] text-muted">
+              <p className="text-[15px] leading-tight font-semibold tracking-[-0.01em]">Assistant</p>
+              <p className="mt-0.5 text-[13px] text-ink-3">
                 {attention > 0 ? `${attention} thing${attention === 1 ? "" : "s"} need${attention === 1 ? "s" : ""} you` : "Watching the queue"}
               </p>
             </div>
             <button
               onClick={() => setOpen(false)}
               aria-label="Close assistant"
-              className="press -mt-1 -mr-1 grid size-8 place-items-center rounded-full text-muted hover:bg-surface hover:text-ink"
+              className="press -mt-1 -mr-1 grid size-8 place-items-center rounded-full text-ink-3 hover:bg-surface hover:text-ink"
             >
               <X size={15} />
             </button>
           </header>
 
           <div className="px-2 py-2">
-            <p className="px-2 pt-1 pb-1.5 text-[10.5px] font-semibold tracking-[0.09em] text-muted uppercase">Needs a person</p>
+            <p className="px-2 pt-1 pb-1.5 text-[13px] font-medium text-ink-3">Needs a person</p>
             <Row
               href="/app/inbox?f=new"
               icon={<MessageSquare size={16} strokeWidth={1.8} />}
@@ -82,7 +82,7 @@ export function FloatingAssistant({ counts, aiLimit }: Props) {
               onClick={() => setOpen(false)}
             />
             {attention === 0 && (
-              <p className="mx-2 my-1 flex items-start gap-2 rounded-xl bg-surface px-3 py-2.5 text-[12.5px] leading-relaxed text-muted">
+              <p className="mx-2 my-1 flex items-start gap-2 rounded-xl bg-surface px-3 py-2.5 text-[13.5px] leading-relaxed text-ink-3">
                 <Check size={14} className="mt-0.5 shrink-0 text-accent" aria-hidden />
                 Nothing is waiting. The AI is answering from your approved answers and will hand over anything it can&apos;t.
               </p>
@@ -90,9 +90,9 @@ export function FloatingAssistant({ counts, aiLimit }: Props) {
           </div>
 
           <div className="border-t border-line px-4 py-3">
-            <div className="flex items-baseline justify-between text-[11.5px]">
+            <div className="flex items-baseline justify-between text-[12.5px]">
               <span className="font-medium text-ink-2">AI messages this month</span>
-              <span className="text-muted font-mono tabular-nums">
+              <span className="text-ink-3 tabular-nums">
                 {counts.aiMessages.toLocaleString()} / {aiLimit.toLocaleString()}
               </span>
             </div>
@@ -109,14 +109,14 @@ export function FloatingAssistant({ counts, aiLimit }: Props) {
               <Link
                 href="/app/settings?tab=usage"
                 onClick={() => setOpen(false)}
-                className="press inline-flex items-center gap-1 text-[12px] font-medium text-ink-2 hover:text-ink"
+                className="press inline-flex items-center gap-1 text-[13px] font-medium text-ink-2 hover:text-ink"
               >
                 <Zap size={12} strokeWidth={2} aria-hidden /> Usage &amp; plan
               </Link>
               <Link
                 href="/app/knowledge"
                 onClick={() => setOpen(false)}
-                className="press inline-flex items-center gap-1 text-[12px] text-muted hover:text-ink"
+                className="press inline-flex items-center gap-1 text-[13px] text-ink-3 hover:text-ink"
               >
                 What it knows <ArrowUpRight size={12} aria-hidden />
               </Link>
@@ -138,9 +138,9 @@ export function FloatingAssistant({ counts, aiLimit }: Props) {
           <span className="assist-dot absolute inset-0 rounded-full bg-accent-soft" aria-hidden />
           <Sparkle size={15} strokeWidth={2} className="relative text-accent" aria-hidden />
         </span>
-        <span className="text-[13.5px] font-medium">Assist</span>
+        <span className="text-[14.5px] font-medium">Assist</span>
         {attention > 0 && (
-          <span className="grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1.5 text-[11px] font-semibold font-mono text-primary-ink tabular-nums">
+          <span className="grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1.5 text-[12px] font-semibold tabular-nums text-primary-ink tabular-nums">
             {attention}
           </span>
         )}
@@ -168,15 +168,15 @@ function Row({
       href={href}
       onClick={onClick}
       className={cx(
-        "press flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-[13.5px]",
-        idle ? "text-muted" : "text-ink hover:bg-surface",
+        "press flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-[14.5px]",
+        idle ? "text-ink-3" : "text-ink hover:bg-surface",
       )}
     >
-      <span className={cx("shrink-0", idle ? "text-line-strong" : "text-muted")} aria-hidden>
+      <span className={cx("shrink-0", idle ? "text-line-strong" : "text-ink-3")} aria-hidden>
         {icon}
       </span>
       <span className="flex-1">{label}</span>
-      <span className={cx("text-[12px] font-mono tabular-nums", idle ? "text-muted" : "font-semibold text-ink")}>
+      <span className={cx("text-[13px] tabular-nums", idle ? "text-ink-3" : "font-semibold text-ink")}>
         {count}
       </span>
       <ArrowUpRight size={13} className="shrink-0 text-line-strong" aria-hidden />

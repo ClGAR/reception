@@ -4,7 +4,7 @@ export function cx(...c: (string | false | null | undefined)[]) {
 }
 
 export function statusTone(s: string) {
-  return s === "pending" ? "warn" : s === "confirmed" ? "accent" : s === "declined" || s === "no_show" ? "danger" : "neutral";
+  return s === "pending" ? "warn" : s === "confirmed" || s === "completed" ? "success" : s === "declined" || s === "no_show" ? "danger" : "neutral";
 }
 
 export const statusLabel: Record<string, string> = {
