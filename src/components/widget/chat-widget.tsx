@@ -73,7 +73,7 @@ export function ChatWidget(p: Props) {
   return (
     <div className="flex h-dvh flex-col bg-bg text-ink">
       <header className="flex items-center gap-3 border-b border-line px-4 py-3">
-        <span className="grid size-9 place-items-center rounded-full bg-accent-soft text-accent-strong" aria-hidden>
+        <span className="grid size-9 place-items-center rounded-full bg-accent-soft text-accent" aria-hidden>
           <Sparkle size={17} />
         </span>
         <div className="min-w-0 flex-1">
@@ -124,7 +124,7 @@ export function ChatWidget(p: Props) {
         >
           <label htmlFor="w-input" className="sr-only">Message</label>
           <input id="w-input" value={draft} maxLength={1000} onChange={(e) => setDraft(e.target.value)} placeholder="Type your message…" className="h-11 min-w-0 flex-1 bg-transparent px-1 text-[15px] outline-none placeholder:text-muted" />
-          <button type="submit" disabled={!draft.trim() || sending} aria-label="Send" className="grid size-9 place-items-center rounded-md bg-accent-strong text-white disabled:opacity-50">
+          <button type="submit" disabled={!draft.trim() || sending} aria-label="Send" className="grid size-9 place-items-center rounded-md bg-primary text-primary-ink disabled:opacity-50">
             <SendHorizontal size={17} />
           </button>
         </form>
@@ -140,7 +140,7 @@ function Bubble({ sender, body, time, note }: { sender: "customer" | "ai" | "sta
   const mine = sender === "customer";
   return (
     <li className={cx("flex flex-col", mine ? "items-end" : "items-start")}>
-      <p className={cx("max-w-[85%] rounded-xl px-3.5 py-2 text-[14.5px] leading-snug break-words whitespace-pre-wrap", mine ? "rounded-tr-md bg-accent-strong text-white" : "rounded-tl-md bg-surface")}>
+      <p className={cx("max-w-[85%] rounded-xl px-3.5 py-2 text-[14.5px] leading-snug break-words whitespace-pre-wrap", mine ? "rounded-tr-md bg-primary text-primary-ink" : "rounded-tl-md bg-surface")}>
         <span className="sr-only">{mine ? "You: " : sender === "staff" ? "Staff: " : "Assistant: "}</span>
         {body}
       </p>

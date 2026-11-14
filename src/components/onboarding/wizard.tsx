@@ -49,7 +49,7 @@ export function OnboardingWizard({ ownerName }: { ownerName: string }) {
     <div>
       <p className="text-[13.5px] text-muted">Step {step + 1} of {STEPS.length}</p>
       <div className="mt-2 mb-8 flex gap-1.5" aria-hidden>
-        {STEPS.map((s, i) => <span key={s} className={cx("h-1 flex-1 rounded-full", i <= step ? "bg-accent-strong" : "bg-surface-2")} />)}
+        {STEPS.map((s, i) => <span key={s} className={cx("h-1 flex-1 rounded-full", i <= step ? "bg-primary" : "bg-surface-2")} />)}
       </div>
 
       {step === 0 && (

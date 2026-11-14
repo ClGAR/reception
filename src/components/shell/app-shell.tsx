@@ -14,6 +14,7 @@ import {
   LogOut,
   Menu,
   MessageSquare,
+  MoreHorizontal,
   Scissors,
   Search,
   Settings,
@@ -25,6 +26,8 @@ import { authClient } from "@/lib/auth-client";
 import { markNotificationsRead } from "@/server/actions";
 import { cx } from "@/components/ui";
 import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { FloatingAssistant } from "@/components/assistant/floating-assistant";
 
 const nav = [
   { label: "Overview", href: "/app/overview", icon: LayoutGrid },
@@ -35,6 +38,8 @@ const nav = [
   { label: "Knowledge", href: "/app/knowledge", icon: BookOpen },
   { label: "Settings", href: "/app/settings", icon: Settings },
 ] as const;
+
+const mobileNav = nav.slice(0, 4);
 
 export interface ShellProps {
   businessName: string;
@@ -49,21 +54,38 @@ export interface ShellProps {
 
 export function AppShell(p: ShellProps) {
   const [drawer, setDrawer] = useState(false);
+
+  useEffect(() => {
+    if (!drawer) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setDrawer(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [drawer]);
+
   return (
     <div className="flex h-dvh flex-col bg-bg text-ink">
       <TopBar {...p} onMenu={() => setDrawer(true)} />
       <div className="flex min-h-0 flex-1">
-        <Sidebar {...p} className="hidden lg:flex" />
+        <Sidebar {...p} className="hidden w-[248px] lg:flex" />
         {drawer && (
-          <div className="fixed inset-0 z-40 lg:hidden">
-            <button aria-label="Close menu" className="absolute inset-0 bg-ink/25" onClick={() => setDrawer(false)} />
-            <Sidebar {...p} className="drawer-anim relative z-10 flex h-full bg-bg shadow-xl" onClose={() => setDrawer(false)} />
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <button aria-label="Close menu" className="absolute inset-0 bg-[var(--scrim)] backdrop-blur-[2px]" onClick={() => setDrawer(false)} />
+            <div className="drawer-anim relative z-10 flex h-full w-[288px] max-w-[84vw] flex-col border-r border-line bg-bg-elevated shadow-[var(--shadow-float)]">
+              <Sidebar {...p} className="flex w-full flex-1" onClose={() => setDrawer(false)} />
+              <div className="border-t border-line px-5 py-4">
+                <p className="truncate text-[13.5px] font-medium">{p.userName}</p>
+                <p className="truncate text-[12.5px] text-muted">{p.userEmail}</p>
+                <SignOutButton className="mt-3 flex w-full items-center gap-2.5 rounded-full px-3 py-2 text-left text-[14px] text-ink-2 hover:bg-surface" />
+              </div>
+            </div>
           </div>
         )}
-        <main id="main" className="min-h-0 min-w-0 flex-1 overflow-y-auto">
+        <main id="main" className="min-h-0 min-w-0 flex-1 overflow-y-auto pb-[calc(58px+env(safe-area-inset-bottom))] lg:pb-0">
           {p.children}
         </main>
       </div>
+      <MobileTabs counts={p.counts} onMore={() => setDrawer(true)} />
+      <FloatingAssistant counts={p.counts} aiLimit={p.aiLimit} />
     </div>
   );
 }
@@ -83,28 +105,28 @@ function TopBar(p: ShellProps & { onMenu: () => void }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
   return (
-    <header className="flex h-[62px] shrink-0 items-center border-b border-line px-4 md:px-7">
-      <button onClick={p.onMenu} aria-label="Open menu" className="-ml-1 mr-2 grid size-9 place-items-center rounded-md hover:bg-surface lg:hidden">
+    <header className="material z-30 flex h-14 shrink-0 items-center gap-2 border-b border-line px-3 md:h-[60px] md:px-5">
+      <button onClick={p.onMenu} aria-label="Open menu" className="press -ml-0.5 grid size-9 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink lg:hidden">
         <Menu size={20} />
       </button>
-      <Link href="/app/overview" className="flex items-center gap-3 md:w-[211px]">
+      <Link href="/app/overview" className="flex items-center gap-3 md:w-[216px]" aria-label="Reception home">
         <Logo />
       </Link>
-      <span className="mx-5 hidden h-7 w-px bg-line md:block" />
-      <span className="hidden items-center gap-3 text-[16px] md:flex" title="Business">
-        <span className="max-w-[220px] truncate">{p.businessName}</span>
-        <ChevronDown size={17} strokeWidth={1.75} className="text-muted" aria-hidden />
-      </span>
-      <div className="ml-auto flex items-center gap-2 md:gap-4">
+      <span className="mx-3 hidden h-6 w-px bg-line md:block" />
+      <div className="hidden min-w-0 items-center gap-2 md:flex">
+        <span className="max-w-[220px] truncate text-[13.5px] font-medium">{p.businessName}</span>
+        <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[10px] font-medium text-muted">Pro</span>
+      </div>
+      <div className="ml-auto flex items-center gap-1 md:gap-2">
         <form
           role="search"
           onSubmit={(e) => {
             e.preventDefault();
             router.push(`/app/customers?q=${encodeURIComponent(q)}`);
           }}
-          className="hidden h-10 w-[440px] items-center gap-3 rounded-lg border border-line bg-bg px-3 focus-within:border-accent xl:flex"
+          className="mr-1 hidden h-9 w-[340px] items-center gap-2.5 rounded-full border border-transparent bg-surface px-3.5 transition-colors focus-within:border-line-strong focus-within:bg-bg xl:flex"
         >
-          <Search size={19} strokeWidth={1.75} aria-hidden />
+          <Search size={17} strokeWidth={1.75} className="shrink-0 text-muted" aria-hidden />
           <label htmlFor="global-search" className="sr-only">
             Search customers
           </label>
@@ -113,16 +135,17 @@ function TopBar(p: ShellProps & { onMenu: () => void }) {
             ref={searchRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search conversations, customers, bookings..."
-            className="min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-muted"
+            placeholder="Search people, bookings, messages"
+            className="min-w-0 flex-1 bg-transparent text-[13.5px] outline-none placeholder:text-muted"
           />
-          <kbd className="flex items-center gap-1 rounded border border-line px-1.5 py-0.5 text-[12px] text-muted">
-            <Command size={11} /> K
+          <kbd className="flex shrink-0 items-center gap-0.5 rounded-md border border-line bg-bg px-1.5 py-0.5 text-[11px] text-muted">
+            <Command size={10} /> K
           </kbd>
         </form>
-        <Link href="/app/customers" aria-label="Search" className="grid size-9 place-items-center rounded-md hover:bg-surface xl:hidden">
-          <Search size={20} strokeWidth={1.75} />
+        <Link href="/app/customers" aria-label="Search" className="press grid size-9 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink xl:hidden">
+          <Search size={19} strokeWidth={1.75} />
         </Link>
+        <ThemeToggle />
         <Notifications items={p.notifications} unread={p.counts.unreadNotifications} />
         <AccountMenu name={p.userName} email={p.userEmail} role={p.role} />
       </div>
@@ -151,7 +174,7 @@ function Notifications({ items, unread }: { items: ShellProps["notifications"]; 
   const [, start] = useTransition();
   const ref = useOutside(open, () => setOpen(false));
   return (
-    <div ref={ref} className="relative md:mx-3">
+    <div ref={ref} className="relative">
       <button
         aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}
         aria-expanded={open}
@@ -159,27 +182,27 @@ function Notifications({ items, unread }: { items: ShellProps["notifications"]; 
           setOpen((o) => !o);
           if (!open && unread) start(() => void markNotificationsRead());
         }}
-        className="relative grid size-9 place-items-center rounded-md hover:bg-surface"
+        className="press relative grid size-9 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink"
       >
-        <Bell size={21} strokeWidth={1.75} />
+        <Bell size={19} strokeWidth={1.75} />
         {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full border-2 border-bg bg-live" />}
       </button>
       {open && (
-        <div className="menu-anim absolute right-0 z-30 mt-2 w-[340px] max-w-[calc(100vw-32px)] rounded-lg border border-line bg-bg shadow-[0_12px_40px_-12px_rgba(33,40,38,0.25)]">
-          <p className="border-b border-line px-4 py-2.5 text-[13.5px] font-medium">Notifications</p>
+        <div className="pop menu-anim absolute right-0 z-30 mt-2 w-[344px] max-w-[calc(100vw-24px)] overflow-hidden">
+          <p className="border-b border-line px-4 py-3 text-[13px] font-semibold">Notifications</p>
           <ul className="max-h-[360px] overflow-y-auto">
-            {items.length === 0 && <li className="px-4 py-8 text-center text-[13.5px] text-muted">You&apos;re all caught up.</li>}
+            {items.length === 0 && <li className="px-4 py-10 text-center text-[13.5px] text-muted">You&apos;re all caught up.</li>}
             {items.map((n) => (
-              <li key={n.id} className="flex gap-3 border-b border-line px-4 py-3 text-[13.5px] last:border-0">
-                <span className={cx("mt-1.5 size-1.5 shrink-0 rounded-full", n.unread ? "bg-live" : "bg-transparent")} />
-                <span className="flex-1">
+              <li key={n.id} className="flex gap-3 border-b border-line px-4 py-3 text-[13.5px] last:border-0 hover:bg-surface">
+                <span className={cx("mt-1.5 size-1.5 shrink-0 rounded-full", n.unread ? "bg-live" : "bg-line-strong")} />
+                <span className="flex-1 leading-relaxed">
                   {n.text}
                   <span className="mt-0.5 block text-[12px] text-muted">{n.ago}</span>
                 </span>
               </li>
             ))}
           </ul>
-          <Link href="/app/bookings" onClick={() => setOpen(false)} className="block border-t border-line px-4 py-2.5 text-[13px] text-muted hover:text-ink">
+          <Link href="/app/bookings" onClick={() => setOpen(false)} className="block border-t border-line px-4 py-3 text-[12.5px] text-muted hover:text-ink">
             View bookings
           </Link>
         </div>
@@ -190,7 +213,6 @@ function Notifications({ items, unread }: { items: ShellProps["notifications"]; 
 
 function AccountMenu({ name, email, role }: { name: string; email: string; role: string }) {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const ref = useOutside(open, () => setOpen(false));
   const initials = name
     .split(/\s+/)
@@ -199,33 +221,40 @@ function AccountMenu({ name, email, role }: { name: string; email: string; role:
     .join("");
   return (
     <div ref={ref} className="relative">
-      <button className="flex items-center gap-2" aria-label="Account menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-        <span className="grid size-9 place-items-center rounded-full bg-surface-2 text-[14px] font-semibold">{initials}</span>
-        <ChevronDown size={17} strokeWidth={1.75} className="hidden md:block" />
+      <button className="press flex items-center gap-1.5 rounded-full p-0.5 hover:bg-surface md:pr-1.5" aria-label="Account menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+        <span className="grid size-8 place-items-center rounded-full bg-surface-2 text-[12.5px] font-semibold">{initials}</span>
+        <ChevronDown size={14} strokeWidth={2} className="hidden text-muted md:block" />
       </button>
       {open && (
-        <div className="menu-anim absolute right-0 z-30 mt-2 w-[250px] rounded-lg border border-line bg-bg py-1 shadow-[0_12px_40px_-12px_rgba(33,40,38,0.25)]">
+        <div className="pop menu-anim absolute right-0 z-30 mt-2 w-[256px] overflow-hidden py-1">
           <div className="border-b border-line px-4 py-3">
             <p className="truncate text-[14px] font-medium">{name}</p>
             <p className="truncate text-[12.5px] text-muted">{email}</p>
-            <p className="mt-1 text-[12px] text-muted capitalize">{role === "member" ? "Reception staff" : role}</p>
+            <p className="mt-1.5 text-[11.5px] tracking-[0.01em] text-muted capitalize">{role === "member" ? "Reception staff" : role}</p>
           </div>
-          <Link href="/app/settings" onClick={() => setOpen(false)} className="flex items-center gap-2.5 px-4 py-2 text-[14px] hover:bg-surface">
+          <Link href="/app/settings" onClick={() => setOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-[14px] hover:bg-surface">
             <Settings size={16} /> Settings
           </Link>
-          <button
-            onClick={async () => {
-              await authClient.signOut();
-              router.push("/login");
-              router.refresh();
-            }}
-            className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-[14px] hover:bg-surface"
-          >
-            <LogOut size={16} /> Sign out
-          </button>
+          <SignOutButton className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[14px] hover:bg-surface" />
         </div>
       )}
     </div>
+  );
+}
+
+function SignOutButton({ className }: { className?: string }) {
+  const router = useRouter();
+  return (
+    <button
+      onClick={async () => {
+        await authClient.signOut();
+        router.push("/login");
+        router.refresh();
+      }}
+      className={className}
+    >
+      <LogOut size={16} /> Sign out
+    </button>
   );
 }
 
@@ -234,61 +263,100 @@ function Sidebar(p: ShellProps & { className?: string; onClose?: () => void }) {
   const { aiMessages } = p.counts;
   const pct = p.aiLimit ? Math.min(100, (aiMessages / p.aiLimit) * 100) : 0;
   return (
-    <aside className={cx("w-[254px] shrink-0 flex-col border-r border-line px-3 pt-8 pb-4", p.className)} aria-label="Workspace">
-      <div className="mb-3 flex items-center justify-between px-4">
-        <p className="text-[12.5px] font-medium tracking-[0.06em] text-muted">WORKSPACE</p>
-        {p.onClose && (
-          <button onClick={p.onClose} aria-label="Close menu" className="grid size-8 place-items-center rounded-md hover:bg-surface">
-            <X size={18} />
+    <aside className={cx("shrink-0 flex-col border-r border-line px-3 py-5", p.className)} aria-label="Workspace">
+      {p.onClose && (
+        <div className="mb-2 flex items-center justify-between px-2">
+          <span className="text-[12px] font-medium text-muted">Menu</span>
+          <button onClick={p.onClose} aria-label="Close menu" className="press grid size-8 place-items-center rounded-full text-muted hover:bg-surface hover:text-ink">
+            <X size={17} />
           </button>
-        )}
-      </div>
-      <nav className="space-y-1.5">
-        {nav.map(({ label, href, icon: Icon }) => {
-          const active = path.startsWith(href);
-          const badge = label === "Inbox" ? p.counts.unread : label === "Bookings" ? p.counts.pending : 0;
-          return (
-            <Link
-              key={label}
-              href={href}
-              onClick={p.onClose}
-              aria-current={active ? "page" : undefined}
-              className={cx(
-                "flex h-[42px] items-center gap-4 rounded-md px-4 text-[16.5px] transition-colors",
-                active ? "bg-surface-2 font-medium" : "hover:bg-surface",
-              )}
-            >
-              <Icon size={20} strokeWidth={1.6} aria-hidden />
-              <span className="flex-1">{label}</span>
-              {badge > 0 && (
-                <span
-                  aria-label={`${badge} ${label === "Inbox" ? "unread" : "pending"}`}
-                  className={cx(
-                    "grid h-5 min-w-5 place-items-center rounded px-1 text-[12px] font-medium",
-                    active || label === "Inbox" ? "bg-accent-strong text-white" : "bg-surface-2 text-ink/80",
-                  )}
-                >
-                  {badge}
-                </span>
-              )}
-            </Link>
-          );
-        })}
-      </nav>
-      <div className="mt-auto rounded-lg bg-surface px-4 py-3.5">
-        <p className="flex items-center gap-2.5 text-[15px] font-medium">
-          <Zap size={17} strokeWidth={1.75} aria-hidden /> Pro Plan
-        </p>
-        <p className="mt-2 text-[14.5px]">
-          {aiMessages.toLocaleString()} / {p.aiLimit.toLocaleString()} messages
-        </p>
-        <div className="mt-2 h-1.5 rounded-full bg-track" role="progressbar" aria-valuenow={aiMessages} aria-valuemax={p.aiLimit} aria-label="AI messages used this month">
-          <div className="h-full rounded-full bg-accent-strong" style={{ width: `${pct}%` }} />
         </div>
-        <Link href="/app/settings?tab=usage" className="mt-3 flex items-center gap-2 text-[14px] text-ink/80 hover:text-ink">
-          Manage plan <ArrowRight size={15} />
+      )}
+      <nav className="min-h-0 flex-1 space-y-5 overflow-y-auto pb-4" aria-label="Sections">
+        {[
+          { title: "Workspace", items: nav.slice(0, 4) },
+          { title: "Setup", items: nav.slice(4) },
+        ].map((group) => (
+          <div key={group.title}>
+            <p className="px-3.5 pb-1.5 text-[10.5px] font-semibold tracking-[0.09em] text-muted uppercase">{group.title}</p>
+            <div className="space-y-0.5">
+              {group.items.map(({ label, href, icon: Icon }) => {
+                const active = path.startsWith(href);
+                const badge = label === "Inbox" ? p.counts.unread : label === "Bookings" ? p.counts.pending : 0;
+                return (
+                  <Link
+                    key={label}
+                    href={href}
+                    onClick={p.onClose}
+                    aria-current={active ? "page" : undefined}
+                    className={cx(
+                      "press flex h-10 items-center gap-3 rounded-full px-3.5 text-[14px]",
+                      active ? "bg-surface-2 font-semibold text-ink" : "text-ink-2 hover:bg-surface hover:text-ink",
+                    )}
+                  >
+                    <Icon size={18} strokeWidth={active ? 2 : 1.7} aria-hidden />
+                    <span className="flex-1">{label}</span>
+                    {badge > 0 && (
+                      <span
+                        aria-label={`${badge} ${label === "Inbox" ? "unread" : "pending"}`}
+                        className={cx(
+                          "grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[11px] font-semibold font-mono tabular-nums",
+                          active || label === "Inbox" ? "bg-primary text-primary-ink" : "bg-surface-2 text-ink-2",
+                        )}
+                      >
+                        {badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </nav>
+      <div className="mt-auto rounded-2xl border border-line bg-surface px-4 py-3.5">
+        <p className="flex items-center gap-1.5 text-[12.5px] font-semibold">
+          <Zap size={13} strokeWidth={2} aria-hidden /> Pro plan
+        </p>
+        <p className="mt-1.5 text-[11.5px] text-muted font-mono tabular-nums">
+          {aiMessages.toLocaleString()} / {p.aiLimit.toLocaleString()} AI messages
+        </p>
+        <div className="mt-2 h-1 overflow-hidden rounded-full bg-track" role="progressbar" aria-valuenow={aiMessages} aria-valuemax={p.aiLimit} aria-label="AI messages used this month">
+          <div className="h-full rounded-full bg-accent transition-[width] duration-500 ease-[var(--ease-out)]" style={{ width: `${pct}%` }} />
+        </div>
+        <Link href="/app/settings?tab=usage" className="mt-2.5 inline-flex items-center gap-1.5 text-[11.5px] font-medium text-ink-2 hover:text-ink">
+          Manage plan <ArrowRight size={12} />
         </Link>
       </div>
     </aside>
+  );
+}
+
+function MobileTabs({ counts, onMore }: { counts: ShellProps["counts"]; onMore: () => void }) {
+  const path = usePathname();
+  return (
+    <nav
+      aria-label="Primary"
+      className="material-strong pb-safe fixed inset-x-0 bottom-0 z-40 grid h-[58px] grid-cols-5 items-stretch border-t border-line lg:hidden"
+    >
+      {mobileNav.map(({ label, href, icon: Icon }) => {
+        const active = path.startsWith(href);
+        const badge = label === "Inbox" ? counts.unread : label === "Bookings" ? counts.pending : 0;
+        return (
+          <Link key={label} href={href} aria-current={active ? "page" : undefined} className="relative flex flex-col items-center justify-center gap-1 text-[10.5px]">
+            <span className={cx("relative", active ? "text-ink" : "text-muted")}>
+              <Icon size={21} strokeWidth={active ? 2.1 : 1.7} aria-hidden />
+              {badge > 0 && <span className="absolute -top-1 -right-2 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[9.5px] font-semibold font-mono text-primary-ink tabular-nums">{badge}</span>}
+            </span>
+            <span className={cx(active ? "font-semibold text-ink" : "text-muted")}>{label}</span>
+            {active && <span className="absolute top-0 h-0.5 w-8 rounded-full bg-ink" />}
+          </Link>
+        );
+      })}
+      <button onClick={onMore} className="flex flex-col items-center justify-center gap-1 text-[10.5px] text-muted">
+        <MoreHorizontal size={21} strokeWidth={1.7} />
+        More
+      </button>
+    </nav>
   );
 }

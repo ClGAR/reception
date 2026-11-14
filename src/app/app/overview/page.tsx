@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CalendarCheck2, CalendarClock, Check, Circle, Hand, MessageSquare } from "lucide-react";
+import { ArrowRight, CalendarCheck2, CalendarClock, Check, Circle, Hand, MessageSquare, Sparkle } from "lucide-react";
 import { requireBusiness } from "@/server/context";
 import { overview, setupProgress } from "@/server/queries";
 import { fmtDate, fmtTime, relative, todayIn } from "@/lib/time";
@@ -43,7 +43,7 @@ export default async function OverviewPage() {
       <PageHeader title={`${greet}, ${user.name.split(" ")[0]}`} description={`${fmtDate(new Date(), tz, { weekday: "long", month: "long" })} · ${business.name}`} />
       <div className="space-y-8 px-4 py-6 md:px-8">
         {left.length > 0 && (
-          <section aria-labelledby="setup-h" className="rounded-lg border border-line">
+          <section aria-labelledby="setup-h" className="rounded-2xl border border-line">
             <div className="flex items-center justify-between border-b border-line px-5 py-3">
               <h2 id="setup-h" className="text-[15px] font-semibold">Finish setting up</h2>
               <span className="text-[13px] text-muted">{setup.length - left.length} of {setup.length} done</span>
@@ -62,7 +62,7 @@ export default async function OverviewPage() {
           </section>
         )}
 
-        <section aria-label="Today at a glance" className="grid grid-cols-2 overflow-hidden rounded-lg border border-line lg:grid-cols-4">
+        <section aria-label="Today at a glance" className="grid grid-cols-2 overflow-hidden rounded-2xl border border-line lg:grid-cols-4">
           {stats.map(({ label, value, href, icon: Icon }, i) => (
             <Link
               key={label}
@@ -72,79 +72,135 @@ export default async function OverviewPage() {
               <span className="flex items-center gap-2 text-[13.5px] text-muted">
                 <Icon size={16} strokeWidth={1.75} aria-hidden /> {label}
               </span>
-              <span className="text-[30px] font-semibold tracking-[-0.02em] tabular-nums">{value}</span>
+              <span className="text-[30px] font-semibold tracking-[-0.02em] font-mono tabular-nums">{value}</span>
             </Link>
           ))}
         </section>
 
-        <div className="grid gap-8 xl:grid-cols-[1.25fr_1fr]">
-          <section aria-labelledby="pending-h">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 id="pending-h" className="text-[16px] font-semibold">Needs your approval</h2>
-              <Link href="/app/bookings?status=pending" className="text-[13.5px] text-muted hover:text-ink">View all</Link>
-            </div>
-            <div className="rounded-lg border border-line">
-              {data.pendingList.length === 0 ? (
-                <p className="px-5 py-10 text-center text-[14px] text-muted">No requests waiting. New ones from chat and your booking page show up here.</p>
+        <div className="grid gap-8 xl:grid-cols-[1.55fr_1fr] xl:items-start">
+          <div className="space-y-8">
+            <section aria-labelledby="pending-h">
+              <div className="mb-3 flex items-center justify-between">
+                <h2 id="pending-h" className="text-[16px] font-semibold">Needs your approval</h2>
+                <Link href="/app/bookings?status=pending" className="text-[13.5px] text-muted hover:text-ink">View all</Link>
+              </div>
+              <div className="rounded-2xl border border-line">
+                {data.pendingList.length === 0 ? (
+                  <p className="px-5 py-10 text-center text-[14px] text-muted">No requests waiting. New ones from chat and your booking page show up here.</p>
+                ) : (
+                  <ul className="divide-y divide-line">
+                    {data.pendingList.map((p) => (
+                      <li key={p.appointment.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-3">
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[14.5px] font-medium">{p.customerName}</p>
+                          <p className="text-[13.5px] text-muted">
+                            {p.serviceName} · {fmtDate(p.appointment.startsAt, tz)}, <span className="font-mono tabular-nums">{fmtTime(p.appointment.startsAt, tz)}</span>
+                          </p>
+                        </div>
+                        <PendingActions id={p.appointment.id} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </section>
+
+            <section aria-labelledby="activity-h">
+              <h2 id="activity-h" className="mb-3 text-[16px] font-semibold">Recent activity</h2>
+              {data.activity.length === 0 ? (
+                <p className="text-[14px] text-muted">Nothing yet.</p>
               ) : (
-                <ul className="divide-y divide-line">
-                  {data.pendingList.map((p) => (
-                    <li key={p.appointment.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-3">
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-[14.5px] font-medium">{p.customerName}</p>
-                        <p className="text-[13.5px] text-muted">
-                          {p.serviceName} · {fmtDate(p.appointment.startsAt, tz)}, {fmtTime(p.appointment.startsAt, tz)}
-                        </p>
-                      </div>
-                      <PendingActions id={p.appointment.id} />
+                <ol className="divide-y divide-line rounded-2xl border border-line px-5">
+                  {data.activity.map((a) => (
+                    <li key={a.auditLog.id} className="flex items-baseline gap-3 py-2.5 text-[13.5px]">
+                      <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-line-strong" aria-hidden />
+                      <span className="flex-1">
+                        {actionText[a.auditLog.action] ?? a.auditLog.action}
+                        {a.actor && <span className="text-muted"> · {a.actor}</span>}
+                      </span>
+                      <span className="shrink-0 text-[12px] text-muted">{relative(a.auditLog.createdAt)}</span>
                     </li>
                   ))}
-                </ul>
+                </ol>
               )}
-            </div>
-          </section>
+            </section>
+          </div>
 
-          <section aria-labelledby="today-h">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 id="today-h" className="text-[16px] font-semibold">Today&apos;s bookings</h2>
-              <Link href="/app/bookings" className="text-[13.5px] text-muted hover:text-ink">Open calendar</Link>
-            </div>
-            <div className="rounded-lg border border-line">
-              {data.todays.length === 0 ? (
-                <p className="px-5 py-10 text-center text-[14px] text-muted">No confirmed bookings today.</p>
-              ) : (
-                <ul className="divide-y divide-line">
-                  {data.todays.map((t) => (
-                    <li key={t.appointment.id} className="flex items-center gap-4 px-5 py-3">
-                      <span className="w-[72px] shrink-0 text-[14px] font-medium tabular-nums">{fmtTime(t.appointment.startsAt, tz)}</span>
-                      <div className="min-w-0">
-                        <p className="truncate text-[14.5px]">{t.customerName}</p>
-                        <p className="truncate text-[13px] text-muted">{t.serviceName} · {t.staffName}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+          <div className="space-y-8">
+            <section aria-labelledby="today-h">
+              <div className="mb-3 flex items-center justify-between">
+                <h2 id="today-h" className="text-[16px] font-semibold">Today&apos;s bookings</h2>
+                <Link href="/app/bookings" className="text-[13.5px] text-muted hover:text-ink">Open calendar</Link>
+              </div>
+              <div className="rounded-2xl border border-line">
+                {data.todays.length === 0 ? (
+                  <p className="px-5 py-10 text-center text-[14px] text-muted">No confirmed bookings today.</p>
+                ) : (
+                  <ul className="divide-y divide-line">
+                    {data.todays.map((t) => (
+                      <li key={t.appointment.id} className="flex items-center gap-4 px-5 py-3">
+                        <span className="w-[72px] shrink-0 text-[14px] font-medium font-mono tabular-nums">{fmtTime(t.appointment.startsAt, tz)}</span>
+                        <div className="min-w-0">
+                          <p className="truncate text-[14.5px]">{t.customerName}</p>
+                          <p className="truncate text-[13px] text-muted">{t.serviceName} · {t.staffName}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </section>
 
-            <h2 className="mt-8 mb-3 text-[16px] font-semibold">Recent activity</h2>
-            {data.activity.length === 0 ? (
-              <p className="text-[14px] text-muted">Nothing yet.</p>
-            ) : (
-              <ol className="space-y-2.5">
-                {data.activity.map((a) => (
-                  <li key={a.auditLog.id} className="flex items-baseline gap-3 text-[14px]">
-                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-line" aria-hidden />
-                    <span className="flex-1">
-                      {actionText[a.auditLog.action] ?? a.auditLog.action}
-                      {a.actor && <span className="text-muted"> · {a.actor}</span>}
-                    </span>
-                    <span className="shrink-0 text-[12.5px] text-muted">{relative(a.auditLog.createdAt)}</span>
-                  </li>
-                ))}
-              </ol>
-            )}
-          </section>
+            <section aria-labelledby="ai-h">
+              <h2 id="ai-h" className="mb-3 text-[16px] font-semibold">Assistant</h2>
+              <div className="rounded-2xl border border-line bg-surface/60 p-5">
+                <div className="flex items-start gap-3">
+                  <span className="relative mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+                    <Sparkle size={15} strokeWidth={1.9} aria-hidden />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[14px] leading-tight font-semibold">
+                      <span className="text-[24px] tracking-[-0.03em] font-mono tabular-nums">{data.aiMessages.toLocaleString()}</span>{" "}
+                      messages answered
+                    </p>
+                    <p className="mt-0.5 text-[12px] text-muted">This month, from your approved answers</p>
+                  </div>
+                </div>
+                <div
+                  className="mt-4 h-1 overflow-hidden rounded-full bg-track"
+                  role="progressbar"
+                  aria-valuenow={data.aiMessages}
+                  aria-valuemax={business.aiMonthlyMessageLimit}
+                  aria-label="AI messages used this month"
+                >
+                  <div
+                    className="h-full rounded-full bg-accent transition-[width] duration-700 ease-[var(--ease-out)]"
+                    style={{ width: `${business.aiMonthlyMessageLimit ? Math.min(100, (data.aiMessages / business.aiMonthlyMessageLimit) * 100) : 0}%` }}
+                  />
+                </div>
+                <p className="mt-1.5 text-[11.5px] text-muted font-mono tabular-nums">
+                  {business.aiMonthlyMessageLimit.toLocaleString()} included on Pro
+                </p>
+
+                <div className="mt-4 space-y-0.5 border-t border-line pt-2">
+                  <Link href="/app/inbox?f=new" className="press -mx-2 flex items-center gap-2.5 rounded-lg px-2 py-2 text-[13px] hover:bg-bg">
+                    <MessageSquare size={15} className="text-muted" aria-hidden />
+                    <span className="flex-1">Unread conversations</span>
+                    <span className="font-semibold font-mono tabular-nums">{data.newInquiries}</span>
+                  </Link>
+                  <Link href="/app/inbox" className="press -mx-2 flex items-center gap-2.5 rounded-lg px-2 py-2 text-[13px] hover:bg-bg">
+                    <Hand size={15} className="text-muted" aria-hidden />
+                    <span className="flex-1">Awaiting a person</span>
+                    <span className="font-semibold font-mono tabular-nums">{data.awaitingStaff}</span>
+                  </Link>
+                </div>
+
+                <p className="mt-3 text-[11.5px] leading-relaxed text-muted">
+                  It answers from your services, hours and FAQs. Anything else is handed to you with the thread attached.
+                </p>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </div>

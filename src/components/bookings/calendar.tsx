@@ -126,9 +126,9 @@ export function BookingsCalendar(p: Props) {
               <Link
                 key={c.key}
                 href={p.view === "week" ? qs({ view: "day", date: c.date }) : "#"}
-                className={cx("border-l border-line px-3 py-2.5 text-[13.5px]", c.date === p.today && p.view === "week" && "text-accent-strong")}
+                className={cx("border-l border-line px-3 py-2.5 text-[13.5px]", c.date === p.today && p.view === "week" && "text-accent")}
               >
-                <span className="font-medium">{c.label}</span> {c.sub && <span className={cx("ml-1 tabular-nums", c.date === p.today && "rounded bg-accent-strong px-1.5 py-0.5 text-white")}>{c.sub}</span>}
+                <span className="font-medium">{c.label}</span> {c.sub && <span className={cx("ml-1 font-mono tabular-nums", c.date === p.today && "rounded bg-primary px-1.5 py-0.5 text-primary-ink")}>{c.sub}</span>}
               </Link>
             ))}
           </div>
@@ -184,7 +184,7 @@ export function BookingsCalendar(p: Props) {
           const list = p.events.filter((e) => e.date === d);
           return (
             <section key={d} className="border-b border-line px-4 py-3">
-              <h2 className={cx("mb-2 text-[13.5px] font-medium", d === p.today && "text-accent-strong")}>{dayName(d, { weekday: "long", month: "short", day: "numeric" })}</h2>
+              <h2 className={cx("mb-2 text-[13.5px] font-medium", d === p.today && "text-accent")}>{dayName(d, { weekday: "long", month: "short", day: "numeric" })}</h2>
               {list.length === 0 ? (
                 <p className="text-[13.5px] text-muted">No bookings</p>
               ) : (
@@ -192,7 +192,7 @@ export function BookingsCalendar(p: Props) {
                   {list.map((e) => (
                     <li key={e.id}>
                       <button onClick={() => setSelected(e)} className="flex w-full items-center gap-3 rounded-md border border-line px-3 py-2.5 text-left">
-                        <span className="w-[64px] shrink-0 text-[13.5px] font-medium tabular-nums">{minuteLabel(e.startMinute)}</span>
+                        <span className="w-[64px] shrink-0 text-[13.5px] font-medium font-mono tabular-nums">{minuteLabel(e.startMinute)}</span>
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-[14px]">{e.customer}</span>
                           <span className="block truncate text-[12.5px] text-muted">{e.service} · {e.staff}</span>

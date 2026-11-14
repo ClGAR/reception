@@ -10,8 +10,8 @@ import { Button, Field, Input } from "@/components/ui";
 function Heading({ title, body }: { title: string; body?: string }) {
   return (
     <div className="mb-7">
-      <h1 className="text-[26px] font-semibold tracking-[-0.02em]">{title}</h1>
-      {body && <p className="mt-1.5 text-[14.5px] text-muted">{body}</p>}
+      <h1 className="text-[28px] leading-tight font-semibold tracking-[-0.04em]">{title}</h1>
+      {body && <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{body}</p>}
     </div>
   );
 }
@@ -19,7 +19,7 @@ function Heading({ title, body }: { title: string; body?: string }) {
 function FormError({ msg }: { msg: string | null }) {
   if (!msg) return null;
   return (
-    <p role="alert" className="rounded-md border border-danger-line bg-danger-soft px-3 py-2 text-[13.5px] text-danger-ink">
+    <p role="alert" className="rounded-xl border border-danger-line bg-danger-soft px-3 py-2 text-[13px] text-danger-ink">
       {msg}
     </p>
   );

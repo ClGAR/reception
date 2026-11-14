@@ -49,7 +49,7 @@ export function RescheduleDialog({ appointment, onClose }: { appointment: { id: 
               role="radio"
               aria-checked={picked === s.minute}
               onClick={() => setPicked(s.minute)}
-              className={cx("h-9 rounded-md border text-[13.5px] transition-colors", picked === s.minute ? "border-accent-strong bg-accent-strong text-white" : "border-line hover:bg-surface")}
+              className={cx("h-9 rounded-md border text-[13.5px] transition-colors", picked === s.minute ? "border-primary bg-primary text-primary-ink" : "border-line hover:bg-surface")}
             >
               {minuteLabel(s.minute)}
             </button>

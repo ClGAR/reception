@@ -28,7 +28,7 @@ export function BookingFlow(p: Props) {
         <ol className="mb-6 flex items-center gap-2 text-[13.5px]" aria-label="Steps">
           {steps.map((s, i) => (
             <li key={s} className="flex items-center gap-2" aria-current={i === step ? "step" : undefined}>
-              <span className={cx("grid size-6 place-items-center rounded-full text-[12px] font-medium", i < step ? "bg-accent-strong text-white" : i === step ? "bg-ink text-bg" : "bg-surface-2 text-muted")}>
+              <span className={cx("grid size-6 place-items-center rounded-full text-[12px] font-medium", i < step ? "bg-primary text-primary-ink" : i === step ? "bg-ink text-bg" : "bg-surface-2 text-muted")}>
                 {i < step ? <Check size={13} /> : i + 1}
               </span>
               <span className={cx(i === step ? "font-medium" : "text-muted", "hidden sm:inline")}>{s}</span>
@@ -63,7 +63,7 @@ export function BookingFlow(p: Props) {
                       {s.description && <span className="mt-0.5 block text-[13.5px] text-muted">{s.description}</span>}
                       <span className="mt-1 flex items-center gap-1.5 text-[13px] text-muted"><Clock size={13} aria-hidden /> {s.duration} min</span>
                     </span>
-                    <span className="text-[15px] font-medium tabular-nums">{s.price}</span>
+                    <span className="text-[15px] font-medium font-mono tabular-nums">{s.price}</span>
                     <ChevronRight size={18} className="text-muted" aria-hidden />
                   </button>
                 </li>
@@ -190,12 +190,12 @@ function DateTime(p: Props & { svc: Svc; date: string | null; setDate: (d: strin
               }}
               className={cx(
                 "flex flex-col items-center rounded-md border py-2 text-[13px] transition-colors",
-                sel ? "border-accent-strong bg-accent-strong text-white" : isOpen ? "border-line hover:bg-surface" : "border-transparent text-muted/60 line-through",
+                sel ? "border-primary bg-primary text-primary-ink" : isOpen ? "border-line hover:bg-surface" : "border-transparent text-muted/60 line-through",
                 !open && "animate-pulse",
               )}
             >
-              <span className={sel ? "text-white/80" : "text-muted"}>{fmt(d, { weekday: "short" })}</span>
-              <span className="text-[16px] font-medium tabular-nums">{fmt(d, { day: "numeric" })}</span>
+              <span className={sel ? "text-primary-ink/70" : "text-muted"}>{fmt(d, { weekday: "short" })}</span>
+              <span className="text-[16px] font-medium font-mono tabular-nums">{fmt(d, { day: "numeric" })}</span>
             </button>
           );
         })}
@@ -211,7 +211,7 @@ function DateTime(p: Props & { svc: Svc; date: string | null; setDate: (d: strin
           {slots && slots.length > 0 && (
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Time">
               {slots.map((s) => (
-                <button key={s.minute} role="radio" aria-checked={p.slot?.minute === s.minute} onClick={() => p.onPick(s)} className="h-10 rounded-md border border-line text-[14px] tabular-nums transition-colors hover:border-accent hover:bg-accent-soft/50">
+                <button key={s.minute} role="radio" aria-checked={p.slot?.minute === s.minute} onClick={() => p.onPick(s)} className="h-10 rounded-md border border-line text-[14px] font-mono tabular-nums transition-colors hover:border-accent hover:bg-accent-soft/50">
                   {s.label}
                 </button>
               ))}
@@ -259,7 +259,7 @@ function Details(p: Props & { svc: Svc; date: string; slot: { minute: number; la
         <Field label="Mobile number (optional)" htmlFor="bk-phone"><Input id="bk-phone" name="phone" type="tel" autoComplete="tel" placeholder="+63 9XX XXX XXXX" /></Field>
         <Field label="Notes for the team (optional)" htmlFor="bk-notes"><Textarea id="bk-notes" name="notes" maxLength={500} /></Field>
         <label className="flex items-start gap-3 text-[13px] leading-relaxed text-ink/80">
-          <input type="checkbox" name="consent" required className="mt-0.5 size-4 accent-accent-strong" />
+          <input type="checkbox" name="consent" required className="mt-0.5 size-4 accent-primary" />
           <span>I agree that {p.businessName} may use my name and contact details to manage this appointment, in line with the Data Privacy Act of 2012.</span>
         </label>
         {error && <p role="alert" className="rounded-md bg-danger-soft px-3 py-2 text-[13.5px] text-danger-ink">{error}</p>}
@@ -276,7 +276,7 @@ function Done({ status, service, when, businessName }: { status: "pending" | "co
   const confirmed = status === "confirmed";
   return (
     <div className="mx-auto max-w-[460px] py-10 text-center" role="status">
-      <span className={cx("mx-auto mb-5 grid size-14 place-items-center rounded-full", confirmed ? "bg-accent-soft text-accent-strong" : "bg-warn-soft text-warn-ink")}>
+      <span className={cx("mx-auto mb-5 grid size-14 place-items-center rounded-full", confirmed ? "bg-accent-soft text-accent" : "bg-warn-soft text-warn-ink")}>
         {confirmed ? <CalendarCheck2 size={26} /> : <CalendarClock size={26} />}
       </span>
       <h2 className="text-[24px] font-semibold tracking-[-0.01em]">{confirmed ? "You're booked" : "Request sent"}</h2>

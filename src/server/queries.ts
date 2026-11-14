@@ -96,13 +96,18 @@ export async function overview(biz: Business) {
   const today = todayIn(biz.timezone);
   const start = localToUtc(today, 0, biz.timezone);
   const end = localToUtc(addDays(today, 1), 0, biz.timezone);
-  const [[newInq], [pending], [awaiting], todays, pendingList, activity] = await Promise.all([
+  const monthStart = localToUtc(today.slice(0, 8) + "01", 0, biz.timezone);
+  const [[newInq], [pending], [awaiting], [ai], todays, pendingList, activity] = await Promise.all([
     db.select({ n: count() }).from(conversation).where(and(eq(conversation.businessId, biz.id), eq(conversation.unread, true))),
     db.select({ n: count() }).from(appointment).where(and(eq(appointment.businessId, biz.id), eq(appointment.status, "pending"))),
     db
       .select({ n: count() })
       .from(conversation)
       .where(and(eq(conversation.businessId, biz.id), eq(conversation.handledBy, "human"), eq(conversation.status, "open"))),
+    db
+      .select({ n: count() })
+      .from(aiUsage)
+      .where(and(eq(aiUsage.businessId, biz.id), gte(aiUsage.createdAt, monthStart))),
     db
       .select({ appointment, customerName: customer.name, serviceName: service.name, staffName: staff.name })
       .from(appointment)
@@ -134,7 +139,7 @@ export async function overview(biz: Business) {
       .orderBy(desc(auditLog.createdAt))
       .limit(8),
   ]);
-  return { newInquiries: newInq.n, pending: pending.n, awaitingStaff: awaiting.n, todays, pendingList, activity };
+  return { newInquiries: newInq.n, pending: pending.n, awaitingStaff: awaiting.n, aiMessages: ai.n, todays, pendingList, activity };
 }
 
 export async function bookingsInRange(biz: Business, from: string, days: number, f: { staffId?: string; serviceId?: string }) {

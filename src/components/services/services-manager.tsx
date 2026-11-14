@@ -77,8 +77,8 @@ export function ServicesManager({ services, staff, canEdit, bookingUrl }: { serv
                         <span className="font-medium">{s.name}</span>
                         {s.description && <span className="block max-w-[320px] truncate text-[12.5px] text-muted">{s.description}</span>}
                       </td>
-                      <td className="px-4 py-3 tabular-nums">{s.durationMinutes} min{s.bufferMinutes ? <span className="text-muted"> + {s.bufferMinutes} buffer</span> : null}</td>
-                      <td className="px-4 py-3 tabular-nums">{peso(Math.round(s.price * 100))}</td>
+                      <td className="px-4 py-3 font-mono tabular-nums">{s.durationMinutes} min{s.bufferMinutes ? <span className="text-muted"> + {s.bufferMinutes} buffer</span> : null}</td>
+                      <td className="px-4 py-3 font-mono tabular-nums">{peso(Math.round(s.price * 100))}</td>
                       <td className="px-4 py-3">{s.staffIds.length ? s.staffIds.map(staffName).join(", ") : <Badge tone="warn">No staff</Badge>}</td>
                       <td className="px-4 py-3"><Badge tone={s.active ? "accent" : "outline"}>{s.active ? "Bookable" : "Hidden"}</Badge></td>
                       <td className="px-4 py-3 text-right">{canEdit && <Button size="sm" variant="ghost" onClick={() => setEditSvc(s)}>Edit</Button>}</td>
@@ -173,7 +173,7 @@ function ServiceDialog({ svc, staff, onClose }: { svc: Svc | null; staff: Staff[
                 const on = v.staffIds.includes(s.id);
                 return (
                   <label key={s.id} className={cx("flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 text-[13.5px]", on ? "border-accent bg-accent-soft/60" : "border-line")}>
-                    <input type="checkbox" className="accent-accent-strong" checked={on} onChange={() => set("staffIds", on ? v.staffIds.filter((x) => x !== s.id) : [...v.staffIds, s.id])} />
+                    <input type="checkbox" className="accent-primary" checked={on} onChange={() => set("staffIds", on ? v.staffIds.filter((x) => x !== s.id) : [...v.staffIds, s.id])} />
                     {s.name}
                   </label>
                 );

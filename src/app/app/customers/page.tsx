@@ -69,7 +69,7 @@ export default async function CustomersPage({ searchParams }: PageProps<"/app/cu
                 <p className="text-[13.5px] text-muted">Customer since {fmtDate(detail.customer.createdAt, tz, { year: "numeric" })} · Last active {relative(detail.customer.lastActivityAt)}</p>
               </div>
             </div>
-            <dl className="mt-6 grid gap-4 rounded-lg border border-line px-5 py-4 text-[14px] sm:grid-cols-2">
+            <dl className="mt-6 grid gap-4 rounded-2xl border border-line px-5 py-4 text-[14px] sm:grid-cols-2">
               <div><dt className="text-[12.5px] text-muted">Email</dt><dd className="mt-0.5 break-all">{detail.customer.email ?? "—"}</dd></div>
               <div><dt className="text-[12.5px] text-muted">Phone</dt><dd className="mt-0.5">{detail.customer.phone ?? "—"}</dd></div>
               <div className="sm:col-span-2">
@@ -85,7 +85,7 @@ export default async function CustomersPage({ searchParams }: PageProps<"/app/cu
             {detail.bookings.length === 0 ? (
               <p className="text-[14px] text-muted">No bookings yet.</p>
             ) : (
-              <ul className="divide-y divide-line rounded-lg border border-line">
+              <ul className="divide-y divide-line rounded-2xl border border-line">
                 {detail.bookings.map((b) => (
                   <li key={b.appointment.id} className="flex flex-wrap items-center gap-3 px-4 py-3 text-[14px]">
                     <span className="min-w-0 flex-1">
@@ -102,7 +102,7 @@ export default async function CustomersPage({ searchParams }: PageProps<"/app/cu
             {detail.conversations.length === 0 ? (
               <p className="text-[14px] text-muted">No conversations yet.</p>
             ) : (
-              <ul className="divide-y divide-line rounded-lg border border-line">
+              <ul className="divide-y divide-line rounded-2xl border border-line">
                 {detail.conversations.map(({ conversation: c, last }) => (
                   <li key={c.id}>
                     <Link href={`/app/inbox?c=${c.id}`} className="flex items-center gap-3 px-4 py-3 text-[14px] hover:bg-surface">
