@@ -44,7 +44,7 @@ export function ProductReveal() {
 
   return (
     <section ref={root} id="product" aria-labelledby="product-title" className="scroll-mt-16 overflow-hidden">
-      <div className="mx-auto max-w-[1120px] px-5 pt-20 pb-16 text-center md:px-8 md:pt-28 md:pb-24">
+      <div className="mx-auto max-w-[1120px] px-5 py-16 text-center md:px-8 md:py-20">
         <h2 id="product-title" className="font-display mx-auto max-w-[18ch] text-[clamp(30px,4.6vw,52px)] leading-[1.03] font-semibold tracking-[-0.035em]">
           Your whole front desk in one screen.
         </h2>
@@ -52,7 +52,7 @@ export function ProductReveal() {
           Every chat, every request and every customer&apos;s history, side by side. This is the real app, with a demo salon.
         </p>
 
-        <div data-stage className="mt-12 [perspective:1200px] md:mt-16">
+        <div data-stage className="mt-10 [perspective:1200px] md:mt-12">
           <div
             data-device
             className="mx-auto max-w-[1040px] origin-top rounded-[22px] border border-line-strong bg-ink p-2 shadow-[var(--shadow-float)] md:rounded-[30px] md:p-3"

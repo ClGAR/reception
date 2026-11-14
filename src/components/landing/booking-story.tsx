@@ -159,7 +159,7 @@ export function BookingStory() {
 
   return (
     <section ref={root} id="how" data-mode="static" className="group/story scroll-mt-16 border-t border-line">
-      <div className="mx-auto max-w-[1120px] px-5 py-20 md:px-8 md:py-24">
+      <div className="mx-auto max-w-[1120px] px-5 py-16 md:px-8 md:py-20">
         <div className="w-full">
           <div className="grid items-center gap-6 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-16">
             <div>
@@ -170,11 +170,11 @@ export function BookingStory() {
                 Every message from your website, booking page and chat lands in one inbox. The AI does the back-and-forth. Your staff make the decision.
               </p>
             </div>
-            <BrandBurst className="h-[300px] sm:h-[360px] lg:h-[400px]" />
+            <BrandBurst className="h-[240px] sm:h-[300px] lg:h-[340px]" />
           </div>
 
-          <div data-pin className="mt-10 grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-16">
-            <ol className="relative space-y-10 group-data-[mode=pinned]/story:space-y-7 group-data-[mode=pinned]/story:pl-8">
+          <div data-pin className="mt-8 grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-16 lg:group-data-[mode=static]/story:block">
+            <ol className="relative space-y-8 group-data-[mode=pinned]/story:space-y-7 group-data-[mode=pinned]/story:pl-8 lg:group-data-[mode=static]/story:grid lg:group-data-[mode=static]/story:grid-cols-2 lg:group-data-[mode=static]/story:gap-8 lg:group-data-[mode=static]/story:space-y-0">
               <span aria-hidden className="absolute top-1 bottom-1 left-[5px] hidden w-0.5 rounded-full bg-line lg:group-data-[mode=pinned]/story:block" />
               <span
                 aria-hidden
@@ -190,7 +190,7 @@ export function BookingStory() {
                   <h3 className="mt-3 text-[22px] leading-snug font-semibold tracking-[-0.02em]">{s.title}</h3>
                   <p className="mt-2 max-w-[44ch] text-[16px] leading-relaxed text-ink-2">{s.body}</p>
                   {/* Static mode: each step carries its own picture. */}
-                  <div aria-hidden className="mt-5 max-w-[440px] rounded-[18px] border border-line bg-bg p-5 shadow-[var(--shadow-pop)] group-data-[mode=pinned]/story:hidden">
+                  <div aria-hidden className="mt-4 max-w-[440px] rounded-[18px] border border-line bg-bg p-4 shadow-[var(--shadow-pop)] group-data-[mode=pinned]/story:hidden">
                     <Scene i={i} />
                   </div>
                 </li>

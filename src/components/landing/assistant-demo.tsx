@@ -39,7 +39,7 @@ const SUGGESTIONS = [
   },
 ];
 
-let nextId = 1;
+let nextId = 3;
 
 export function AssistantDemo() {
   const [conv, setConv] = useState<Msg[]>([
@@ -48,15 +48,21 @@ export function AssistantDemo() {
       from: "ai",
       text: "Hi! I'm the receptionist at Glow Studio. Ask me about services, prices or free times.",
     },
+    { id: 1, from: "you", text: "How much is whitening?" },
+    { id: 2, from: "ai", text: SUGGESTIONS[1].answer, note: SUGGESTIONS[1].note, kind: "answer" },
   ]);
   const [busy, setBusy] = useState(false);
   const timer = useRef<number | undefined>(undefined);
-  const endRef = useRef<HTMLDivElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    if (conv.length <= 3 && !busy) return;
+    chatRef.current?.scrollTo({
+      top: chatRef.current.scrollHeight,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
   }, [conv, busy]);
 
   function ask(s: (typeof SUGGESTIONS)[number]) {
@@ -85,7 +91,7 @@ export function AssistantDemo() {
           </span>
         </header>
 
-        <div className="h-[280px] space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
+        <div ref={chatRef} className="h-[280px] space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
           {conv.map((m) =>
             m.from === "you" ? (
               <p key={m.id} className="bubble-anim ml-auto w-fit max-w-[86%] rounded-[18px] rounded-br-[6px] bg-primary px-4 py-2.5 text-[15.5px] leading-relaxed text-primary-ink">
@@ -132,7 +138,6 @@ export function AssistantDemo() {
               <span className="typing-dot size-1.5 rounded-full bg-ink-3" style={{ animationDelay: "320ms" }} />
             </div>
           )}
-          <div ref={endRef} />
         </div>
 
         <div className="border-t border-line px-4 py-4">

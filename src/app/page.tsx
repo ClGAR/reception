@@ -40,39 +40,41 @@ export default function Home() {
         {/* Hero */}
         <section className="relative overflow-hidden">
           <div aria-hidden className="grid-backdrop pointer-events-none absolute inset-x-0 top-0 h-[640px]" />
-          <div className="relative mx-auto max-w-[1120px] px-5 pt-16 pb-16 text-center md:px-8 md:pt-24 md:pb-24">
-            <p className="hero-in mx-auto inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3.5 py-1.5 text-[14px] text-ink-2 shadow-[var(--shadow-sm)]">
-              <span className="size-2 rounded-full bg-primary" aria-hidden />
-              For clinics, salons and service businesses in the Philippines
-            </p>
+          <div className="relative mx-auto grid max-w-[1120px] gap-10 px-5 py-14 text-center md:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:items-center lg:gap-12 lg:py-20 lg:text-left">
+            <div className="min-w-0">
+              <p className="hero-in mx-auto inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3.5 py-1.5 text-[14px] text-ink-2 shadow-[var(--shadow-sm)] lg:mx-0">
+                <span className="size-2 rounded-full bg-primary" aria-hidden />
+                For clinics, salons and service businesses in the Philippines
+              </p>
 
-            <h1
-              className="hero-in mx-auto mt-7 max-w-[14ch] text-[clamp(44px,8vw,84px)] leading-[0.98] font-semibold tracking-[-0.045em]"
-              style={{ "--d": "60ms", "--rise": "18px" } as CSSProperties}
-            >
-              Every inquiry, handled.
-            </h1>
+              <h1
+                className="hero-in mx-auto mt-7 max-w-[14ch] text-[clamp(44px,6vw,72px)] leading-[0.98] font-semibold tracking-[-0.045em] lg:mx-0"
+                style={{ "--d": "60ms", "--rise": "18px" } as CSSProperties}
+              >
+                Every inquiry, handled.
+              </h1>
 
-            <p
-              className="hero-in mx-auto mt-6 max-w-[46ch] text-[18px] leading-relaxed text-ink-2 md:text-[20px]"
-              style={{ "--d": "140ms" } as CSSProperties}
-            >
-              An AI receptionist that answers your customers, finds a free time and sends you the booking to approve.
-            </p>
+              <p
+                className="hero-in mx-auto mt-6 max-w-[46ch] text-[18px] leading-relaxed text-ink-2 md:text-[20px] lg:mx-0"
+                style={{ "--d": "140ms" } as CSSProperties}
+              >
+                An AI receptionist that answers your customers, finds a free time and sends you the booking to approve.
+              </p>
 
-            <div className="hero-in mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" style={{ "--d": "200ms", "--rise": "8px" } as CSSProperties}>
-              <Link href={DEMO} className={`${btnPrimary} w-full sm:w-auto`}>
-                Try the live demo <ArrowRight size={18} aria-hidden />
-              </Link>
-              <Link href="/register" className={`${btnSecondary} w-full sm:w-auto`}>
-                Create your account
-              </Link>
+              <div className="hero-in mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start" style={{ "--d": "200ms", "--rise": "8px" } as CSSProperties}>
+                <Link href={DEMO} className={`${btnPrimary} w-full sm:w-auto`}>
+                  Try the live demo <ArrowRight size={18} aria-hidden />
+                </Link>
+                <Link href="/register" className={`${btnSecondary} w-full sm:w-auto`}>
+                  Create your account
+                </Link>
+              </div>
+              <p className="hero-in mt-4 text-[14px] text-ink-3" style={{ "--d": "240ms" } as CSSProperties}>
+                No card needed. The demo is a fictional salon.
+              </p>
             </div>
-            <p className="hero-in mt-4 text-[14px] text-ink-3" style={{ "--d": "240ms" } as CSSProperties}>
-              No card needed. The demo is a fictional salon.
-            </p>
 
-            <div className="hero-in mt-14 md:mt-16" style={{ "--d": "300ms", "--rise": "24px" } as CSSProperties}>
+            <div className="hero-in min-w-0" style={{ "--d": "300ms", "--rise": "24px" } as CSSProperties}>
               <AssistantDemo />
             </div>
           </div>
@@ -80,7 +82,7 @@ export default function Home() {
 
         {/* What it connects */}
         <section aria-label="What Reception connects" className="border-y border-line bg-surface">
-          <ul className="mx-auto grid max-w-[1120px] grid-cols-1 gap-x-8 gap-y-6 px-5 py-10 sm:grid-cols-2 md:px-8 lg:grid-cols-4">
+          <ul className="mx-auto grid max-w-[1120px] grid-cols-1 gap-x-8 gap-y-6 px-5 py-8 sm:grid-cols-2 md:px-8 lg:grid-cols-4">
             {CHANNELS.map(({ icon: Icon, title, body }) => (
               <li key={title} className="flex items-start gap-3.5">
                 <span className="grid size-10 shrink-0 place-items-center rounded-[10px] border border-line bg-bg text-primary" aria-hidden>
@@ -101,7 +103,7 @@ export default function Home() {
 
         {/* Controlled AI */}
         <section id="trust" className="scroll-mt-16 border-t border-line bg-surface">
-          <div className="mx-auto max-w-[1120px] px-5 py-20 md:px-8 md:py-28">
+          <div className="mx-auto max-w-[1120px] px-5 py-16 md:px-8 md:py-20">
             <Reveal>
               <h2 className="font-display max-w-[18ch] text-[clamp(30px,4.2vw,48px)] leading-[1.04] font-semibold tracking-[-0.035em]">
                 The AI only says what you approved.
@@ -111,7 +113,7 @@ export default function Home() {
               </p>
             </Reveal>
 
-            <div className="mt-12">
+            <div className="mt-8">
               <Reveal>
                 <article className="grid overflow-hidden rounded-[20px] border border-line bg-bg md:grid-cols-[1fr_1.1fr]">
                   <div className="p-6 md:p-9">
@@ -148,11 +150,11 @@ export default function Home() {
         </section>
 
         {/* Businesses */}
-        <section id="solutions" className="mx-auto max-w-[1120px] scroll-mt-16 px-5 py-20 md:px-8 md:py-28">
+        <section id="solutions" className="mx-auto max-w-[1120px] scroll-mt-16 px-5 py-16 md:px-8 md:py-20">
           <Reveal>
             <h2 className="font-display text-[clamp(28px,3.8vw,42px)] leading-tight font-semibold tracking-[-0.035em]">Made for appointment businesses</h2>
           </Reveal>
-          <ul className="mt-10 grid gap-px overflow-hidden rounded-[20px] border border-line bg-line sm:grid-cols-2">
+          <ul className="mt-8 grid gap-px overflow-hidden rounded-[20px] border border-line bg-line sm:grid-cols-2">
             {[
               ["Dental clinics", "Cleanings and check-ups by request. Health questions always go to your staff."],
               ["Salons & barbershops", "Each stylist has their own schedule. Customers only see times someone is free."],
@@ -169,7 +171,7 @@ export default function Home() {
 
         {/* Pricing */}
         <section id="pricing" className="scroll-mt-16 border-t border-line bg-surface">
-          <div className="mx-auto max-w-[1120px] px-5 py-20 md:px-8 md:py-28">
+          <div className="mx-auto max-w-[1120px] px-5 py-16 md:px-8 md:py-20">
             <Reveal className="text-center">
               <h2 className="font-display text-[clamp(28px,3.8vw,42px)] leading-tight font-semibold tracking-[-0.035em]">One simple plan</h2>
               <p className="mx-auto mt-4 max-w-[48ch] text-[17px] leading-relaxed text-ink-2">
@@ -177,7 +179,7 @@ export default function Home() {
               </p>
             </Reveal>
             <Reveal delay={80}>
-              <div className="mx-auto mt-12 max-w-[560px] rounded-[22px] border border-line bg-bg p-7 shadow-[var(--shadow-pop)] md:p-10">
+              <div className="mx-auto mt-8 max-w-[560px] rounded-[22px] border border-line bg-bg p-7 shadow-[var(--shadow-pop)] md:p-10">
                 <div className="flex items-baseline justify-between gap-4">
                   <p className="text-[18px] font-semibold">Pro</p>
                   <p className="text-[14px] text-ink-3">plus one-time setup</p>
@@ -209,7 +211,7 @@ export default function Home() {
         </section>
 
         {/* FAQ */}
-        <section id="faq" className="mx-auto max-w-[820px] scroll-mt-16 px-5 py-20 md:px-8 md:py-28">
+        <section id="faq" className="mx-auto max-w-[820px] scroll-mt-16 px-5 py-16 md:px-8 md:py-20">
           <Reveal>
             <h2 className="font-display text-[clamp(28px,3.8vw,42px)] leading-tight font-semibold tracking-[-0.035em]">Questions</h2>
           </Reveal>
@@ -236,7 +238,7 @@ export default function Home() {
 
         {/* Closing CTA */}
         <section className="border-t border-line">
-          <div className="relative mx-auto max-w-[1120px] overflow-hidden px-5 py-24 text-center md:px-8 md:py-32">
+          <div className="relative mx-auto max-w-[1120px] overflow-hidden px-5 py-16 text-center md:px-8 md:py-20">
             <Reveal>
               <h2 className="font-display mx-auto max-w-[18ch] text-[clamp(32px,5vw,56px)] leading-[1.02] font-semibold tracking-[-0.04em]">
                 See it handle a real booking.
@@ -281,7 +283,7 @@ function SiteHeader() {
         <Link href="/" aria-label="Reception home" className="press">
           <Logo />
         </Link>
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-1 lg:flex">
           {[
             ["How it works", "#how"],
             ["Product", "#product"],

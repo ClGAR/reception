@@ -145,7 +145,7 @@ const CARDS = [
 export function FeatureBento() {
   return (
     <section aria-labelledby="features-title" className="border-t border-line bg-surface">
-      <div className="mx-auto max-w-[1120px] px-5 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1120px] px-5 py-16 md:px-8 md:py-20">
         <Reveal className="grid gap-4 md:grid-cols-[1.2fr_1fr] md:items-end">
           <h2 id="features-title" className="font-display max-w-[16ch] text-[clamp(30px,4.2vw,48px)] leading-[1.04] font-semibold tracking-[-0.035em]">
             Everything your front desk does, made easier.
@@ -154,7 +154,7 @@ export function FeatureBento() {
             Built for busy shops, not tech teams. If you can use Facebook Messenger, you can use Reception.
           </p>
         </Reveal>
-        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {CARDS.map((c, i) => (
             <Reveal key={c.title} delay={i * 50} className={cx("min-w-0", c.span)}>
               <article className="lift flex h-full min-w-0 flex-col rounded-[20px] border border-line bg-bg p-5 md:p-6">

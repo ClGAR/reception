@@ -28,6 +28,8 @@ Updated 2026-11-14. Feel: Vercel / X / Apple. Calm, plain, high contrast.
 - Buttons: sm 36 px, md 44 px, lg 48 px tall.
 - Sidebar rows 44 px; mobile tab bar 62 px with labels.
 - Selected nav, tab and filter: light blue fill + blue text.
+- Landing hero uses a side-by-side message and scripted chat at desktop widths. The chat opens with an example exchange so the first view shows its purpose; new messages scroll only inside the chat.
+- Landing sections use 64 to 80 px vertical padding. The four story steps form a two-column grid on large screens when motion is reduced; the scroll-driven version keeps its sequential layout.
 
 ## Motion (0 to 3 per screen, one focal moment)
 - Landing hero: CSS entrance (rise and fade, staggered 60 to 300 ms). Job: first read order.
