@@ -1,4 +1,4 @@
-# Architecture (Stage 3)
+# Architecture (Stage 4)
 
 Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 · Neon Postgres + Drizzle · Better Auth (email/password + organization plugin) · Zod · Vitest.
 
@@ -7,7 +7,10 @@ Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 
 - `src/server/context.ts` resolves the business from the session + `member` row on every request. Client input never chooses the business.
 - Roles: `owner` (everything), `admin` = Manager (services, knowledge, hours, bookings, inbox), `member` = Reception staff (inbox, bookings, customer notes). `can()` + `authorize()` enforce this in every server action.
 - Every query and mutation filters by `business_id`. Integration tests prove cross-tenant reads/writes fail.
-- Postgres RLS: not enabled yet. The app connects with one Neon role, so RLS would need `SET app.business_id` per transaction; planned as defence in depth (see Limitations).
+- Postgres RLS (migration `0003_rls.sql`), defence in depth on top of the `business_id` filters:
+  - Staff reads (`src/server/queries.ts`) and simple staff writes (`src/server/actions.ts`) run through `withTenant()` (`src/server/db/tenant.ts`): a transaction on the restricted role `reception_app` (`DATABASE_URL_APP`) that first sets `app.business_id`. Postgres then only shows and accepts that business's rows; with nothing set it shows nothing.
+  - The owner role (migrations, auth, public booking page, widget, AI, booking engine with advisory locks, background jobs) owns the tables and bypasses RLS. Those paths keep explicit `business_id` filters and the isolation tests.
+  - `scripts/setup-app-role.mts` sets the role's password and writes `DATABASE_URL_APP`. Production refuses tenant queries without it.
 
 ## Booking engine
 - `src/server/booking/availability.ts`: pure function. Business hours ∩ staff hours − closures − pending/confirmed bookings (incl. buffer), lead time, max days ahead, slot step. Timezone-aware (stored UTC, shown in business tz, default Asia/Manila).
@@ -45,17 +48,23 @@ Next.js 16 App Router (Cache Components on) · TypeScript strict · Tailwind v4 
 - `src/server/widget-actions.ts`: public server actions. Widget token picks the business; a random per-visitor conversation token (stored in the iframe's localStorage) picks the thread. Rate-limited per IP. The widget polls every 8 s for staff replies; the inbox refreshes every 10 s.
 - `public/demo-site.html`: fictional host page for demos.
 
-## Notifications
-- `notification_outbox` rows are created inside the same transaction as the booking change. The bell menu reads them. Email is dry-run unless `RESEND_API_KEY` + `EMAIL_FROM` are set. Inngest delivery is Stage 4.
+## Notifications (`src/server/notify/`, `src/server/inngest/`)
+- `notification_outbox` rows are written in the same transaction as the change: booking requested / confirmed / declined / cancelled / rescheduled / completed / no-show, handoff requested, reminders. The bell menu reads them.
+- After commit, `kickOutbox(businessId)` sends one Inngest event (`reception/outbox.kick`). Without Inngest configured it delivers inline with `after()`.
+- `deliverOutboxRow` locks the row (`FOR UPDATE SKIP LOCKED`), so a row is never sent twice; failures are recorded and retried (5 attempts, then `failed`).
+- Inngest functions (`/api/inngest`): deliver per business (retries 4), sweep every 5 min for rows pending > 2 min, reminders hourly for confirmed appointments 20–26 h ahead (dedupe key `reminder:<id>`, one each).
+- Emails (`emailLayout` in `src/server/email.ts`): one plain branded template, text + HTML. Customer: request received (clearly "not confirmed yet"), confirmed, declined, cancelled, new time, reminder. Business email (if `notify_email`): new request / booking, customer waiting for a person. Auth: confirm email, reset password, team invite.
+- Delivery is Resend when `RESEND_API_KEY` + `EMAIL_FROM` are set, dry run otherwise; fictional domains never deliver. `EMAIL_CAPTURE_FILE` (tests) records every message.
 
 ## Routes
 `/` marketing · `/login` `/register` `/forgot-password` `/reset-password` · `/onboarding` · `/app/{overview,inbox,bookings,customers,services,knowledge,settings}` · `/b/[slug]` public booking · `/privacy` (draft).
 
 ## Deviations from the brief
 - UI primitives are hand-written (`src/components/ui.tsx`, native `<dialog>`) instead of shadcn/Radix, to keep dependencies small. Swap in later if needed.
-- Motion library not added yet: only CSS entrances (dropdowns, dialogs, drawer, toasts) with a reduced-motion override.
+- Motion: CSS entrances in the app; GSAP ScrollTrigger only for the landing page story (see DESIGN.md).
 
 ## Limitations / next
-- Inngest workers, real email, Playwright E2E suite: Stage 4.
+- Real email needs a Resend account + verified sending domain; Inngest Cloud needs an app + keys. Both are config only.
+- RLS covers staff reads and simple staff writes; booking engine, AI and public paths still rely on app-level filters (tested).
 - Rate limiting on public endpoints is in-memory per instance; needs a shared store before scaling.
 - Data Privacy Act: privacy notice is a draft; DPO, retention policy and processing agreements still to do.

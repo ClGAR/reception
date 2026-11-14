@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, CalendarClock, Check, MessageSquare, Sparkle, X, Zap } from "lucide-react";
 import { cx } from "@/components/ui";
@@ -15,6 +16,7 @@ interface Props {
  * links to the screen where the work happens — nothing is invented.
  */
 export function FloatingAssistant({ counts, aiLimit }: Props) {
+  const path = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const attention = counts.unread + counts.pending;
@@ -34,10 +36,13 @@ export function FloatingAssistant({ counts, aiLimit }: Props) {
     };
   }, [open]);
 
+  // The inbox already shows who is waiting, and its composer sits where this pill would.
+  if (path.startsWith("/app/inbox")) return null;
+
   return (
     <div
       ref={ref}
-      className="fixed right-4 bottom-[calc(58px+12px+env(safe-area-inset-bottom))] z-40 lg:right-6 lg:bottom-6"
+      className="fixed right-4 bottom-[calc(62px+12px+env(safe-area-inset-bottom))] z-40 lg:right-6 lg:bottom-6"
     >
       {open && (
         <div

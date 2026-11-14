@@ -9,6 +9,9 @@ const kindText: Record<string, (p: Record<string, string>) => string> = {
   "booking.confirmed": () => "A booking was confirmed",
   "booking.declined": () => "A booking request was declined",
   "booking.cancelled": () => "A booking was cancelled",
+  "booking.rescheduled": () => "A booking was moved to a new time",
+  "booking.completed": () => "A booking was marked completed",
+  "booking.no_show": () => "A customer didn't show up",
   "handoff.requested": (p) => `${p.customer ?? "A customer"} asked for a staff member`,
 };
 

@@ -18,7 +18,7 @@ import {
   workingHours,
 } from "../db/schema";
 import { BookingError, createBookingRequest, getSlots } from "../booking/service";
-import { sendEmail } from "../email";
+import { kickOutbox } from "../notify/queue";
 import { answerFromKnowledge } from "./faq";
 import { checkReply, EMAIL_RE, isAffirmative, parseTime, PHONE_RE, timesIn } from "./flow-rules";
 import { resolveModel, resolveModels } from "./provider";
@@ -52,6 +52,7 @@ export async function handOff(biz: Business, conversationId: string, reason: str
       .insert(notificationOutbox)
       .values({ businessId: biz.id, kind: "handoff.requested", payload: { conversationId, customer: customerName ?? "A customer", reason }, dedupeKey: `handoff:${h.id}` })
       .onConflictDoNothing();
+    kickOutbox(biz.id);
   }
 }
 
@@ -312,12 +313,7 @@ async function submitDraft(biz: Business, d: Draft, conv: { id: string; customer
     });
     await saveDraft(d, { stage: "submitted", appointmentId: appt.id });
     const when = `${dayLabel(biz, d.date!)} at ${minuteLabel(d.minute!)}`;
-    if (d.customerEmail)
-      await sendEmail({
-        to: d.customerEmail,
-        subject: `${appt.status === "confirmed" ? "Booked" : "Request received"}: ${svc.name}, ${when}`,
-        text: `Hi ${d.customerName}, ${appt.status === "confirmed" ? "your appointment is confirmed" : "we received your request. It is not confirmed yet; we'll let you know when staff approve it"}: ${svc.name}, ${when}, ${biz.name}.`,
-      });
+    // The "request received" / "booked" email goes out from the notification outbox (src/server/notify).
     const text =
       appt.status === "confirmed"
         ? `You're booked, ${d.customerName}: ${svc.name} on ${when}. See you then!`

@@ -19,6 +19,6 @@ export default defineConfig({
     url: "http://localhost:3108",
     reuseExistingServer: false,
     timeout: 120_000,
-    env: { AI_PROVIDER: "", BETTER_AUTH_URL: "http://localhost:3108", RESEND_API_KEY: "" },
+    env: { AI_PROVIDER: "", BETTER_AUTH_URL: "http://localhost:3108", RESEND_API_KEY: "", EMAIL_CAPTURE_FILE: "test-results/e2e-emails.jsonl", INNGEST_DEV: "", INNGEST_EVENT_KEY: "" },
   },
 });

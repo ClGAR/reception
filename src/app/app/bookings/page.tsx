@@ -1,10 +1,7 @@
 import { requireBusiness } from "@/server/context";
-import { bookingsInRange, staffAndServices } from "@/server/queries";
+import { allWorkingHours, bookingsInRange, staffAndServices } from "@/server/queries";
 import { addDays, fmtTime, isValidDate, localParts, peso, todayIn, weekdayOf } from "@/lib/time";
 import { BookingsCalendar } from "@/components/bookings/calendar";
-import { db } from "@/server/db";
-import { workingHours } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
 
 export const metadata = { title: "Bookings · Reception" };
 
@@ -26,7 +23,7 @@ export default async function BookingsPage({ searchParams }: PageProps<"/app/boo
   const [rows, { staff, services }, hours] = await Promise.all([
     bookingsInRange(business, start, days, { staffId, serviceId }),
     staffAndServices(business),
-    db.select().from(workingHours).where(eq(workingHours.businessId, business.id)),
+    allWorkingHours(business),
   ]);
   const open = hours.length ? Math.min(...hours.map((h) => h.startMinute)) : 8 * 60;
   const close = hours.length ? Math.max(...hours.map((h) => h.endMinute)) : 20 * 60;

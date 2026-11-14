@@ -1,6 +1,7 @@
 import "server-only";
 import { and, eq, gte, inArray, lt, ne, sql } from "drizzle-orm";
 import { db } from "../db";
+import { kickOutbox } from "../notify/queue";
 import {
   appointment,
   auditLog,
@@ -122,7 +123,7 @@ export async function createBookingRequest(biz: Business, input: RequestInput) {
       .where(and(eq(appointment.businessId, biz.id), eq(appointment.idempotencyKey, input.idempotencyKey)));
     if (existing) return existing;
   }
-  return db.transaction(async (tx) => {
+  const created = await db.transaction(async (tx) => {
     const [svc] = await tx
       .select()
       .from(service)
@@ -194,6 +195,8 @@ export async function createBookingRequest(biz: Business, input: RequestInput) {
     });
     return appt;
   });
+  kickOutbox(biz.id);
+  return created;
 }
 
 function isExclusionViolation(e: unknown) {
@@ -204,7 +207,7 @@ function isExclusionViolation(e: unknown) {
 /** Change status following the legal transition table. Confirmations rely on the DB exclusion constraint. */
 export async function transitionAppointment(biz: Business, id: string, to: string, actorUserId: string) {
   try {
-    return await db.transaction(async (tx) => {
+    const changed = await db.transaction(async (tx) => {
       const [appt] = await tx
         .select()
         .from(appointment)
@@ -239,6 +242,8 @@ export async function transitionAppointment(biz: Business, id: string, to: strin
         .onConflictDoNothing();
       return updated;
     });
+    kickOutbox(biz.id);
+    return changed;
   } catch (e) {
     if (isExclusionViolation(e))
       throw new BookingError("This time overlaps another confirmed appointment for the same staff member.", "conflict");
@@ -248,7 +253,7 @@ export async function transitionAppointment(biz: Business, id: string, to: strin
 
 export async function rescheduleAppointment(biz: Business, id: string, date: string, minute: number, actorUserId: string) {
   try {
-    return await db.transaction(async (tx) => {
+    const moved = await db.transaction(async (tx) => {
       const [appt] = await tx
         .select()
         .from(appointment)
@@ -276,8 +281,19 @@ export async function rescheduleAppointment(biz: Business, id: string, date: str
         entityId: id,
         data: { from: appt.startsAt.toISOString(), to: slot.startsAt.toISOString() },
       });
+      await tx
+        .insert(notificationOutbox)
+        .values({
+          businessId: biz.id,
+          kind: "booking.rescheduled",
+          payload: { appointmentId: id, from: appt.startsAt.toISOString() },
+          dedupeKey: `booking.rescheduled:${id}:${slot.startsAt.toISOString()}`,
+        })
+        .onConflictDoNothing();
       return updated;
     });
+    kickOutbox(biz.id);
+    return moved;
   } catch (e) {
     if (isExclusionViolation(e))
       throw new BookingError("This time overlaps another confirmed appointment for the same staff member.", "conflict");
